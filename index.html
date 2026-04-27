@@ -18,6 +18,7 @@
         :root {
             --gold: #ffd700;
             --gold-dark: #ccaa00;
+            --gold-light: #ffe066;
             --gold-glow: rgba(255, 215, 0, 0.4);
             --dark-bg: #0a0a0a;
         }
@@ -75,7 +76,7 @@
             backdrop-filter: blur(20px);
             border-radius: 80px;
             padding: 8px 20px;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
             border: 1px solid rgba(255, 215, 0, 0.4);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
@@ -113,81 +114,132 @@
 
         /* Кнопка назад */
         .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 170, 0, 0.08));
+            border: 1px solid rgba(255, 215, 0, 0.4);
             border-radius: 60px;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-weight: 600;
             color: #ffd700;
             cursor: pointer;
             transition: all 0.2s;
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            backdrop-filter: blur(10px);
         }
 
         .back-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
-        /* Главное меню - сетка игр */
+        /* ========== ГЛАВНОЕ МЕНЮ - ПРЕМИАЛЬНЫЕ КАРТОЧКИ ========== */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 16px;
         }
 
         .game-menu-card {
-            background: linear-gradient(145deg, rgba(20, 18, 14, 0.8), rgba(10, 8, 6, 0.9));
+            position: relative;
+            background: linear-gradient(145deg, rgba(25, 22, 18, 0.9), rgba(15, 12, 8, 0.95));
             backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 28px 20px;
+            border-radius: 48px;
+            padding: 32px 24px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        /* Золотая обводка при наведении */
+        .game-menu-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 48px;
+            padding: 2px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .game-menu-card:hover::before {
+            opacity: 1;
         }
 
         .game-menu-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.02);
             border-color: rgba(255, 215, 0, 0.6);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
         }
 
+        /* Анимированный иконки */
         .game-menu-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
+            font-size: 72px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: floatIcon 3s ease-in-out infinite;
         }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .game-menu-card:nth-child(1) .game-menu-icon { animation-delay: 0s; }
+        .game-menu-card:nth-child(2) .game-menu-icon { animation-delay: 0.5s; }
+        .game-menu-card:nth-child(3) .game-menu-icon { animation-delay: 1s; }
 
         .game-menu-title {
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 12px;
+            letter-spacing: 1px;
         }
 
         .game-menu-desc {
             font-size: 13px;
             opacity: 0.7;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
+        /* Бейджи */
         .game-menu-badge {
             display: inline-block;
-            background: rgba(255, 215, 0, 0.15);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1));
             border-radius: 60px;
-            padding: 6px 16px;
+            padding: 8px 20px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             color: #ffd700;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Особый бейдж для популярной игры */
+        .game-menu-card[data-game="mines"] .game-menu-badge {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a1a;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         /* Карточка игры (активная игра) */
@@ -218,7 +270,6 @@
             color: transparent;
         }
 
-        /* Секции */
         .section-label {
             font-size: 12px;
             text-transform: uppercase;
@@ -228,7 +279,6 @@
             margin-bottom: 14px;
         }
 
-        /* Кнопки ставок */
         .bet-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -257,7 +307,6 @@
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
 
-        /* Карточки выбора мин */
         .mines-buttons {
             display: flex;
             gap: 16px;
@@ -298,7 +347,6 @@
             opacity: 0.6;
         }
 
-        /* Инфо панель */
         .info-panel {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
             border-radius: 32px;
@@ -335,7 +383,6 @@
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
-        /* Игровое поле */
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -400,7 +447,6 @@
             padding: 2px 5px;
         }
 
-        /* Кнопки */
         .btn {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             border: none;
@@ -425,7 +471,6 @@
             color: white;
         }
 
-        /* Взрыв */
         .explosion-overlay {
             position: fixed;
             top: 0;
@@ -457,7 +502,6 @@
             80% { transform: translateX(3px); }
         }
 
-        /* Уведомления */
         .toast {
             position: fixed;
             bottom: 100px;
@@ -477,13 +521,9 @@
             font-size: 14px;
         }
 
-        /* Адаптация для планшетов и ПК */
         @media (min-width: 768px) {
             .mine-cell {
                 font-size: 40px;
-            }
-            .bet-btn:hover, .mine-card:hover, .game-menu-card:hover {
-                transform: translateY(-3px);
             }
         }
 
@@ -496,10 +536,16 @@
                 font-size: 13px;
             }
             .game-menu-icon {
-                font-size: 48px;
+                font-size: 56px;
             }
             .game-menu-title {
-                font-size: 20px;
+                font-size: 24px;
+            }
+            .games-grid {
+                gap: 16px;
+            }
+            .game-menu-card {
+                padding: 24px 16px;
             }
         }
     </style>
@@ -561,7 +607,7 @@
     document.getElementById('addStarsBtn').onclick = () => addStars(500);
     
     // ========== СОСТОЯНИЕ ПРИЛОЖЕНИЯ ==========
-    let currentScreen = 'menu'; // 'menu' или 'game'
+    let currentScreen = 'menu';
     let currentGameId = null;
     
     // ========== ИГРА: МИННОЕ ПОЛЕ ==========
@@ -774,18 +820,18 @@
         renderMinesGameStats();
     }
     
-    // ========== ДРУГИЕ ИГРЫ (ЗАГЛУШКИ) ==========
+    // ========== ДРУГИЕ ИГРЫ ==========
     function renderWheelGame() {
         const container = document.getElementById('gameContent');
         if (container) {
-            container.innerHTML = `<div class="game-card"><div class="game-title">🎡 FORTUNE WHEEL</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🚧</div><p style="opacity: 0.7;">Скоро будет доступно...</p></div></div>`;
+            container.innerHTML = `<div class="game-card"><div class="game-title">🎡 FORTUNE WHEEL</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🎡</div><p style="opacity: 0.7;">Скоро будет доступно...</p><p style="margin-top: 16px; font-size: 13px; opacity: 0.5;">Следите за обновлениями</p></div></div>`;
         }
     }
     
     function renderRocketGame() {
         const container = document.getElementById('gameContent');
         if (container) {
-            container.innerHTML = `<div class="game-card"><div class="game-title">🚀 ROCKET</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🚀</div><p style="opacity: 0.7;">Скоро будет доступно...</p></div></div>`;
+            container.innerHTML = `<div class="game-card"><div class="game-title">🚀 ROCKET</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🚀</div><p style="opacity: 0.7;">Скоро будет доступно...</p><p style="margin-top: 16px; font-size: 13px; opacity: 0.5;">Следите за обновлениями</p></div></div>`;
         }
     }
     
@@ -797,20 +843,20 @@
                 <div class="game-menu-card" data-game="mines">
                     <div class="game-menu-icon">💎</div>
                     <div class="game-menu-title">MINES</div>
-                    <div class="game-menu-desc">Классическое минное поле с множителями до x7.5</div>
-                    <div class="game-menu-badge">🔥 Популярное</div>
+                    <div class="game-menu-desc">Классическое минное поле. Открывай кристаллы, избегай мин и увеличивай множитель до x7.5!</div>
+                    <div class="game-menu-badge">🔥 ПОПУЛЯРНОЕ</div>
                 </div>
                 <div class="game-menu-card" data-game="wheel">
                     <div class="game-menu-icon">🎡</div>
                     <div class="game-menu-title">FORTUNE WHEEL</div>
-                    <div class="game-menu-desc">Колесо фортуны — испытай удачу!</div>
-                    <div class="game-menu-badge">🚧 Скоро</div>
+                    <div class="game-menu-desc">Колесо фортуны. Сделай ставку и крути колесо удачи! Победитель забирает всё.</div>
+                    <div class="game-menu-badge">⚡ СКОРО</div>
                 </div>
                 <div class="game-menu-card" data-game="rocket">
                     <div class="game-menu-icon">🚀</div>
                     <div class="game-menu-title">ROCKET</div>
-                    <div class="game-menu-desc">Лети выше и забирай выигрыш вовремя</div>
-                    <div class="game-menu-badge">🚧 Скоро</div>
+                    <div class="game-menu-desc">Ракетка. Лети выше и забирай выигрыш до того, как ракета взорвется!</div>
+                    <div class="game-menu-badge">⚡ СКОРО</div>
                 </div>
             </div>
         `;
@@ -830,7 +876,7 @@
         
         const mainContent = document.getElementById('mainContent');
         mainContent.innerHTML = `
-            <button class="back-btn" id="backToMenuBtn">← В главное меню</button>
+            <button class="back-btn" id="backToMenuBtn">← ВЕРНУТЬСЯ В МЕНЮ</button>
             <div id="gameContent"></div>
         `;
         
@@ -850,11 +896,9 @@
         }
     }
     
-    // Глобальные функции для onclick
     window.revealMineCell = revealMineCell;
     window.cashoutMines = cashoutMines;
     
-    // Инициализация Telegram
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.ready();
         window.Telegram.WebApp.expand();
