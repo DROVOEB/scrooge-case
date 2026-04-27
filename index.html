@@ -34,7 +34,6 @@
             position: relative;
         }
 
-        /* Анимированный фон с золотыми частицами */
         body::before {
             content: "";
             position: fixed;
@@ -46,7 +45,6 @@
             z-index: -2;
         }
 
-        /* Плавающие золотые монеты */
         .floating-coins {
             position: fixed;
             top: 0;
@@ -66,23 +64,12 @@
         }
 
         @keyframes floatCoin {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.2;
-            }
-            90% {
-                opacity: 0.2;
-            }
-            100% {
-                transform: translateY(-50px) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.2; }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-50px) rotate(360deg); opacity: 0; }
         }
 
-        /* Золотая пыльца */
         .glitter {
             position: fixed;
             width: 2px;
@@ -107,7 +94,6 @@
             z-index: 2;
         }
 
-        /* Премиум верхняя панель */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -192,7 +178,6 @@
             transform: scale(0.95);
         }
 
-        /* Кнопка назад */
         .back-btn {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 170, 0, 0.08));
             border: 1px solid rgba(255, 215, 0, 0.4);
@@ -216,7 +201,6 @@
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
-        /* Карточки игр главного меню — ЛЮКС */
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -238,7 +222,6 @@
             overflow: hidden;
         }
 
-        /* Золотая обводка при наведении */
         .game-menu-card::before {
             content: "";
             position: absolute;
@@ -280,10 +263,6 @@
             50% { transform: translateY(-10px); }
         }
 
-        .game-menu-card:nth-child(1) .game-menu-icon { animation-delay: 0s; }
-        .game-menu-card:nth-child(2) .game-menu-icon { animation-delay: 0.5s; }
-        .game-menu-card:nth-child(3) .game-menu-icon { animation-delay: 1s; }
-
         .game-menu-title {
             font-family: 'Playfair Display', serif;
             font-size: 32px;
@@ -324,7 +303,6 @@
             font-weight: 800;
         }
 
-        /* Общая карточка игры */
         .game-card {
             background: linear-gradient(145deg, rgba(20, 15, 12, 0.85), rgba(12, 8, 6, 0.95));
             backdrop-filter: blur(20px);
@@ -448,7 +426,7 @@
         }
 
         .participants-list {
-            max-height: 200px;
+            max-height: 250px;
             overflow-y: auto;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 28px;
@@ -475,6 +453,7 @@
         .participant {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 10px 12px;
             border-bottom: 1px solid rgba(255, 215, 0, 0.1);
             font-size: 14px;
@@ -492,17 +471,18 @@
             margin: 2px 0;
         }
 
-        .fake-player-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2px 8px;
-            font-size: 10px;
-            margin-left: 8px;
-            color: #aaa;
+        .participant-avatar {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-right: 10px;
         }
 
-        /* Колесо фортуны */
         .wheel-wrapper {
             position: relative;
             display: flex;
@@ -549,7 +529,6 @@
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
-        /* Кнопки */
         .btn {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             border: none;
@@ -618,7 +597,6 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Поле для мин */
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -663,28 +641,14 @@
         }
 
         @media (max-width: 550px) {
-            .games-grid {
-                gap: 20px;
-            }
-            .game-menu-icon {
-                font-size: 60px;
-            }
-            .game-menu-title {
-                font-size: 26px;
-            }
-            .timer-display {
-                font-size: 42px;
-            }
-            .coefficient-display {
-                font-size: 48px;
-            }
-            .mine-cell {
-                font-size: 28px;
-            }
-            canvas {
-                width: 280px;
-                height: 280px;
-            }
+            .games-grid { gap: 20px; }
+            .game-menu-icon { font-size: 60px; }
+            .game-menu-title { font-size: 26px; }
+            .timer-display { font-size: 42px; }
+            .coefficient-display { font-size: 48px; }
+            .mine-cell { font-size: 28px; }
+            canvas { width: 280px; height: 280px; }
+            .participant { font-size: 12px; }
         }
     </style>
 </head>
@@ -693,18 +657,18 @@
 <div class="app">
     <div class="top-bar">
         <div class="balance">💎 <span id="balance">1000</span> Stars</div>
-        <button class="add-stars" id="addStarsBtn">💎 VIP +500</button>
+        <button class="add-stars" id="addStarsBtn">⭐ ПОПОЛНИТЬ</button>
     </div>
     <div id="mainContent"></div>
 </div>
 <div id="toast" class="toast"></div>
 
 <script>
-    // Плавающие монеты и блёстки
+    // ========== ПЛАВАЮЩИЕ МОНЕТЫ ==========
     function createFloatingCoins() {
         const container = document.getElementById('floatingCoins');
         const coins = ['💰', '💎', '🪙', '💵'];
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 35; i++) {
             const coin = document.createElement('div');
             coin.className = 'coin';
             coin.textContent = coins[Math.floor(Math.random() * coins.length)];
@@ -714,8 +678,7 @@
             coin.style.animationDelay = Math.random() * 10 + 's';
             container.appendChild(coin);
         }
-        
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 70; i++) {
             const glitter = document.createElement('div');
             glitter.className = 'glitter';
             glitter.style.left = Math.random() * 100 + '%';
@@ -726,6 +689,42 @@
         }
     }
     createFloatingCoins();
+    
+    // ========== РЕАЛЬНОЕ ПОПОЛНЕНИЕ TELEGRAM STARS ==========
+    function openTelegramStarsInvoice() {
+        if (window.Telegram?.WebApp) {
+            // Telegram Stars — встроенная покупка
+            const starsAmount = 500;
+            const price = starsAmount; // 1 Star = 0.01 USD примерно
+            Telegram.WebApp.openInvoice(`stars_${starsAmount}_${Date.now()}`, {
+                title: `${starsAmount} Telegram Stars`,
+                description: `Пополнение баланса на ${starsAmount} Stars`,
+                payload: JSON.stringify({ action: 'add_stars', amount: starsAmount }),
+                provider_token: '', // Telegram Stars не требует provider_token
+                currency: 'XTR',
+                prices: [{ label: `${starsAmount} Stars`, amount: price * 100 }]
+            });
+        } else {
+            // Демо-режим для тестирования в браузере
+            showToast('⭐ Демо-пополнение: +500 Stars (в Telegram будет через Stars)', false);
+            addStars(500);
+        }
+    }
+    
+    // Обработчик покупки через Telegram
+    if (window.Telegram?.WebApp) {
+        Telegram.WebApp.onEvent('invoiceClosed', (event) => {
+            if (event.status === 'paid') {
+                try {
+                    const data = JSON.parse(event.payload);
+                    if (data.action === 'add_stars') {
+                        addStars(data.amount);
+                        showToast(`⭐ Пополнение: +${data.amount} Stars!`, false);
+                    }
+                } catch(e) {}
+            }
+        });
+    }
     
     // ========== БАЛАНС ==========
     let balance = parseInt(localStorage.getItem('balance') || '1000');
@@ -769,46 +768,55 @@
         }
     }
     
-    document.getElementById('addStarsBtn').onclick = () => addStars(500);
+    document.getElementById('addStarsBtn').onclick = openTelegramStarsInvoice;
     
-    // ========== ГЕНЕРАТОР ФЕЙК-ИГРОКОВ ==========
-    const firstNames = ['Alex', 'Max', 'Leo', 'Dan', 'Sam', 'Tom', 'Nick', 'Mike', 'John', 'Chris', 'Kevin', 'Brian', 'Jason', 'Eric', 'Adam', 'David', 'Paul', 'Mark', 'Steve', 'Andrew', 'Vlad', 'Igor', 'Dmitry', 'Sergey', 'Anton'];
-    const lastNames = ['Crypto', 'Winner', 'Lucky', 'Player', 'Gamer', 'Hunter', 'Killer', 'Master', 'Pro', 'Star', 'King', 'Queen', 'Ace', 'Wolf', 'Fox', 'Hawk', 'Eagle', 'Shark', 'Dragon', 'Phoenix', 'Rich', 'Gold', 'Diamond'];
-    const suffixes = ['_99', 'X', 'Pro', '007', '_xXx', '2024', '777', 'Gold', 'Diamond', 'Platinum', 'VIP'];
+    // ========== ПРОДВИНУТЫЙ ГЕНЕРАТОР ФЕЙК-ИГРОКОВ ==========
+    const firstNames = ['Alex', 'Max', 'Leo', 'Dan', 'Sam', 'Tom', 'Nick', 'Mike', 'John', 'Chris', 'Kevin', 'Brian', 'Jason', 'Eric', 'Adam', 'David', 'Paul', 'Mark', 'Steve', 'Andrew', 'Vlad', 'Igor', 'Dmitry', 'Sergey', 'Anton', 'Roman', 'Ivan', 'Mikhail', 'Nikita', 'Artem'];
+    const lastNames = ['Crypto', 'Winner', 'Lucky', 'Player', 'Gamer', 'Hunter', 'Killer', 'Master', 'Pro', 'Star', 'King', 'Queen', 'Ace', 'Wolf', 'Fox', 'Hawk', 'Eagle', 'Shark', 'Dragon', 'Phoenix', 'Rich', 'Gold', 'Diamond', 'Legend', 'Hero', 'Champ', 'Boss', 'Elite', 'Crown', 'Royal'];
+    const suffixes = ['_99', 'X', 'Pro', '007', '_xXx', '2024', '777', 'Gold', 'Diamond', 'Platinum', 'VIP', 'OG', 'MVP', 'LTD'];
+    const avatars = ['🐺', '🦊', '🐉', '🦅', '🦁', '🐯', '🐎', '🦄', '🐧', '🐸', '🐙', '🦭', '🦚', '🦜', '🐳'];
     
     function generateRandomNick() {
-        const useFirstName = Math.random() > 0.4;
+        const useFirstName = Math.random() > 0.35;
         if (useFirstName) {
             const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
             const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-            const useSuffix = Math.random() > 0.7;
+            const useSuffix = Math.random() > 0.65;
             if (useSuffix) {
                 return `${firstName}${lastName}${suffixes[Math.floor(Math.random() * suffixes.length)]}`;
             }
             return `${firstName}${lastName}`;
         } else {
-            const prefixes = ['Cool', 'Fast', 'Big', 'Little', 'Dark', 'Light', 'Fire', 'Ice', 'Thunder', 'Storm', 'High', 'Low'];
+            const prefixes = ['Cool', 'Fast', 'Big', 'Little', 'Dark', 'Light', 'Fire', 'Ice', 'Thunder', 'Storm', 'High', 'Low', 'Crypto', 'Mega', 'Ultra', 'Super'];
             const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
             const number = Math.floor(Math.random() * 9000) + 1000;
             return `${prefix}_${number}`;
         }
     }
     
+    function generateRandomAvatar() {
+        return avatars[Math.floor(Math.random() * avatars.length)];
+    }
+    
     function generateRandomBet(min, max) {
-        const bets = [10, 20, 25, 30, 40, 50, 75, 100, 125, 150, 175, 200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 800, 900, 1000, 1200, 1500, 2000, 2500];
+        const bets = [10, 15, 20, 25, 30, 40, 45, 50, 60, 75, 80, 90, 100, 110, 120, 125, 130, 140, 150, 160, 175, 180, 190, 200, 210, 220, 230, 240, 250, 260, 275, 280, 290, 300, 320, 340, 350, 360, 370, 380, 390, 400, 420, 440, 450, 460, 470, 480, 490, 500];
         const available = bets.filter(b => b >= min && b <= max);
-        return available[Math.floor(Math.random() * available.length)] || min;
+        if (available.length === 0) return min;
+        return available[Math.floor(Math.random() * available.length)];
     }
     
     let fakePlayersTimers = {};
+    let fakePlayersActive = {};
     
     function addFakePlayer(game, participants, maxBet, existingNames) {
         const nick = generateRandomNick();
         if (existingNames.includes(nick)) return false;
+        const avatar = generateRandomAvatar();
         const bet = generateRandomBet(10, maxBet);
         participants.push({ 
             name: nick, 
             bet: bet, 
+            avatar: avatar,
             isFake: true,
             cashedOut: false
         });
@@ -819,7 +827,7 @@
         const fakeParticipants = participants.filter(p => p.isFake && !p.cashedOut);
         if (fakeParticipants.length === 0) return false;
         const randomFake = fakeParticipants[Math.floor(Math.random() * fakeParticipants.length)];
-        const increase = [10, 15, 20, 25, 30, 50][Math.floor(Math.random() * 6)];
+        const increase = [10, 15, 20, 25, 30, 35, 40, 45, 50][Math.floor(Math.random() * 9)];
         const newBet = Math.min(randomFake.bet + increase, maxBet);
         if (newBet > randomFake.bet) {
             randomFake.bet = newBet;
@@ -830,28 +838,44 @@
     
     function startFakePlayersGenerator(gameId, getParticipants, maxBet, stopCondition) {
         if (fakePlayersTimers[gameId]) clearInterval(fakePlayersTimers[gameId]);
+        if (fakePlayersActive[gameId]) return;
+        fakePlayersActive[gameId] = true;
         
-        fakePlayersTimers[gameId] = setInterval(() => {
-            if (stopCondition()) return;
+        const generate = () => {
+            if (stopCondition && stopCondition()) {
+                fakePlayersActive[gameId] = false;
+                return;
+            }
             
             const participants = getParticipants();
             const existingNames = participants.map(p => p.name);
             
             const action = Math.random();
             
-            if (action < 0.55 && participants.filter(p => p.isFake).length < 8) {
-                addFakePlayer(gameId, participants, maxBet, existingNames);
-            } else if (action < 0.85 && participants.filter(p => p.isFake && !p.cashedOut).length > 0) {
+            if (participants.filter(p => p.isFake).length < 12) {
+                if (action < 0.6) {
+                    addFakePlayer(gameId, participants, maxBet, existingNames);
+                } else if (action < 0.85 && participants.filter(p => p.isFake && !p.cashedOut).length > 0) {
+                    raiseFakeBet(participants, maxBet);
+                }
+            } else if (action < 0.7 && participants.filter(p => p.isFake && !p.cashedOut).length > 2) {
                 raiseFakeBet(participants, maxBet);
             }
-        }, 3000 + Math.random() * 4000);
+            
+            if (fakePlayersActive[gameId]) {
+                fakePlayersTimers[gameId] = setTimeout(generate, 2500 + Math.random() * 4000);
+            }
+        };
+        
+        fakePlayersTimers[gameId] = setTimeout(generate, 1500);
     }
     
     function stopFakePlayersGenerator(gameId) {
         if (fakePlayersTimers[gameId]) {
-            clearInterval(fakePlayersTimers[gameId]);
+            clearTimeout(fakePlayersTimers[gameId]);
             delete fakePlayersTimers[gameId];
         }
+        fakePlayersActive[gameId] = false;
     }
     
     // ========== ИГРА: КОЛЕСО ФОРТУНЫ ==========
@@ -913,10 +937,10 @@
             ctx.translate(center, center);
             ctx.rotate(startAngle + angle / 2);
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 11px Poppins';
+            ctx.font = 'bold 10px Poppins';
             ctx.shadowBlur = 0;
             let name = p.name.length > 12 ? p.name.slice(0, 10) + '..' : p.name;
-            ctx.fillText(name, radius - 40, 5);
+            ctx.fillText(name, radius - 35, 5);
             ctx.restore();
             
             startAngle = endAngle;
@@ -985,7 +1009,7 @@
                 wheelGame.spinning = false;
                 
                 addWin(totalBet);
-                showToast(`🎡 ПОБЕДИТЕЛЬ: ${winner.name} 🎡 (забрал ${totalBet} Stars)!`, false);
+                showToast(`🎡 ПОБЕДИТЕЛЬ: ${winner.name} 🎡 (забрал ${totalBet.toLocaleString()} Stars)!`, false);
                 
                 wheelGame.active = false;
                 wheelGame.countingDown = false;
@@ -1047,7 +1071,7 @@
         if (!deductStars(wheelGame.bet)) return;
         
         wheelGame.myBetPlaced = true;
-        wheelGame.participants.push({ name: 'ВЫ', bet: wheelGame.bet, isFake: false });
+        wheelGame.participants.push({ name: 'ВЫ', bet: wheelGame.bet, avatar: '👑', isFake: false });
         
         drawWheel();
         renderWheelGame();
@@ -1093,7 +1117,10 @@
             wheelGame.participants.forEach(p => {
                 const chance = totalBet > 0 ? ((p.bet / totalBet) * 100).toFixed(1) : 0;
                 const isReal = p.name === 'ВЫ';
-                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}"><span><strong>${p.name}</strong> ${p.isFake ? '<span class="fake-player-badge">🤖</span>' : '🔥'}</span><span>⭐ ${p.bet} (${chance}%)</span></div>`;
+                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}">
+                    <span><span class="participant-avatar">${p.avatar || '🎲'}</span> <strong>${p.name}</strong></span>
+                    <span>⭐ ${p.bet.toLocaleString()} (${chance}%)</span>
+                </div>`;
             });
         }
         participantsHtml += '</div>';
@@ -1109,6 +1136,7 @@
                         <button class="bet-btn ${wheelGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
                         <button class="bet-btn ${wheelGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
                         <button class="bet-btn ${wheelGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${wheelGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
                     </div>
                     <div class="timer-display">⏱️ ${wheelGame.countdown} сек</div>
                     <div class="wheel-wrapper">
@@ -1157,12 +1185,13 @@
                         <button class="bet-btn ${wheelGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
                         <button class="bet-btn ${wheelGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
                         <button class="bet-btn ${wheelGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${wheelGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
                     </div>
                     <div class="info-panel">
                         <div class="info-row"><span>💰 СТАВКА</span><span>${wheelGame.bet} STARS</span></div>
                         <div class="info-row"><span>🎡 МАКС. ВЫИГРЫШ</span><span>зависит от банка</span></div>
                     </div>
-                    <button class="btn" id="newWheelRoundBtn">🎡 НОВЫЙ РАУНД (10 сек) 🎡</button>
+                    <button class="btn" id="newWheelRoundBtn">🎡 НОВЫЙ РАУНД (10 сек)</button>
                 </div>
             `;
             document.querySelectorAll('.bet-btn').forEach(btn => {
@@ -1306,7 +1335,7 @@
                         <div class="info-row"><span>⭐ СТАВКА</span><span>${minesGame.bet} STARS</span></div>
                         <div class="info-row"><span>🏆 МАКС. МНОЖИТЕЛЬ</span><span>x${getBaseMultiplier(minesGame.minesCount)}</span></div>
                     </div>
-                    <button class="btn" id="startMinesBtn">💎 НАЧАТЬ ИГРУ 💎</button>
+                    <button class="btn" id="startMinesBtn">💎 НАЧАТЬ ИГРУ</button>
                 </div>
             `;
             document.querySelectorAll('.bet-btn[data-bet]').forEach(btn => {
@@ -1339,13 +1368,13 @@
         
         container.innerHTML = `
             <div class="game-card">
-                <div class="game-title">💎 MINES | ${minesGame.minesCount} MINES 💎</div>
+                <div class="game-title">💎 MINES | ${minesGame.minesCount} MINES</div>
                 ${gridHtml}
                 <div class="info-panel">
                     <div class="info-row"><span>🎯 ПРОГРЕСС</span><span>${progress}%</span></div>
                     <div class="info-row"><span>💎 БЕЗОПАСНО</span><span>${minesGame.safeLeft} / ${totalSafe}</span></div>
                     <div class="coefficient-display" style="font-size:42px;">x${minesGame.multiplier}</div>
-                    <div class="potential-win">💰 ЗАБРАТЬ: ${potentialWin.toLocaleString()} STARS 💰</div>
+                    <div class="potential-win">💰 ЗАБРАТЬ: ${potentialWin.toLocaleString()} STARS</div>
                 </div>
                 <button class="btn btn-cash" onclick="window.cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ</button>
             </div>
@@ -1413,7 +1442,7 @@
         
         rocketGame.myBetPlaced = true;
         rocketGame.currentBet = rocketGame.bet;
-        rocketGame.participants.push({ name: 'ВЫ', bet: rocketGame.bet, isFake: false, cashedOut: false });
+        rocketGame.participants.push({ name: 'ВЫ', bet: rocketGame.bet, avatar: '👑', isFake: false, cashedOut: false });
         
         renderRocketGame();
         showToast(`✅ Ставка ${rocketGame.bet} Stars принята!`, false);
@@ -1489,7 +1518,10 @@
         } else {
             rocketGame.participants.forEach(p => {
                 const isReal = p.name === 'ВЫ';
-                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}"><span><strong>${p.name}</strong> ${p.isFake ? '<span class="fake-player-badge">🤖</span>' : '🔥'}</span><span>⭐ ${p.bet} ${p.cashedOut ? '✅' : ''}</span></div>`;
+                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}">
+                    <span><span class="participant-avatar">${p.avatar || '🚀'}</span> <strong>${p.name}</strong></span>
+                    <span>⭐ ${p.bet.toLocaleString()} ${p.cashedOut ? '✅' : ''}</span>
+                </div>`;
             });
         }
         participantsHtml += '</div>';
@@ -1537,8 +1569,8 @@
                     </div>
                     <div class="info-panel">
                         <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
-                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30
-                                            </div>
+                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30</span></div>
+                    </div>
                     <button class="btn" id="newRocketRoundBtn">🚀 НОВЫЙ РАУНД (10 сек)</button>
                 </div>
             `;
@@ -1623,8 +1655,8 @@
     window.cashoutMines = cashoutMines;
     
     if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.ready();
-        window.Telegram.WebApp.expand();
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
     }
     
     updateBalanceUI();
