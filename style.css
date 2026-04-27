@@ -1,0 +1,262 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background: radial-gradient(circle at 20% 0%, #0a0a1a, #03030a);
+    font-family: 'Segoe UI', 'Poppins', system-ui, 'Inter', sans-serif;
+    color: white;
+    min-height: 100vh;
+    padding-bottom: 80px;
+}
+
+.app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 16px;
+}
+
+/* Верхняя панель */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(20, 20, 40, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 60px;
+    padding: 8px 18px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.balance {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    gap: 8px;
+}
+
+.stars {
+    color: #ffd966;
+}
+
+.add-stars {
+    background: linear-gradient(135deg, #ffaa33, #ff7733);
+    border: none;
+    border-radius: 40px;
+    padding: 6px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.add-stars:active {
+    transform: scale(0.96);
+}
+
+/* Навигация по играм */
+.game-nav {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    background: rgba(0,0,0,0.4);
+    padding: 8px;
+    border-radius: 60px;
+}
+
+.game-tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border-radius: 40px;
+    background: rgba(255,255,255,0.05);
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: bold;
+}
+
+.game-tab.active {
+    background: linear-gradient(135deg, #ffaa33, #ff7733);
+    color: #1a1a2a;
+    box-shadow: 0 0 12px rgba(255,170,51,0.3);
+}
+
+/* Общие карточки */
+.game-card {
+    background: rgba(10, 10, 25, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+}
+
+/* Поле для мин */
+.mines-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+    aspect-ratio: 1;
+}
+
+.mine-cell {
+    background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.05s linear;
+    aspect-ratio: 1;
+}
+
+.mine-cell:active {
+    transform: scale(0.92);
+}
+
+.mine-cell.revealed {
+    background: linear-gradient(145deg, #3a3a5a, #2a2a4a);
+    cursor: default;
+}
+
+.mine-cell.mine {
+    background: linear-gradient(145deg, #9b2c2c, #5a1010);
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Колесо фортуны */
+.wheel-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.wheel {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #ff3366, #ff6633, #ffcc33, #33ff66, #33ccff, #ff3366);
+    margin: 0 auto;
+    transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.wheel.spinning {
+    transform: rotate(1440deg);
+}
+
+.participants-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 16px 0;
+    background: rgba(0,0,0,0.3);
+    border-radius: 24px;
+    padding: 12px;
+}
+
+.participant {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Ракетка */
+.rocket-area {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.rocket {
+    font-size: 64px;
+    transition: transform 0.1s linear;
+}
+
+.rocket.flying {
+    animation: fly 2s ease-out infinite;
+}
+
+@keyframes fly {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-200px); opacity: 0; }
+}
+
+.coefficient-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+    justify-content: center;
+}
+
+.coeff-item {
+    background: rgba(0,0,0,0.7);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Кнопки */
+.btn {
+    background: linear-gradient(95deg, #4a4aff, #2a2aff);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 44px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.1s;
+    margin: 4px;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn-cash {
+    background: linear-gradient(95deg, #2ecc71, #27ae60);
+}
+
+.btn-danger {
+    background: linear-gradient(95deg, #e74c3c, #c0392b);
+}
+
+input, select {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 28px;
+    color: white;
+    margin: 8px;
+}
+
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(12px);
+    padding: 10px 20px;
+    border-radius: 40px;
+    z-index: 1000;
+    pointer-events: none;
+    transition: 0.2s;
+    opacity: 0;
+}
