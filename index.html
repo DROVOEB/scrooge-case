@@ -20,7 +20,6 @@
             --gold-dark: #ccaa00;
             --gold-light: #ffe066;
             --gold-glow: rgba(255, 215, 0, 0.4);
-            --dark-bg: #0a0a0a;
         }
 
         body {
@@ -298,46 +297,6 @@
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
 
-        .mines-buttons {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-        }
-
-        .mine-card {
-            flex: 1;
-            background: linear-gradient(145deg, rgba(255, 215, 0, 0.08), rgba(255, 170, 0, 0.03));
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            border-radius: 28px;
-            padding: 16px 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .mine-card.active {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1));
-            border-color: #ffd700;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .mine-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .mine-count {
-            font-size: 14px;
-            font-weight: 700;
-        }
-
-        .mine-max {
-            font-size: 10px;
-            opacity: 0.6;
-        }
-
         .info-panel {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
             border-radius: 32px;
@@ -374,68 +333,69 @@
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
-        .mines-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin: 28px 0;
-            aspect-ratio: 1;
-        }
-
-        .mine-cell {
-            background: linear-gradient(145deg, rgba(30, 28, 22, 0.9), rgba(20, 18, 14, 0.95));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            cursor: pointer;
-            transition: all 0.2s;
-            aspect-ratio: 1;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 215, 0, 0.2);
+        /* Rocket Game Styles */
+        .rocket-animation {
+            text-align: center;
+            margin: 30px 0;
             position: relative;
+            min-height: 200px;
         }
 
-        .mine-cell.revealing {
-            animation: popOpen 0.25s ease-out forwards;
+        .rocket-ship {
+            font-size: 80px;
+            display: inline-block;
+            transition: transform 0.05s linear;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
         }
 
-        @keyframes popOpen {
-            0% { transform: scale(0.7); opacity: 0; }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1); opacity: 1; }
+        .rocket-ship.flying {
+            animation: rocketFly 2s ease-out infinite;
         }
 
-        .mine-cell:active {
-            transform: scale(0.92);
+        @keyframes rocketFly {
+            0% { transform: translateY(0) rotate(0deg); }
+            30% { transform: translateY(-60px) rotate(-5deg); }
+            70% { transform: translateY(-120px) rotate(5deg); }
+            100% { transform: translateY(-200px) rotate(0deg); opacity: 0.5; }
         }
 
-        .mine-cell.safe {
-            background: linear-gradient(145deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.15));
-            box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+        .rocket-ship.exploding {
+            animation: rocketExplode 0.5s ease-out forwards;
         }
 
-        .mine-cell.mine-revealed {
-            background: linear-gradient(145deg, #9b2c2c, #5a1010);
-            animation: explode 0.4s ease-out forwards;
+        @keyframes rocketExplode {
+            0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 5px #ff6600); }
+            50% { transform: scale(1.5); opacity: 1; filter: drop-shadow(0 0 20px #ff3300); }
+            100% { transform: scale(0.5); opacity: 0; filter: drop-shadow(0 0 0 #ff0000); }
         }
 
-        @keyframes explode {
-            0% { transform: scale(1); background: #ff6600; }
-            30% { transform: scale(1.2); background: #ff3300; }
-            100% { transform: scale(1); background: #5a1010; }
-        }
-
-        .mine-cell .hint-number {
+        .rocket-trail {
             position: absolute;
-            bottom: 4px;
-            right: 6px;
-            font-size: 10px;
-            color: #ffd700;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            padding: 2px 5px;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 40px;
+            background: linear-gradient(to top, #ff6600, #ffaa00);
+            border-radius: 2px;
+            animation: trailFlicker 0.1s infinite;
+        }
+
+        @keyframes trailFlicker {
+            0%, 100% { opacity: 0.8; height: 40px; }
+            50% { opacity: 1; height: 50px; }
+        }
+
+        .coefficient-display {
+            font-size: 64px;
+            font-weight: 800;
+            text-align: center;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
 
         .btn {
@@ -462,6 +422,17 @@
             color: white;
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+
         .explosion-overlay {
             position: fixed;
             top: 0;
@@ -479,18 +450,6 @@
             0% { opacity: 0; backdrop-filter: blur(0px); }
             20% { opacity: 1; backdrop-filter: blur(10px); }
             100% { opacity: 0; backdrop-filter: blur(0px); }
-        }
-
-        .shake-field {
-            animation: shakeField 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-        }
-
-        @keyframes shakeField {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-3px); }
-            80% { transform: translateX(3px); }
         }
 
         .toast {
@@ -512,16 +471,7 @@
             font-size: 14px;
         }
 
-        @media (min-width: 768px) {
-            .mine-cell {
-                font-size: 40px;
-            }
-        }
-
         @media (max-width: 480px) {
-            .mine-cell {
-                font-size: 24px;
-            }
             .bet-btn {
                 padding: 8px 12px;
                 font-size: 13px;
@@ -537,6 +487,12 @@
             }
             .game-menu-card {
                 padding: 24px 16px;
+            }
+            .coefficient-display {
+                font-size: 48px;
+            }
+            .rocket-ship {
+                font-size: 60px;
             }
         }
     </style>
@@ -607,21 +563,14 @@
         multiplier: 1, safeLeft: 0, currentBet: 0, cellsRevealed: 0, maxMultiplier: 0
     };
     
-    // ПОВЫШЕННЫЕ КОЭФФИЦИЕНТЫ
     function getBaseMultiplier(minesCount) {
-        const multipliers = {
-            3: 3.5,   // было 2.5
-            5: 6.5,   // было 4.5
-            7: 11.0   // было 7.5
-        };
+        const multipliers = { 3: 3.5, 5: 6.5, 7: 11.0 };
         return multipliers[minesCount] || 3.5;
     }
     
     function calculateMultiplier(minesCount, openedSafe, totalSafe) {
         const baseMax = getBaseMultiplier(minesCount);
-        // Плавный рост множителя с каждым открытым квадратом
         const progress = openedSafe / totalSafe;
-        // Используем квадратичную функцию для более быстрого роста в конце
         const accelerated = Math.pow(progress, 1.2);
         return 1 + (baseMax - 1) * accelerated;
     }
@@ -631,8 +580,6 @@
         overlay.className = 'explosion-overlay';
         document.body.appendChild(overlay);
         setTimeout(() => overlay.remove(), 600);
-        const grid = document.querySelector('.mines-grid');
-        if (grid) { grid.classList.add('shake-field'); setTimeout(() => grid.classList.remove('shake-field'), 500); }
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         }
@@ -678,31 +625,12 @@
     
     function revealMineCell(row, col) {
         if (!minesGame.active || minesGame.revealed[row][col]) return;
-        const cellDiv = document.querySelector(`.mine-cell[data-row='${row}'][data-col='${col}']`);
         if (minesGame.board[row][col] === -1) {
             minesGame.active = false;
-            if (cellDiv) {
-                cellDiv.classList.add('mine-revealed', 'revealing');
-                setTimeout(() => { cellDiv.innerHTML = '💣'; cellDiv.classList.add('revealed'); }, 150);
-            }
             showExplosionEffect();
             showToast(`💥 ВЗРЫВ! Проиграно ${minesGame.currentBet} Stars`, true);
             renderMinesGame();
             return;
-        }
-        if (cellDiv) {
-            cellDiv.classList.add('revealing');
-            setTimeout(() => {
-                cellDiv.classList.add('safe', 'revealed');
-                cellDiv.innerHTML = '💎';
-                const val = minesGame.board[row][col];
-                if (val > 0) {
-                    const hintSpan = document.createElement('span');
-                    hintSpan.className = 'hint-number';
-                    hintSpan.textContent = val;
-                    cellDiv.appendChild(hintSpan);
-                }
-            }, 100);
         }
         minesGame.revealed[row][col] = true;
         minesGame.safeLeft--;
@@ -717,7 +645,7 @@
             renderMinesGame();
             return;
         }
-        renderMinesGameStats();
+        renderMinesGame();
     }
     
     function cashoutMines() {
@@ -727,23 +655,6 @@
         minesGame.active = false;
         showToast(`💰 ЗАБРАНО ${win} Stars!`, false);
         renderMinesGame();
-    }
-    
-    function renderMinesGameStats() {
-        const statsDiv = document.getElementById('minesStats');
-        if (!statsDiv) return;
-        const potentialWin = Math.floor(minesGame.currentBet * minesGame.multiplier);
-        const totalSafe = 25 - minesGame.minesCount;
-        const progress = Math.floor((minesGame.cellsRevealed / totalSafe) * 100);
-        statsDiv.innerHTML = `
-            <div class="info-panel">
-                <div class="info-row"><span>🎯 ПРОГРЕСС</span><span>${progress}%</span></div>
-                <div class="info-row"><span>💎 БЕЗОПАСНО</span><span>${minesGame.safeLeft} / ${totalSafe}</span></div>
-                <div class="multiplier-preview">x${minesGame.multiplier}</div>
-                <div class="potential-win">💰 ЗАБРАТЬ: ${potentialWin.toLocaleString()} STARS 💰</div>
-            </div>
-            <button class="btn btn-cash" onclick="window.cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ 💰</button>
-        `;
     }
     
     function renderMinesGame() {
@@ -764,63 +675,177 @@
                         <button class="bet-btn ${minesGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
                     </div>
                     <div class="section-label">💣 КОЛИЧЕСТВО МИН</div>
-                    <div class="mines-buttons">
-                        <div class="mine-card ${minesGame.minesCount === 3 ? 'active' : ''}" data-mines="3">
-                            <div class="mine-icon">💎💎💎</div>
-                            <div class="mine-count">3 мины</div>
-                            <div class="mine-max">Макс x3.5</div>
-                        </div>
-                        <div class="mine-card ${minesGame.minesCount === 5 ? 'active' : ''}" data-mines="5">
-                            <div class="mine-icon">💎💎💎💎💎</div>
-                            <div class="mine-count">5 мин</div>
-                            <div class="mine-max">Макс x6.5</div>
-                        </div>
-                        <div class="mine-card ${minesGame.minesCount === 7 ? 'active' : ''}" data-mines="7">
-                            <div class="mine-icon">💎💎💎💎💎💎💎</div>
-                            <div class="mine-count">7 мин</div>
-                            <div class="mine-max">Макс x11.0</div>
-                        </div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn ${minesGame.minesCount === 3 ? 'active' : ''}" data-mines="3">3 мины (x3.5)</button>
+                        <button class="bet-btn ${minesGame.minesCount === 5 ? 'active' : ''}" data-mines="5">5 мин (x6.5)</button>
+                        <button class="bet-btn ${minesGame.minesCount === 7 ? 'active' : ''}" data-mines="7">7 мин (x11.0)</button>
                     </div>
                     <div class="info-panel">
-                        <div class="info-row"><span>⭐ ТЕКУЩАЯ СТАВКА</span><span>${minesGame.bet} STARS</span></div>
+                        <div class="info-row"><span>⭐ СТАВКА</span><span>${minesGame.bet} STARS</span></div>
                         <div class="info-row"><span>🏆 МАКС. МНОЖИТЕЛЬ</span><span>x${getBaseMultiplier(minesGame.minesCount)}</span></div>
                         <div class="potential-win">🏆 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${Math.floor(minesGame.bet * getBaseMultiplier(minesGame.minesCount)).toLocaleString()} STARS 🏆</div>
                     </div>
                     <button class="btn" id="startGameBtn">💎 НАЧАТЬ ИГРУ 💎</button>
                 </div>
             `;
-            document.querySelectorAll('.bet-btn').forEach(btn => {
+            document.querySelectorAll('.bet-btn[data-bet]').forEach(btn => {
                 btn.onclick = () => { minesGame.bet = parseInt(btn.dataset.bet); renderMinesGame(); };
             });
-            document.querySelectorAll('.mine-card').forEach(card => {
-                card.onclick = () => { minesGame.minesCount = parseInt(card.dataset.mines); renderMinesGame(); };
+            document.querySelectorAll('.bet-btn[data-mines]').forEach(btn => {
+                btn.onclick = () => { minesGame.minesCount = parseInt(btn.dataset.mines); renderMinesGame(); };
             });
-            const startBtn = document.getElementById('startGameBtn');
-            if (startBtn) startBtn.onclick = initMinesGame;
+            document.getElementById('startGameBtn').onclick = initMinesGame;
             return;
         }
         
-        let gridHtml = '<div class="mines-grid">';
+        const totalSafe = 25 - minesGame.minesCount;
+        const progress = Math.floor((minesGame.cellsRevealed / totalSafe) * 100);
+        const potentialWin = Math.floor(minesGame.currentBet * minesGame.multiplier);
+        
+        let gridHtml = '<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0;">';
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
                 const isRevealed = minesGame.revealed[i][j];
-                let content = '💎', addClass = '';
+                let content = '💎', style = '';
                 if (isRevealed) {
-                    if (minesGame.board[i][j] === -1) { content = '💣'; addClass = 'mine-revealed revealed'; }
-                    else { content = '💎'; addClass = 'safe revealed'; }
+                    if (minesGame.board[i][j] === -1) { content = '💣'; style = 'background: linear-gradient(145deg, #9b2c2c, #5a1010);'; }
+                    else { content = '💎'; style = 'background: linear-gradient(145deg, #2a7a4a, #1a5a3a);'; }
                 }
-                let hint = '';
-                if (isRevealed && minesGame.board[i][j] > 0 && minesGame.board[i][j] !== -1) {
-                    hint = `<span class="hint-number">${minesGame.board[i][j]}</span>`;
-                }
-                gridHtml += `<div class="mine-cell ${addClass}" data-row="${i}" data-col="${j}" onclick="window.revealMineCell(${i},${j})">${content}${hint}</div>`;
+                gridHtml += `<div style="background: linear-gradient(145deg, rgba(30,28,22,0.9), rgba(20,18,14,0.95)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; aspect-ratio: 1; cursor: pointer; border: 1px solid rgba(255,215,0,0.2); ${style}" onclick="window.revealMineCell(${i},${j})">${content}</div>`;
             }
         }
         gridHtml += '</div>';
-        container.innerHTML = `<div class="game-card"><div class="game-title">💎 MINES | ${minesGame.minesCount} MINES 💎</div>${gridHtml}<div id="minesStats"></div></div>`;
-        renderMinesGameStats();
+        
+        container.innerHTML = `
+            <div class="game-card">
+                <div class="game-title">💎 MINES | ${minesGame.minesCount} MINES 💎</div>
+                ${gridHtml}
+                <div class="info-panel">
+                    <div class="info-row"><span>🎯 ПРОГРЕСС</span><span>${progress}%</span></div>
+                    <div class="info-row"><span>💎 БЕЗОПАСНО</span><span>${minesGame.safeLeft} / ${totalSafe}</span></div>
+                    <div class="multiplier-preview">x${minesGame.multiplier}</div>
+                    <div class="potential-win">💰 ЗАБРАТЬ: ${potentialWin.toLocaleString()} STARS 💰</div>
+                </div>
+                <button class="btn btn-cash" onclick="window.cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ 💰</button>
+            </div>
+        `;
     }
     
+    // ========== ИГРА: РАКЕТКА ==========
+    let rocketGame = {
+        active: false,
+        bet: 50,
+        currentBet: 0,
+        multiplier: 1.00,
+        targetMultiplier: 1.00,
+        interval: null,
+        cashedOut: false
+    };
+    
+    function startRocketGame() {
+        if (rocketGame.active) return;
+        if (rocketGame.bet < 50) {
+            showToast('Минимальная ставка 50 Stars', true);
+            return;
+        }
+        if (!deductStars(rocketGame.bet)) return;
+        
+        rocketGame.active = true;
+        rocketGame.currentBet = rocketGame.bet;
+        rocketGame.multiplier = 1.00;
+        rocketGame.cashedOut = false;
+        
+        // Случайный коэффициент от 1.5 до 25
+        rocketGame.targetMultiplier = +(Math.random() * (25 - 1.5) + 1.5).toFixed(2);
+        
+        if (rocketGame.interval) clearInterval(rocketGame.interval);
+        rocketGame.interval = setInterval(() => {
+            if (!rocketGame.active) return;
+            // Увеличиваем множитель с ускорением
+            const increment = 0.02 + (rocketGame.multiplier / 200);
+            rocketGame.multiplier = +(rocketGame.multiplier + increment).toFixed(2);
+            
+            if (rocketGame.multiplier >= rocketGame.targetMultiplier) {
+                clearInterval(rocketGame.interval);
+                rocketGame.active = false;
+                showExplosionEffect();
+                showToast(`💥 РАКЕТА ВЗОРВАЛАСЬ! Проиграно ${rocketGame.currentBet} Stars`, true);
+                renderRocketGame();
+            } else {
+                renderRocketGame();
+            }
+        }, 80);
+        
+        renderRocketGame();
+        showToast(`🚀 Ракета взлетает! Цель ~x${rocketGame.targetMultiplier}`, false);
+    }
+    
+    function cashoutRocket() {
+        if (!rocketGame.active || rocketGame.cashedOut) return;
+        clearInterval(rocketGame.interval);
+        const win = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
+        addWin(win);
+        rocketGame.active = false;
+        rocketGame.cashedOut = true;
+        showToast(`💰 ВЫ ЗАБРАЛИ ${win} Stars (x${rocketGame.multiplier})!`, false);
+        renderRocketGame();
+    }
+    
+    function renderRocketGame() {
+        const container = document.getElementById('gameContent');
+        if (!container) return;
+        
+        if (!rocketGame.active) {
+            container.innerHTML = `
+                <div class="game-card">
+                    <div class="game-title">🚀 ROCKET 🚀</div>
+                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
+                    </div>
+                    <div class="info-panel">
+                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x25</span></div>
+                        <div class="info-row"><span>💎 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
+                        <div class="potential-win">🏆 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: до ${(rocketGame.bet * 25).toLocaleString()} STARS 🏆</div>
+                    </div>
+                    <button class="btn" id="startRocketBtn">🚀 ЗАПУСТИТЬ РАКЕТУ 🚀</button>
+                </div>
+            `;
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
+            });
+            document.getElementById('startRocketBtn').onclick = startRocketGame;
+            return;
+        }
+        
+        const potentialWin = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
+        const progress = Math.min(100, Math.floor((rocketGame.multiplier / rocketGame.targetMultiplier) * 100));
+        
+        container.innerHTML = `
+            <div class="game-card">
+                <div class="game-title">🚀 ROCKET IN FLIGHT 🚀</div>
+                <div class="rocket-animation">
+                    <div class="rocket-ship flying">🚀</div>
+                    <div class="rocket-trail"></div>
+                </div>
+                <div class="coefficient-display">x${rocketGame.multiplier}</div>
+                <div class="info-panel">
+                    <div class="info-row"><span>🎯 ПРОГРЕСС ДО ЦЕЛИ</span><span>${progress}%</span></div>
+                    <div class="info-row"><span>💎 СТАВКА</span><span>${rocketGame.currentBet} STARS</span></div>
+                    <div class="info-row"><span>🏆 ТЕКУЩИЙ МНОЖИТЕЛЬ</span><span>x${rocketGame.multiplier}</span></div>
+                    <div class="potential-win">💰 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${potentialWin.toLocaleString()} STARS 💰</div>
+                </div>
+                <button class="btn btn-cash" id="cashoutRocketBtn">🚀 ЗАБРАТЬ ВЫИГРЫШ 🚀</button>
+            </div>
+        `;
+        document.getElementById('cashoutRocketBtn').onclick = cashoutRocket;
+    }
+    
+    // ========== ДРУГИЕ ИГРЫ ==========
     function renderWheelGame() {
         const container = document.getElementById('gameContent');
         if (container) {
@@ -828,13 +853,7 @@
         }
     }
     
-    function renderRocketGame() {
-        const container = document.getElementById('gameContent');
-        if (container) {
-            container.innerHTML = `<div class="game-card"><div class="game-title">🚀 ROCKET</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🚀</div><p style="opacity: 0.7;">Скоро будет доступно...</p><p style="margin-top: 16px; font-size: 13px; opacity: 0.5;">Следите за обновлениями</p></div></div>`;
-        }
-    }
-    
+    // ========== ГЛАВНОЕ МЕНЮ ==========
     function renderMainMenu() {
         const mainContent = document.getElementById('mainContent');
         mainContent.innerHTML = `
@@ -854,8 +873,8 @@
                 <div class="game-menu-card" data-game="rocket">
                     <div class="game-menu-icon">🚀</div>
                     <div class="game-menu-title">ROCKET</div>
-                    <div class="game-menu-desc">Ракетка. Лети выше и забирай выигрыш до того, как ракета взорвется!</div>
-                    <div class="game-menu-badge">⚡ СКОРО</div>
+                    <div class="game-menu-desc">Ракетка. Лети выше, лови момент и забирай выигрыш до x25 до взрыва!</div>
+                    <div class="game-menu-badge">🚀 АКТИВНА</div>
                 </div>
             </div>
         `;
@@ -879,6 +898,8 @@
         `;
         
         document.getElementById('backToMenuBtn').onclick = () => {
+            if (rocketGame.interval) clearInterval(rocketGame.interval);
+            rocketGame.active = false;
             currentScreen = 'menu';
             renderMainMenu();
         };
@@ -890,6 +911,8 @@
         } else if (gameId === 'wheel') {
             renderWheelGame();
         } else if (gameId === 'rocket') {
+            rocketGame.active = false;
+            if (rocketGame.interval) clearInterval(rocketGame.interval);
             renderRocketGame();
         }
     }
