@@ -13,9 +13,8 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Основной фон с долларами */
         body {
-            font-family: 'Segoe UI', 'Poppins', system-ui, 'Inter', sans-serif;
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
             color: white;
             padding: 20px 16px 80px;
             min-height: 100vh;
@@ -23,7 +22,7 @@
             background: #0a2a1a;
         }
 
-        /* Долларовый фон через SVG паттерн */
+        /* Долларовый фон */
         body::before {
             content: "";
             position: fixed;
@@ -31,14 +30,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="20" font-size="14" fill="%23aaff88">💵</text><text x="40" y="45" font-size="18" fill="%2388ff66">💰</text><text x="70" y="30" font-size="12" fill="%23ccff99">💵</text><text x="20" y="70" font-size="16" fill="%2399ff77">💰</text><text x="60" y="80" font-size="14" fill="%23aaff88">💵</text><text x="85" y="60" font-size="20" fill="%2377ff55">💰</text><text x="5" y="90" font-size="10" fill="%23bbff99">💵</text><text x="50" y="15" font-size="11" fill="%2388ff66">💰</text><text x="30" y="55" font-size="13" fill="%23ccff99">💵</text><text x="75" y="95" font-size="15" fill="%2399ff77">💰</text></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="20" font-size="14" fill="%23aaff88">💵</text><text x="40" y="45" font-size="18" fill="%2388ff66">💰</text><text x="70" y="30" font-size="12" fill="%23ccff99">💵</text><text x="20" y="70" font-size="16" fill="%2399ff77">💰</text><text x="60" y="80" font-size="14" fill="%23aaff88">💵</text><text x="85" y="60" font-size="20" fill="%2377ff55">💰</text><text x="5" y="90" font-size="10" fill="%23bbff99">💵</text><text x="50" y="15" font-size="11" fill="%2388ff66">💰</text><text x="30" y="55" font-size="13" fill="%23ccff99">💵</text><text x="75" y="95" font-size="15" fill="%2399ff77">💰</text></svg>');
             background-repeat: repeat;
             background-size: 60px 60px;
             pointer-events: none;
             z-index: 0;
         }
 
-        /* Затемнение для читаемости текста */
         body::after {
             content: "";
             position: fixed;
@@ -46,7 +44,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 0%, rgba(10, 42, 26, 0.85), rgba(3, 20, 10, 0.95));
+            background: radial-gradient(circle at 20% 0%, rgba(10, 42, 26, 0.88), rgba(3, 20, 10, 0.96));
             pointer-events: none;
             z-index: 0;
         }
@@ -56,33 +54,6 @@
             margin: 0 auto;
             position: relative;
             z-index: 1;
-        }
-
-        /* Добавим плавающие доллары для красоты */
-        .floating-dollar {
-            position: fixed;
-            font-size: 24px;
-            pointer-events: none;
-            z-index: 0;
-            animation: floatDollar 8s ease-in-out infinite;
-            opacity: 0.15;
-        }
-
-        @keyframes floatDollar {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.15;
-            }
-            90% {
-                opacity: 0.15;
-            }
-            100% {
-                transform: translateY(-50px) rotate(360deg);
-                opacity: 0;
-            }
         }
 
         /* Верхняя панель */
@@ -100,30 +71,32 @@
 
         .balance {
             background: rgba(0, 0, 0, 0.7);
-            padding: 6px 16px;
+            padding: 8px 20px;
             border-radius: 40px;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             border: 1px solid rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(4px);
         }
 
-        .stars {
-            color: #ffd966;
+        .balance span {
+            color: #ffd700;
         }
 
         .add-stars {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             border: none;
             border-radius: 40px;
-            padding: 6px 16px;
+            padding: 8px 20px;
             font-weight: bold;
             color: #1a4a2a;
             cursor: pointer;
-            transition: 0.1s;
+            transition: all 0.2s;
+            font-size: 16px;
         }
 
         .add-stars:active {
-            transform: scale(0.96);
+            transform: scale(0.95);
         }
 
         /* Навигация */
@@ -131,7 +104,7 @@
             display: flex;
             gap: 12px;
             margin-bottom: 24px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(8px);
             padding: 8px;
             border-radius: 60px;
@@ -146,32 +119,151 @@
             background: rgba(255, 255, 255, 0.05);
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
 
         .game-tab.active {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #1a4a2a;
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
 
-        /* Карточка игры */
+        /* Карточка */
         .game-card {
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
             border-radius: 40px;
-            padding: 20px;
+            padding: 24px 20px;
             border: 1px solid rgba(255, 215, 0, 0.25);
             margin-bottom: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        /* Поле 5x5 */
+        .game-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Секция ставок - кнопки пресеты */
+        .bet-section {
+            margin-bottom: 24px;
+        }
+
+        .section-label {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .bet-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .bet-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            font-size: 16px;
+        }
+
+        .bet-btn.active {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a4a2a;
+            border-color: transparent;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Выбор мин - карточки */
+        .mines-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .mine-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 24px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mine-card.active {
+            background: linear-gradient(135deg, #ffd70020, #ffaa0020);
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .mine-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .mine-count {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .mine-max {
+            font-size: 11px;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+
+        /* Инфо панель */
+        .info-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 28px;
+            padding: 16px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .multiplier-preview {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd700;
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .potential-win {
+            background: rgba(255, 215, 0, 0.15);
+            border-radius: 60px;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Поле игры */
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 12px;
-            margin: 20px 0;
+            margin: 24px 0;
             aspect-ratio: 1;
         }
 
@@ -196,67 +288,59 @@
         }
 
         @keyframes popOpen {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .mine-cell:active {
-            transform: scale(0.92);
-        }
-
-        .mine-cell.revealed {
-            cursor: default;
-            transform: none;
-        }
-
+        .mine-cell:active { transform: scale(0.92); }
+        .mine-cell.revealed { cursor: default; }
         .mine-cell.safe {
             background: linear-gradient(145deg, #2a7a4a, #1a5a3a);
             box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
         }
-
         .mine-cell.mine-revealed {
             background: linear-gradient(145deg, #9b2c2c, #5a1010);
             animation: explode 0.4s ease-out forwards;
         }
 
         @keyframes explode {
-            0% {
-                transform: scale(1);
-                background: #ff6600;
-            }
-            30% {
-                transform: scale(1.3);
-                background: #ff3300;
-            }
-            70% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-                background: #5a1010;
-            }
+            0% { transform: scale(1); background: #ff6600; }
+            30% { transform: scale(1.3); background: #ff3300; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); background: #5a1010; }
         }
 
         .mine-cell .hint-number {
             position: absolute;
             bottom: 4px;
             right: 8px;
-            font-size: 12px;
-            color: rgba(255, 215, 0, 0.9);
+            font-size: 11px;
+            color: #ffd700;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
             padding: 2px 6px;
         }
 
+        /* Кнопки */
+        .btn {
+            background: linear-gradient(95deg, #ffd700, #ffaa00);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 60px;
+            font-weight: bold;
+            color: #1a4a2a;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            transition: all 0.1s;
+        }
+
+        .btn:active { transform: scale(0.97); }
+        .btn-cash { background: linear-gradient(95deg, #2ecc71, #27ae60); color: white; }
+        .btn:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
+
+        /* Взрыв */
         .explosion-overlay {
             position: fixed;
             top: 0;
@@ -286,78 +370,31 @@
             75% { transform: translateX(8px); }
         }
 
-        .btn {
-            background: linear-gradient(95deg, #ffd700, #ffaa00);
-            border: none;
-            padding: 12px 20px;
-            border-radius: 44px;
-            font-weight: bold;
-            color: #1a4a2a;
-            cursor: pointer;
-            margin: 4px;
-            transition: 0.1s;
-        }
-
-        .btn:active {
-            transform: scale(0.96);
-        }
-
-        .btn-cash {
-            background: linear-gradient(95deg, #2ecc71, #27ae60);
-            color: white;
-        }
-
-        input, select {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 10px;
-            border-radius: 28px;
-            color: white;
-            margin: 8px;
-        }
-
         .toast {
             position: fixed;
             bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             backdrop-filter: blur(12px);
-            padding: 10px 20px;
-            border-radius: 40px;
+            padding: 12px 24px;
+            border-radius: 60px;
             z-index: 1000;
             transition: 0.2s;
             opacity: 0;
             pointer-events: none;
             font-weight: bold;
-            white-space: nowrap;
             border: 1px solid #ffd700;
+            white-space: nowrap;
         }
 
         .multiplier-badge {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #1a4a2a;
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 40px;
             font-weight: bold;
             display: inline-block;
-            margin: 8px 0;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            transform: none;
-        }
-
-        .info-text {
-            font-size: 14px;
-            opacity: 0.8;
-            margin-top: 8px;
-        }
-
-        h3 {
-            color: #ffd700;
-            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
         }
     </style>
 </head>
@@ -365,7 +402,7 @@
 <div class="app">
     <div class="top-bar">
         <div class="balance">💰 <span id="balance">1000</span> Stars</div>
-        <button class="add-stars" id="addStarsBtn">➕ 500 Stars</button>
+        <button class="add-stars" id="addStarsBtn">+500 Stars</button>
     </div>
 
     <div class="game-nav">
@@ -379,7 +416,7 @@
 <div id="toast" class="toast"></div>
 
 <script>
-    // ==================== БАЛАНС ====================
+    // ========== БАЛАНС ==========
     let balance = parseInt(localStorage.getItem('balance') || '1000');
     const balanceEl = document.getElementById('balance');
     
@@ -423,33 +460,19 @@
     
     document.getElementById('addStarsBtn').onclick = () => addStars(500);
     
-    // ==================== ИГРА: МИННОЕ ПОЛЕ ====================
+    // ========== ИГРА ==========
     let minesGame = {
-        active: false,
-        board: [],
-        revealed: [],
-        minesCount: 3,
-        bet: 20,
-        multiplier: 1,
-        safeLeft: 0,
-        currentBet: 0,
-        cellsRevealed: 0,
-        maxMultiplier: 0
+        active: false, board: [], revealed: [], minesCount: 3, bet: 20,
+        multiplier: 1, safeLeft: 0, currentBet: 0, cellsRevealed: 0, maxMultiplier: 0
     };
     
     function getBaseMultiplier(minesCount) {
-        const multipliers = {
-            3: 2.5,
-            5: 4.0,
-            7: 6.5
-        };
-        return multipliers[minesCount] || 3.0;
+        return {3: 2.5, 5: 4.0, 7: 6.5}[minesCount] || 3.0;
     }
     
     function calculateMultiplier(minesCount, openedSafe, totalSafe) {
         const baseMax = getBaseMultiplier(minesCount);
-        const progress = openedSafe / totalSafe;
-        return 1 + (baseMax - 1) * progress;
+        return 1 + (baseMax - 1) * (openedSafe / totalSafe);
     }
     
     function showExplosionEffect() {
@@ -457,51 +480,28 @@
         overlay.className = 'explosion-overlay';
         document.body.appendChild(overlay);
         setTimeout(() => overlay.remove(), 600);
-        
         const grid = document.querySelector('.mines-grid');
-        if (grid) {
-            grid.classList.add('shake-field');
-            setTimeout(() => grid.classList.remove('shake-field'), 500);
-        }
-        
+        if (grid) { grid.classList.add('shake-field'); setTimeout(() => grid.classList.remove('shake-field'), 500); }
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         }
     }
     
     function initMinesGame() {
-        const betInput = document.getElementById('minesBet');
-        const minesSelect = document.getElementById('minesCount');
-        const bet = betInput ? parseInt(betInput.value) : minesGame.bet;
-        const mines = minesSelect ? parseInt(minesSelect.value) : minesGame.minesCount;
-        
-        if (bet < 20) {
-            showToast('Минимальная ставка 20 Stars', true);
-            return;
-        }
-        
-        if (!deductStars(bet)) return;
-        
+        if (!deductStars(minesGame.bet)) return;
         minesGame.active = true;
-        minesGame.currentBet = bet;
+        minesGame.currentBet = minesGame.bet;
         minesGame.multiplier = 1;
-        minesGame.minesCount = mines;
         minesGame.cellsRevealed = 0;
-        
         const size = 5;
         const totalMines = minesGame.minesCount;
         let newBoard = Array(size).fill().map(() => Array(size).fill(0));
         let minesPlaced = 0;
-        
         while (minesPlaced < totalMines) {
             const r = Math.floor(Math.random() * size);
             const c = Math.floor(Math.random() * size);
-            if (newBoard[r][c] !== -1) {
-                newBoard[r][c] = -1;
-                minesPlaced++;
-            }
+            if (newBoard[r][c] !== -1) { newBoard[r][c] = -1; minesPlaced++; }
         }
-        
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
                 if (newBoard[i][j] !== -1) {
@@ -509,54 +509,41 @@
                     for (let di = -1; di <= 1; di++) {
                         for (let dj = -1; dj <= 1; dj++) {
                             if (di === 0 && dj === 0) continue;
-                            const ni = i + di, nj = j + dj;
-                            if (ni >= 0 && ni < size && nj >= 0 && nj < size && newBoard[ni][nj] === -1) cnt++;
+                            const ni = i+di, nj = j+dj;
+                            if (ni>=0 && ni<size && nj>=0 && nj<size && newBoard[ni][nj]===-1) cnt++;
                         }
                     }
                     newBoard[i][j] = cnt;
                 }
             }
         }
-        
         minesGame.board = newBoard;
         minesGame.revealed = Array(size).fill().map(() => Array(size).fill(false));
-        minesGame.safeLeft = size * size - totalMines;
+        minesGame.safeLeft = size*size - totalMines;
         minesGame.maxMultiplier = getBaseMultiplier(totalMines);
         renderMinesGame();
-        showToast(`🎲 Игра началась! Ставка ${bet} Stars, ${totalMines} мин | Макс. множитель: x${minesGame.maxMultiplier}`);
+        showToast(`🎲 Игра началась! Ставка ${minesGame.bet} Stars, ${totalMines} мин | Макс. x${minesGame.maxMultiplier}`);
     }
     
     function revealMineCell(row, col) {
-        if (!minesGame.active) return;
-        if (minesGame.revealed[row][col]) return;
-        
+        if (!minesGame.active || minesGame.revealed[row][col]) return;
         const cellDiv = document.querySelector(`.mine-cell[data-row='${row}'][data-col='${col}']`);
-        
         if (minesGame.board[row][col] === -1) {
             minesGame.active = false;
-            
             if (cellDiv) {
-                cellDiv.classList.add('mine-revealed');
-                cellDiv.classList.add('revealing');
-                setTimeout(() => {
-                    cellDiv.innerHTML = '💣';
-                    cellDiv.classList.add('revealed');
-                }, 150);
+                cellDiv.classList.add('mine-revealed', 'revealing');
+                setTimeout(() => { cellDiv.innerHTML = '💣'; cellDiv.classList.add('revealed'); }, 150);
             }
-            
             showExplosionEffect();
             showToast(`💥 ВЗРЫВ! Проиграно ${minesGame.currentBet} Stars`, true);
             renderMinesGame();
             return;
         }
-        
         if (cellDiv) {
             cellDiv.classList.add('revealing');
             setTimeout(() => {
-                cellDiv.classList.add('safe');
-                cellDiv.classList.add('revealed');
+                cellDiv.classList.add('safe', 'revealed');
                 cellDiv.innerHTML = '💎';
-                
                 const val = minesGame.board[row][col];
                 if (val > 0) {
                     const hintSpan = document.createElement('span');
@@ -566,16 +553,11 @@
                 }
             }, 100);
         }
-        
         minesGame.revealed[row][col] = true;
         minesGame.safeLeft--;
         minesGame.cellsRevealed++;
-        
         const totalSafe = 25 - minesGame.minesCount;
-        const openedSafe = minesGame.cellsRevealed;
-        minesGame.multiplier = calculateMultiplier(minesGame.minesCount, openedSafe, totalSafe);
-        minesGame.multiplier = parseFloat(minesGame.multiplier.toFixed(2));
-        
+        minesGame.multiplier = parseFloat(calculateMultiplier(minesGame.minesCount, minesGame.cellsRevealed, totalSafe).toFixed(2));
         if (minesGame.safeLeft === 0) {
             const win = Math.floor(minesGame.currentBet * minesGame.multiplier);
             addWin(win);
@@ -584,7 +566,6 @@
             renderMinesGame();
             return;
         }
-        
         renderMinesGameStats();
     }
     
@@ -593,127 +574,117 @@
         const win = Math.floor(minesGame.currentBet * minesGame.multiplier);
         addWin(win);
         minesGame.active = false;
-        showToast(`💰 Вы забрали ${win} Stars (x${minesGame.multiplier})!`);
+        showToast(`💰 Забрано ${win} Stars (x${minesGame.multiplier})!`);
         renderMinesGame();
+    }
+    
+    function updatePreview() {
+        const previewMult = getBaseMultiplier(minesGame.minesCount);
+        const potential = Math.floor(minesGame.bet * previewMult);
+        const multEl = document.getElementById('previewMultiplier');
+        const potEl = document.getElementById('previewPotential');
+        if (multEl) multEl.textContent = previewMult;
+        if (potEl) potEl.textContent = potential;
     }
     
     function renderMinesGameStats() {
         const statsDiv = document.getElementById('minesStats');
-        if (statsDiv) {
-            const potentialWin = Math.floor(minesGame.currentBet * minesGame.multiplier);
-            const remaining = minesGame.safeLeft;
-            const totalSafe = 25 - minesGame.minesCount;
-            const opened = totalSafe - remaining;
-            const progress = Math.floor((opened / totalSafe) * 100);
-            
-            statsDiv.innerHTML = `
-                <div style="margin: 16px 0;">
-                    <span class="multiplier-badge">🎯 Текущий: x${minesGame.multiplier}</span>
-                    <span class="multiplier-badge" style="background: #2ecc71; color: white;">🏆 Макс: x${minesGame.maxMultiplier}</span>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-cash" onclick="cashoutMines()">💰 ЗАБРАТЬ (${potentialWin} ⭐)</button>
-                </div>
-                <div style="margin-top: 12px;">
-                    <div>📊 Прогресс: ${progress}% (${opened}/${totalSafe})</div>
-                    <div>💎 Осталось безопасных: ${remaining}</div>
-                </div>
-            `;
-        }
+        if (!statsDiv) return;
+        const potentialWin = Math.floor(minesGame.currentBet * minesGame.multiplier);
+        const totalSafe = 25 - minesGame.minesCount;
+        const progress = Math.floor((minesGame.cellsRevealed / totalSafe) * 100);
+        statsDiv.innerHTML = `
+            <div class="info-panel">
+                <div class="info-row"><span>📊 Прогресс</span><span>${progress}%</span></div>
+                <div class="info-row"><span>💎 Безопасных осталось</span><span>${minesGame.safeLeft}</span></div>
+                <div class="multiplier-preview">x${minesGame.multiplier}</div>
+                <div class="potential-win">💰 ЗАБРАТЬ МОЖНО: ${potentialWin} ⭐</div>
+            </div>
+            <button class="btn btn-cash" onclick="cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ</button>
+        `;
     }
     
     function renderMinesGame() {
         const container = document.getElementById('gameContainer');
-        
-        if (!minesGame.active || minesGame.board.length === 0) {
-            const maxMultiplierPreview = getBaseMultiplier(minesGame.minesCount);
+        if (!minesGame.active || !minesGame.board.length) {
+            updatePreview();
             container.innerHTML = `
                 <div class="game-card">
-                    <h3>💎 Минное поле 5x5</h3>
-                    <div style="margin: 16px 0;">
-                        <label>💰 Ставка: </label>
-                        <input type="number" id="minesBet" min="20" value="${minesGame.bet}">
-                        <label>💣 Мин: </label>
-                        <select id="minesCount">
-                            <option value="3" ${minesGame.minesCount === 3 ? 'selected' : ''}>3 мины (макс x2.5)</option>
-                            <option value="5" ${minesGame.minesCount === 5 ? 'selected' : ''}>5 мин (макс x4.0)</option>
-                            <option value="7" ${minesGame.minesCount === 7 ? 'selected' : ''}>7 мин (макс x6.5)</option>
-                        </select>
+                    <div class="game-title">💎 Минное поле 5x5</div>
+                    <div class="bet-section">
+                        <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                        <div class="bet-buttons">
+                            <button class="bet-btn ${minesGame.bet === 20 ? 'active' : ''}" data-bet="20">20 ⭐</button>
+                            <button class="bet-btn ${minesGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
+                            <button class="bet-btn ${minesGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
+                            <button class="bet-btn ${minesGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                            <button class="bet-btn ${minesGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
+                        </div>
                     </div>
-                    <div class="info-text">💡 Чем больше мин, тем выше потенциальный множитель!</div>
-                    <button class="btn" id="startMinesBtn" style="margin-top: 16px;">🚀 Новая игра</button>
+                    <div class="bet-section">
+                        <div class="section-label">💣 КОЛИЧЕСТВО МИН</div>
+                        <div class="mines-buttons">
+                            <div class="mine-card ${minesGame.minesCount === 3 ? 'active' : ''}" data-mines="3">
+                                <div class="mine-icon">💣💣💣</div>
+                                <div class="mine-count">3 мины</div>
+                                <div class="mine-max">макс x2.5</div>
+                            </div>
+                            <div class="mine-card ${minesGame.minesCount === 5 ? 'active' : ''}" data-mines="5">
+                                <div class="mine-icon">💣💣💣💣💣</div>
+                                <div class="mine-count">5 мин</div>
+                                <div class="mine-max">макс x4.0</div>
+                            </div>
+                            <div class="mine-card ${minesGame.minesCount === 7 ? 'active' : ''}" data-mines="7">
+                                <div class="mine-icon">💣💣💣💣💣💣💣</div>
+                                <div class="mine-count">7 мин</div>
+                                <div class="mine-max">макс x6.5</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info-panel">
+                        <div class="info-row"><span>⭐ Ваша ставка</span><span>${minesGame.bet} Stars</span></div>
+                        <div class="info-row"><span>💣 Макс. множитель</span><span>x<span id="previewMultiplier">${getBaseMultiplier(minesGame.minesCount)}</span></span></div>
+                        <div class="potential-win">🏆 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: <span id="previewPotential">${Math.floor(minesGame.bet * getBaseMultiplier(minesGame.minesCount))}</span> ⭐</div>
+                    </div>
+                    <button class="btn" id="startGameBtn">🚀 НАЧАТЬ ИГРУ</button>
                 </div>
             `;
-            
-            const betInput = document.getElementById('minesBet');
-            const minesSelect = document.getElementById('minesCount');
-            
-            if (betInput) betInput.addEventListener('change', (e) => minesGame.bet = Math.max(20, parseInt(e.target.value) || 20));
-            if (minesSelect) minesSelect.addEventListener('change', (e) => minesGame.minesCount = parseInt(e.target.value));
-            
-            document.getElementById('startMinesBtn')?.addEventListener('click', initMinesGame);
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.onclick = () => { minesGame.bet = parseInt(btn.dataset.bet); renderMinesGame(); };
+            });
+            document.querySelectorAll('.mine-card').forEach(card => {
+                card.onclick = () => { minesGame.minesCount = parseInt(card.dataset.mines); renderMinesGame(); };
+            });
+            document.getElementById('startGameBtn').onclick = initMinesGame;
             return;
         }
-        
         let gridHtml = '<div class="mines-grid">';
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
                 const isRevealed = minesGame.revealed[i][j];
-                let content = '🪙';
-                let additionalClass = '';
-                
+                let content = '🪙', addClass = '';
                 if (isRevealed) {
-                    if (minesGame.board[i][j] === -1) {
-                        content = '💣';
-                        additionalClass = 'mine-revealed revealed';
-                    } else {
-                        content = '💎';
-                        additionalClass = 'safe revealed';
-                    }
+                    if (minesGame.board[i][j] === -1) { content = '💣'; addClass = 'mine-revealed revealed'; }
+                    else { content = '💎'; addClass = 'safe revealed'; }
                 }
-                
-                let hintHtml = '';
+                let hint = '';
                 if (isRevealed && minesGame.board[i][j] > 0 && minesGame.board[i][j] !== -1) {
-                    hintHtml = `<span class="hint-number">${minesGame.board[i][j]}</span>`;
+                    hint = `<span class="hint-number">${minesGame.board[i][j]}</span>`;
                 }
-                
-                gridHtml += `<div class="mine-cell ${additionalClass}" data-row="${i}" data-col="${j}" onclick="revealMineCell(${i},${j})">${content}${hintHtml}</div>`;
+                gridHtml += `<div class="mine-cell ${addClass}" data-row="${i}" data-col="${j}" onclick="revealMineCell(${i},${j})">${content}${hint}</div>`;
             }
         }
         gridHtml += '</div>';
-        
-        const potentialWin = Math.floor(minesGame.currentBet * minesGame.multiplier);
-        const totalSafe = 25 - minesGame.minesCount;
-        const opened = totalSafe - minesGame.safeLeft;
-        const progress = Math.floor((opened / totalSafe) * 100);
-        
-        container.innerHTML = `
-            <div class="game-card">
-                <h3>💎 Минное поле | ${minesGame.minesCount} мин</h3>
-                ${gridHtml}
-                <div id="minesStats">
-                    <div style="margin: 16px 0;">
-                        <span class="multiplier-badge">🎯 x${minesGame.multiplier}</span>
-                        <span class="multiplier-badge" style="background: #2ecc71; color: white;">🏆 макс x${minesGame.maxMultiplier}</span>
-                    </div>
-                    <button class="btn btn-cash" onclick="cashoutMines()">💰 ЗАБРАТЬ (${potentialWin} ⭐)</button>
-                    <div style="margin-top: 12px;">
-                        <div>📊 Прогресс: ${progress}% (${opened}/${totalSafe})</div>
-                        <div>💎 Осталось безопасных: ${minesGame.safeLeft}</div>
-                    </div>
-                </div>
-            </div>
-        `;
+        container.innerHTML = `<div class="game-card"><div class="game-title">💎 Минное поле | ${minesGame.minesCount} мин</div>${gridHtml}<div id="minesStats"></div></div>`;
+        renderMinesGameStats();
     }
     
     function renderWheelGame() {
-        const container = document.getElementById('gameContainer');
-        container.innerHTML = `<div class="game-card"><h3>🎡 Колесо фортуны</h3><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
+        document.getElementById('gameContainer').innerHTML = `<div class="game-card"><div class="game-title">🎡 Колесо фортуны</div><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
     }
     
     function renderRocketGame() {
-        const container = document.getElementById('gameContainer');
-        container.innerHTML = `<div class="game-card"><h3>🚀 Ракетка</h3><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
+        document.getElementById('gameContainer').innerHTML = `<div class="game-card"><div class="game-title">🚀 Ракетка</div><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
     }
     
     let currentGame = 'mines';
@@ -724,7 +695,7 @@
         });
         if (game === 'mines') renderMinesGame();
         else if (game === 'wheel') renderWheelGame();
-        else if (game === 'rocket') renderRocketGame();
+        else renderRocketGame();
     }
     
     document.querySelectorAll('.game-tab').forEach(tab => {
