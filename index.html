@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Scrooge Case — Casino Games</title>
+    <title>Scrooge Case — Luxury Casino</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,11 @@
 
         :root {
             --gold: #ffd700;
-            --gold-dark: #ccaa00;
+            --gold-dark: #b8860b;
+            --gold-light: #ffe066;
+            --gold-glow: rgba(255, 215, 0, 0.4);
+            --dark: #0a0a0f;
+            --card-bg: rgba(15, 12, 10, 0.75);
         }
 
         body {
@@ -25,10 +29,12 @@
             color: white;
             padding: 20px;
             min-height: 100vh;
-            background: #0a0a0a;
+            background: #0a0505;
             overflow-x: hidden;
+            position: relative;
         }
 
+        /* Анимированный фон с золотыми частицами */
         body::before {
             content: "";
             position: fixed;
@@ -36,23 +42,62 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.06"><text x="15" y="30" font-size="24" fill="%23ffd700">💎</text><text x="55" y="70" font-size="30" fill="%23ffcc00">🏆</text><text x="100" y="45" font-size="20" fill="%23ffd700">✨</text><text x="140" y="90" font-size="26" fill="%23ffcc00">💎</text><text x="25" y="120" font-size="22" fill="%23ffd700">🏆</text><text x="80" y="150" font-size="28" fill="%23ffcc00">✨</text><text x="130" y="170" font-size="20" fill="%23ffd700">💎</text><text x="165" y="130" font-size="24" fill="%23ffcc00">🏆</text><text x="45" y="180" font-size="18" fill="%23ffd700">✨</text><text x="110" y="195" font-size="22" fill="%23ffcc00">💎</text></svg>');
-            background-repeat: repeat;
-            background-size: 120px 120px;
-            pointer-events: none;
-            z-index: 0;
+            background: radial-gradient(ellipse at 30% 40%, #1a0f0a 0%, #0a0505 100%);
+            z-index: -2;
         }
 
-        body::after {
-            content: "";
+        /* Плавающие золотые монеты */
+        .floating-coins {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 10%, rgba(20, 15, 8, 0.6), rgba(5, 3, 2, 0.95));
             pointer-events: none;
-            z-index: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .coin {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.15;
+            animation: floatCoin linear infinite;
+        }
+
+        @keyframes floatCoin {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Золотая пыльца */
+        .glitter {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: #ffd700;
+            border-radius: 50%;
+            opacity: 0;
+            animation: glitterPulse 2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes glitterPulse {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.5; transform: scale(1); }
         }
 
         .app {
@@ -62,17 +107,37 @@
             z-index: 2;
         }
 
+        /* Премиум верхняя панель */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(20, 15, 8, 0.8));
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 12, 8, 0.9));
             backdrop-filter: blur(20px);
             border-radius: 80px;
             padding: 8px 20px;
             margin-bottom: 32px;
             border: 1px solid rgba(255, 215, 0, 0.4);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-bar::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
         }
 
         .balance {
@@ -82,6 +147,7 @@
             font-weight: 700;
             font-size: 18px;
             border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .balance span {
@@ -94,18 +160,39 @@
             border: none;
             border-radius: 60px;
             padding: 10px 24px;
-            font-weight: 700;
+            font-weight: 800;
             color: #1a1a1a;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             font-size: 15px;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-stars::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .add-stars:active::before {
+            width: 200px;
+            height: 200px;
         }
 
         .add-stars:active {
             transform: scale(0.95);
         }
 
+        /* Кнопка назад */
         .back-btn {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 170, 0, 0.08));
             border: 1px solid rgba(255, 215, 0, 0.4);
@@ -114,7 +201,7 @@
             font-weight: 600;
             color: #ffd700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-size: 14px;
             margin-bottom: 24px;
             display: inline-flex;
@@ -123,105 +210,164 @@
             backdrop-filter: blur(10px);
         }
 
-        .back-btn:active {
-            transform: scale(0.96);
+        .back-btn:hover {
+            transform: translateX(-5px);
+            border-color: #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
+        /* Карточки игр главного меню — ЛЮКС */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 20px;
         }
 
         .game-menu-card {
             position: relative;
-            background: linear-gradient(145deg, rgba(25, 22, 18, 0.9), rgba(15, 12, 8, 0.95));
+            background: linear-gradient(145deg, rgba(25, 18, 14, 0.95), rgba(15, 10, 8, 0.98));
             backdrop-filter: blur(20px);
             border-radius: 48px;
-            padding: 32px 24px;
+            padding: 34px 24px;
             text-align: center;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
 
+        /* Золотая обводка при наведении */
+        .game-menu-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 48px;
+            padding: 2px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .game-menu-card:hover::before {
+            opacity: 1;
+        }
+
         .game-menu-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-10px) scale(1.02);
             border-color: rgba(255, 215, 0, 0.6);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.2);
         }
 
         .game-menu-icon {
-            font-size: 72px;
+            font-size: 80px;
             margin-bottom: 20px;
             display: inline-block;
             animation: floatIcon 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
         }
 
         @keyframes floatIcon {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-10px); }
         }
+
+        .game-menu-card:nth-child(1) .game-menu-icon { animation-delay: 0s; }
+        .game-menu-card:nth-child(2) .game-menu-icon { animation-delay: 0.5s; }
+        .game-menu-card:nth-child(3) .game-menu-icon { animation-delay: 1s; }
 
         .game-menu-title {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 800;
             background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 12px;
+            letter-spacing: 2px;
         }
 
         .game-menu-desc {
             font-size: 13px;
             opacity: 0.7;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             line-height: 1.5;
         }
 
         .game-menu-badge {
             display: inline-block;
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1));
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 170, 0, 0.15));
             border-radius: 60px;
-            padding: 8px 20px;
-            font-size: 12px;
+            padding: 10px 24px;
+            font-size: 13px;
             font-weight: 700;
             color: #ffd700;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
+        .game-menu-card[data-game="mines"] .game-menu-badge {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a1a1a;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            font-weight: 800;
+        }
+
+        /* Общая карточка игры */
         .game-card {
-            background: linear-gradient(145deg, rgba(20, 18, 14, 0.75), rgba(10, 8, 6, 0.85));
+            background: linear-gradient(145deg, rgba(20, 15, 12, 0.85), rgba(12, 8, 6, 0.95));
             backdrop-filter: blur(20px);
             border-radius: 48px;
-            padding: 24px 20px;
+            padding: 28px 24px;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
         }
 
         .game-title {
             font-family: 'Playfair Display', serif;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             margin-bottom: 24px;
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
         .section-label {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 600;
-            color: rgba(255, 215, 0, 0.7);
-            margin-bottom: 14px;
+            color: rgba(255, 215, 0, 0.6);
+            margin-bottom: 16px;
+            text-align: center;
         }
 
         .bet-buttons {
@@ -229,10 +375,11 @@
             flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 28px;
+            justify-content: center;
         }
 
         .bet-btn {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 170, 0, 0.05));
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 170, 0, 0.06));
             border: 1px solid rgba(255, 215, 0, 0.3);
             padding: 12px 20px;
             border-radius: 60px;
@@ -240,16 +387,17 @@
             cursor: pointer;
             transition: all 0.2s;
             color: white;
-            font-size: 16px;
-            flex: 1 0 auto;
+            font-size: 15px;
             text-align: center;
+            backdrop-filter: blur(4px);
         }
 
         .bet-btn.active {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #1a1a1a;
             border-color: transparent;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transform: scale(1.02);
         }
 
         .info-panel {
@@ -267,6 +415,18 @@
             font-weight: 500;
         }
 
+        .coefficient-display {
+            font-size: 60px;
+            font-weight: 800;
+            text-align: center;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 20px 0;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
         .potential-win {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 170, 0, 0.08));
             border-radius: 60px;
@@ -277,7 +437,72 @@
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
-        /* Wheel Styles */
+        .timer-display {
+            font-size: 56px;
+            font-weight: 800;
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .participants-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 28px;
+            padding: 12px;
+            margin: 16px 0;
+            scrollbar-width: thin;
+            scrollbar-color: #ffd700 #333;
+        }
+
+        .participants-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .participants-list::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .participants-list::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 4px;
+        }
+
+        .participant {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .participant:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .participant-real {
+            background: rgba(255, 215, 0, 0.08);
+            border-left: 3px solid #ffd700;
+            border-radius: 12px;
+            margin: 2px 0;
+        }
+
+        .fake-player-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 10px;
+            margin-left: 8px;
+            color: #aaa;
+        }
+
+        /* Колесо фортуны */
         .wheel-wrapper {
             position: relative;
             display: flex;
@@ -292,74 +517,39 @@
 
         canvas {
             border-radius: 50%;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        canvas:hover {
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.5);
         }
 
         .wheel-pointer {
             position: absolute;
-            top: -20px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 40px solid #ffd700;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+            border-left: 22px solid transparent;
+            border-right: 22px solid transparent;
+            border-top: 45px solid #ffd700;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
             z-index: 10;
         }
 
         .wheel-pointer::after {
             content: "▼";
             position: absolute;
-            top: -45px;
-            left: -12px;
-            font-size: 24px;
+            top: -52px;
+            left: -14px;
+            font-size: 28px;
             color: #ffd700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
-        .timer-display {
-            font-size: 48px;
-            font-weight: 800;
-            text-align: center;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            margin: 20px 0;
-        }
-
-        .participants-list {
-            max-height: 200px;
-            overflow-y: auto;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 24px;
-            padding: 12px;
-            margin: 16px 0;
-        }
-
-        .participant {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-            font-size: 14px;
-        }
-
-        .participant-real {
-            background: rgba(255, 215, 0, 0.1);
-            border-left: 3px solid #ffd700;
-        }
-
-        .coefficient-display {
-            font-size: 56px;
-            font-weight: 800;
-            text-align: center;
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin: 20px 0;
-        }
-
+        /* Кнопки */
         .btn {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             border: none;
@@ -372,7 +562,24 @@
             font-size: 18px;
             transition: all 0.2s;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:active {
@@ -382,6 +589,7 @@
         .btn-cash {
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
         }
 
         .btn:disabled {
@@ -395,9 +603,9 @@
             bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(30, 25, 15, 0.95));
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(30, 20, 15, 0.95));
             backdrop-filter: blur(20px);
-            padding: 12px 24px;
+            padding: 14px 28px;
             border-radius: 60px;
             z-index: 1000;
             transition: 0.25s;
@@ -407,39 +615,118 @@
             border: 1px solid #ffd700;
             white-space: nowrap;
             font-size: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .fake-player-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2px 8px;
-            font-size: 10px;
-            margin-left: 8px;
-            color: #aaa;
+        /* Поле для мин */
+        .mines-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+            aspect-ratio: 1;
         }
 
-        @media (max-width: 480px) {
-            .bet-btn { padding: 8px 12px; font-size: 13px; }
-            .game-menu-icon { font-size: 56px; }
-            .game-menu-title { font-size: 24px; }
-            .timer-display { font-size: 36px; }
-            canvas { width: 280px; height: 280px; }
+        .mine-cell {
+            background: linear-gradient(145deg, rgba(40, 30, 25, 0.95), rgba(25, 18, 14, 0.98));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            cursor: pointer;
+            transition: all 0.2s;
+            aspect-ratio: 1;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+
+        .mine-cell:active {
+            transform: scale(0.92);
+        }
+
+        .mine-cell.safe {
+            background: linear-gradient(145deg, rgba(46, 204, 113, 0.25), rgba(39, 174, 96, 0.15));
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+        }
+
+        .mine-cell.mine-revealed {
+            background: linear-gradient(145deg, #9b2c2c, #5a1010);
+            animation: mineExplode 0.4s ease-out forwards;
+        }
+
+        @keyframes mineExplode {
+            0% { transform: scale(1); background: #ff6600; }
+            30% { transform: scale(1.2); background: #ff3300; }
+            100% { transform: scale(1); background: #5a1010; }
+        }
+
+        @media (max-width: 550px) {
+            .games-grid {
+                gap: 20px;
+            }
+            .game-menu-icon {
+                font-size: 60px;
+            }
+            .game-menu-title {
+                font-size: 26px;
+            }
+            .timer-display {
+                font-size: 42px;
+            }
+            .coefficient-display {
+                font-size: 48px;
+            }
+            .mine-cell {
+                font-size: 28px;
+            }
+            canvas {
+                width: 280px;
+                height: 280px;
+            }
         }
     </style>
 </head>
 <body>
+<div class="floating-coins" id="floatingCoins"></div>
 <div class="app">
     <div class="top-bar">
         <div class="balance">💎 <span id="balance">1000</span> Stars</div>
-        <button class="add-stars" id="addStarsBtn">💎 +500</button>
+        <button class="add-stars" id="addStarsBtn">💎 VIP +500</button>
     </div>
-
     <div id="mainContent"></div>
 </div>
 <div id="toast" class="toast"></div>
 
 <script>
+    // Плавающие монеты и блёстки
+    function createFloatingCoins() {
+        const container = document.getElementById('floatingCoins');
+        const coins = ['💰', '💎', '🪙', '💵'];
+        for (let i = 0; i < 25; i++) {
+            const coin = document.createElement('div');
+            coin.className = 'coin';
+            coin.textContent = coins[Math.floor(Math.random() * coins.length)];
+            coin.style.left = Math.random() * 100 + '%';
+            coin.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            coin.style.animationDuration = (Math.random() * 8 + 5) + 's';
+            coin.style.animationDelay = Math.random() * 10 + 's';
+            container.appendChild(coin);
+        }
+        
+        for (let i = 0; i < 50; i++) {
+            const glitter = document.createElement('div');
+            glitter.className = 'glitter';
+            glitter.style.left = Math.random() * 100 + '%';
+            glitter.style.top = Math.random() * 100 + '%';
+            glitter.style.animationDelay = Math.random() * 3 + 's';
+            glitter.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            document.body.appendChild(glitter);
+        }
+    }
+    createFloatingCoins();
+    
     // ========== БАЛАНС ==========
     let balance = parseInt(localStorage.getItem('balance') || '1000');
     const balanceEl = document.getElementById('balance');
@@ -452,7 +739,7 @@
     function addStars(amount) {
         balance += amount;
         updateBalanceUI();
-        showToast(`✨ +${amount} Stars`, false);
+        showToast(`✨ ПОПОЛНЕНИЕ: +${amount} Stars ✨`, false);
     }
     
     function deductStars(amount) {
@@ -461,14 +748,14 @@
             updateBalanceUI();
             return true;
         }
-        showToast('❌ Недостаточно Stars!', true);
+        showToast('❌ НЕДОСТАТОЧНО СРЕДСТВ! Пополните баланс.', true);
         return false;
     }
     
     function addWin(amount) {
         balance += amount;
         updateBalanceUI();
-        showToast(`🏆 +${amount} Stars!`, false);
+        showToast(`🏆 ПОБЕДА! ВЫИГРЫШ ${amount} Stars! 🏆`, false);
     }
     
     function showToast(msg, isError = false) {
@@ -476,7 +763,7 @@
         toast.textContent = msg;
         toast.style.opacity = '1';
         toast.style.borderColor = isError ? '#e74c3c' : '#ffd700';
-        setTimeout(() => toast.style.opacity = '0', 2000);
+        setTimeout(() => toast.style.opacity = '0', 2500);
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred(isError ? 'heavy' : 'light');
         }
@@ -485,12 +772,12 @@
     document.getElementById('addStarsBtn').onclick = () => addStars(500);
     
     // ========== ГЕНЕРАТОР ФЕЙК-ИГРОКОВ ==========
-    const firstNames = ['Alex', 'Max', 'Leo', 'Dan', 'Sam', 'Tom', 'Nick', 'Mike', 'John', 'Chris', 'Kevin', 'Brian', 'Jason', 'Eric', 'Adam', 'David', 'Paul', 'Mark', 'Steve', 'Andrew'];
-    const lastNames = ['Crypto', 'Winner', 'Lucky', 'Player', 'Gamer', 'Hunter', 'Killer', 'Master', 'Pro', 'Star', 'King', 'Queen', 'Ace', 'Wolf', 'Fox', 'Hawk', 'Eagle', 'Shark', 'Dragon', 'Phoenix'];
-    const suffixes = ['_99', 'X', 'Pro', '007', '_xXx', '2024', '777', 'Gold', 'Diamond', 'Platinum'];
+    const firstNames = ['Alex', 'Max', 'Leo', 'Dan', 'Sam', 'Tom', 'Nick', 'Mike', 'John', 'Chris', 'Kevin', 'Brian', 'Jason', 'Eric', 'Adam', 'David', 'Paul', 'Mark', 'Steve', 'Andrew', 'Vlad', 'Igor', 'Dmitry', 'Sergey', 'Anton'];
+    const lastNames = ['Crypto', 'Winner', 'Lucky', 'Player', 'Gamer', 'Hunter', 'Killer', 'Master', 'Pro', 'Star', 'King', 'Queen', 'Ace', 'Wolf', 'Fox', 'Hawk', 'Eagle', 'Shark', 'Dragon', 'Phoenix', 'Rich', 'Gold', 'Diamond'];
+    const suffixes = ['_99', 'X', 'Pro', '007', '_xXx', '2024', '777', 'Gold', 'Diamond', 'Platinum', 'VIP'];
     
     function generateRandomNick() {
-        const useFirstName = Math.random() > 0.5;
+        const useFirstName = Math.random() > 0.4;
         if (useFirstName) {
             const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
             const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
@@ -500,7 +787,7 @@
             }
             return `${firstName}${lastName}`;
         } else {
-            const prefixes = ['Cool', 'Fast', 'Big', 'Little', 'Dark', 'Light', 'Fire', 'Ice', 'Thunder', 'Storm'];
+            const prefixes = ['Cool', 'Fast', 'Big', 'Little', 'Dark', 'Light', 'Fire', 'Ice', 'Thunder', 'Storm', 'High', 'Low'];
             const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
             const number = Math.floor(Math.random() * 9000) + 1000;
             return `${prefix}_${number}`;
@@ -513,7 +800,6 @@
         return available[Math.floor(Math.random() * available.length)] || min;
     }
     
-    // Фейк-игроки для каждой игры
     let fakePlayersTimers = {};
     
     function addFakePlayer(game, participants, maxBet, existingNames) {
@@ -553,7 +839,7 @@
             
             const action = Math.random();
             
-            if (action < 0.6 && participants.filter(p => p.isFake).length < 8) {
+            if (action < 0.55 && participants.filter(p => p.isFake).length < 8) {
                 addFakePlayer(gameId, participants, maxBet, existingNames);
             } else if (action < 0.85 && participants.filter(p => p.isFake && !p.cashedOut).length > 0) {
                 raiseFakeBet(participants, maxBet);
@@ -578,7 +864,6 @@
         myBetPlaced: false,
         spinning: false,
         countdownInterval: null,
-        fakeInterval: null,
         canvas: null,
         ctx: null,
         animationId: null,
@@ -601,10 +886,10 @@
         if (wheelGame.participants.length === 0) {
             ctx.beginPath();
             ctx.arc(center, center, radius, 0, 2 * Math.PI);
-            ctx.fillStyle = '#333';
+            ctx.fillStyle = 'rgba(30,25,20,0.8)';
             ctx.fill();
             ctx.fillStyle = '#ffd700';
-            ctx.font = 'bold 16px Poppins';
+            ctx.font = 'bold 14px Poppins';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText('НЕТ СТАВОК', center, center);
@@ -628,24 +913,24 @@
             ctx.translate(center, center);
             ctx.rotate(startAngle + angle / 2);
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 12px Poppins';
+            ctx.font = 'bold 11px Poppins';
             ctx.shadowBlur = 0;
             let name = p.name.length > 12 ? p.name.slice(0, 10) + '..' : p.name;
-            ctx.fillText(name, radius - 45, 5);
+            ctx.fillText(name, radius - 40, 5);
             ctx.restore();
             
             startAngle = endAngle;
         }
         
         ctx.beginPath();
-        ctx.arc(center, center, 25, 0, 2 * Math.PI);
+        ctx.arc(center, center, 28, 0, 2 * Math.PI);
         ctx.fillStyle = '#1a1a1a';
         ctx.fill();
         ctx.fillStyle = '#ffd700';
-        ctx.font = 'bold 20px Poppins';
+        ctx.font = 'bold 22px Poppins';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('🎡', center, center);
+        ctx.fillText('💰', center, center);
         
         ctx.beginPath();
         ctx.arc(center, center, radius, 0, 2 * Math.PI);
@@ -700,7 +985,7 @@
                 wheelGame.spinning = false;
                 
                 addWin(totalBet);
-                showToast(`🎡 ПОБЕДИТЕЛЬ: ${winner.name} (забрал ${totalBet} Stars)!`, false);
+                showToast(`🎡 ПОБЕДИТЕЛЬ: ${winner.name} 🎡 (забрал ${totalBet} Stars)!`, false);
                 
                 wheelGame.active = false;
                 wheelGame.countingDown = false;
@@ -803,12 +1088,12 @@
         const totalBet = wheelGame.participants.reduce((sum, p) => sum + p.bet, 0);
         let participantsHtml = '<div class="participants-list">';
         if (wheelGame.participants.length === 0) {
-            participantsHtml += '<div style="text-align:center; padding:12px; opacity:0.5;">Ожидание ставок...</div>';
+            participantsHtml += '<div style="text-align:center; padding:12px; opacity:0.6;">💎 ОЖИДАНИЕ СТАВОК 💎</div>';
         } else {
             wheelGame.participants.forEach(p => {
                 const chance = totalBet > 0 ? ((p.bet / totalBet) * 100).toFixed(1) : 0;
                 const isReal = p.name === 'ВЫ';
-                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}"><span>${p.name} ${p.isFake ? '<span class="fake-player-badge">🤖</span>' : ''}</span><span>⭐ ${p.bet} (${chance}%)</span></div>`;
+                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}"><span><strong>${p.name}</strong> ${p.isFake ? '<span class="fake-player-badge">🤖</span>' : '🔥'}</span><span>⭐ ${p.bet} (${chance}%)</span></div>`;
             });
         }
         participantsHtml += '</div>';
@@ -816,7 +1101,7 @@
         if (wheelGame.countingDown) {
             container.innerHTML = `
                 <div class="game-card">
-                    <div class="game-title">🎡 КОЛЕСО ФОРТУНЫ 🎡</div>
+                    <div class="game-title">🎡 FORTUNE WHEEL 🎡</div>
                     <div class="section-label">💰 ВЫБОР СТАВКИ</div>
                     <div class="bet-buttons">
                         <button class="bet-btn ${wheelGame.bet === 10 ? 'active' : ''}" data-bet="10">10 ⭐</button>
@@ -835,11 +1120,11 @@
                     ${participantsHtml}
                     <div class="info-panel">
                         <div class="info-row"><span>💰 ВАША СТАВКА</span><span>${wheelGame.bet} STARS</span></div>
-                        <div class="info-row"><span>🏆 БАНК РАУНДА</span><span>${totalBet} STARS</span></div>
-                        ${wheelGame.myBetPlaced ? '<div class="potential-win">✅ ВАША СТАВКА ПРИНЯТА! Можете повысить...</div>' : '<div class="potential-win">💰 СДЕЛАЙТЕ СТАВКУ ДО КОНЦА ОТСЧЁТА</div>'}
+                        <div class="info-row"><span>🏆 БАНК РАУНДА</span><span>${totalBet.toLocaleString()} STARS</span></div>
+                        ${wheelGame.myBetPlaced ? '<div class="potential-win">✅ ВАША СТАВКА ПРИНЯТА! Можете повысить...</div>' : '<div class="potential-win">💎 СДЕЛАЙТЕ СТАВКУ ДО КОНЦА ОТСЧЁТА 💎</div>'}
                     </div>
                     <div style="display: flex; gap: 12px;">
-                        <button class="btn" id="placeWheelBtn" style="flex:2" ${wheelGame.myBetPlaced ? 'disabled' : ''}>💎 СДЕЛАТЬ СТАВКУ</button>
+                        <button class="btn" id="placeWheelBtn" style="flex:2" ${wheelGame.myBetPlaced ? 'disabled' : ''}>🎡 СДЕЛАТЬ СТАВКУ</button>
                         <button class="btn" id="raiseWheelBtn" style="flex:1" ${!wheelGame.myBetPlaced ? 'disabled' : ''}>⬆️ +10</button>
                     </div>
                 </div>
@@ -864,7 +1149,7 @@
         if (!wheelGame.countingDown && !wheelGame.spinning) {
             container.innerHTML = `
                 <div class="game-card">
-                    <div class="game-title">🎡 КОЛЕСО ФОРТУНЫ 🎡</div>
+                    <div class="game-title">🎡 FORTUNE WHEEL 🎡</div>
                     <div class="section-label">💰 ВЫБОР СТАВКИ</div>
                     <div class="bet-buttons">
                         <button class="bet-btn ${wheelGame.bet === 10 ? 'active' : ''}" data-bet="10">10 ⭐</button>
@@ -889,7 +1174,7 @@
         
         container.innerHTML = `
             <div class="game-card">
-                <div class="game-title">🎡 КОЛЕСО ФОРТУНЫ 🎡</div>
+                <div class="game-title">🎡 FORTUNE WHEEL 🎡</div>
                 <div class="wheel-wrapper">
                     <div class="wheel-canvas-container">
                         <canvas id="wheelCanvas" width="400" height="400" style="width:100%; height:auto; max-width:400px; max-height:400px;"></canvas>
@@ -898,7 +1183,7 @@
                 </div>
                 ${participantsHtml}
                 <div class="info-panel">
-                    <div class="info-row"><span>🏆 БАНК РАУНДА</span><span>${totalBet} STARS</span></div>
+                    <div class="info-row"><span>🏆 БАНК РАУНДА</span><span>${totalBet.toLocaleString()} STARS</span></div>
                 </div>
                 <button class="btn" disabled>🎡 ВРАЩЕНИЕ...</button>
             </div>
@@ -1034,16 +1319,16 @@
             return;
         }
         
-        let gridHtml = '<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0;">';
+        let gridHtml = '<div class="mines-grid">';
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
                 const isRevealed = minesGame.revealed[i][j];
-                let content = '💎', style = '';
+                let content = '💎', addClass = '';
                 if (isRevealed) {
-                    if (minesGame.board[i][j] === -1) { content = '💣'; style = 'background: linear-gradient(145deg, #9b2c2c, #5a1010);'; }
-                    else { content = '💎'; style = 'background: linear-gradient(145deg, #2a7a4a, #1a5a3a);'; }
+                    if (minesGame.board[i][j] === -1) { content = '💣'; addClass = 'mine-revealed'; }
+                    else { content = '💎'; addClass = 'safe'; }
                 }
-                gridHtml += `<div style="background: linear-gradient(145deg, rgba(30,28,22,0.9), rgba(20,18,14,0.95)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; aspect-ratio: 1; cursor: pointer; border: 1px solid rgba(255,215,0,0.2); ${style}" onclick="window.revealMineCell(${i},${j})">${content}</div>`;
+                gridHtml += `<div class="mine-cell ${addClass}" onclick="window.revealMineCell(${i},${j})">${content}</div>`;
             }
         }
         gridHtml += '</div>';
@@ -1062,7 +1347,7 @@
                     <div class="coefficient-display" style="font-size:42px;">x${minesGame.multiplier}</div>
                     <div class="potential-win">💰 ЗАБРАТЬ: ${potentialWin.toLocaleString()} STARS 💰</div>
                 </div>
-                <button class="btn btn-cash" onclick="window.cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ 💰</button>
+                <button class="btn btn-cash" onclick="window.cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ</button>
             </div>
         `;
     }
@@ -1200,11 +1485,11 @@
         const totalBet = rocketGame.participants.reduce((sum, p) => sum + p.bet, 0);
         let participantsHtml = '<div class="participants-list">';
         if (rocketGame.participants.length === 0) {
-            participantsHtml += '<div style="text-align:center; padding:12px; opacity:0.5;">Ожидание ставок...</div>';
+            participantsHtml += '<div style="text-align:center; padding:12px; opacity:0.6;">💎 ОЖИДАНИЕ СТАВОК 💎</div>';
         } else {
             rocketGame.participants.forEach(p => {
                 const isReal = p.name === 'ВЫ';
-                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}"><span>${p.name} ${p.isFake ? '<span class="fake-player-badge">🤖</span>' : ''}</span><span>⭐ ${p.bet} ${p.cashedOut ? '✅' : ''}</span></div>`;
+                participantsHtml += `<div class="participant ${isReal ? 'participant-real' : ''}"><span><strong>${p.name}</strong> ${p.isFake ? '<span class="fake-player-badge">🤖</span>' : '🔥'}</span><span>⭐ ${p.bet} ${p.cashedOut ? '✅' : ''}</span></div>`;
             });
         }
         participantsHtml += '</div>';
@@ -1226,9 +1511,9 @@
                     <div class="info-panel">
                         <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
                         <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30</span></div>
-                        ${rocketGame.myBetPlaced ? '<div class="potential-win">✅ ВАША СТАВКА ПРИНЯТА! Ждите старта...</div>' : '<div class="potential-win">💰 СДЕЛАЙТЕ СТАВКУ ДО КОНЦА ОТСЧЁТА</div>'}
+                        ${rocketGame.myBetPlaced ? '<div class="potential-win">✅ ВАША СТАВКА ПРИНЯТА! Ждите старта...</div>' : '<div class="potential-win">💎 СДЕЛАЙТЕ СТАВКУ ДО КОНЦА ОТСЧЁТА 💎</div>'}
                     </div>
-                    <button class="btn" id="placeRocketBetBtn" ${rocketGame.myBetPlaced ? 'disabled' : ''}>💎 СДЕЛАТЬ СТАВКУ</button>
+                    <button class="btn" id="placeRocketBetBtn" ${rocketGame.myBetPlaced ? 'disabled' : ''}>🚀 СДЕЛАТЬ СТАВКУ</button>
                 </div>
             `;
             document.querySelectorAll('.bet-btn').forEach(btn => {
@@ -1252,9 +1537,9 @@
                     </div>
                     <div class="info-panel">
                         <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
-                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30</span></div>
-                    </div>
-                    <button class="btn" id="newRocketRoundBtn">🚀 НОВЫЙ РАУНД (10 сек) 🚀</button>
+                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30
+                                            </div>
+                    <button class="btn" id="newRocketRoundBtn">🚀 НОВЫЙ РАУНД (10 сек)</button>
                 </div>
             `;
             document.querySelectorAll('.bet-btn').forEach(btn => {
@@ -1273,9 +1558,9 @@
                 <div class="info-panel">
                     <div class="info-row"><span>💎 ВАША СТАВКА</span><span>${rocketGame.currentBet} STARS</span></div>
                     <div class="info-row"><span>🎯 ТЕКУЩИЙ МНОЖИТЕЛЬ</span><span>x${rocketGame.multiplier}</span></div>
-                    <div class="potential-win">💰 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${potentialWin.toLocaleString()} STARS 💰</div>
+                    <div class="potential-win">💰 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${potentialWin.toLocaleString()} STARS</div>
                 </div>
-                <button class="btn btn-cash" id="cashoutRocketBtn" ${rocketGame.cashedOut ? 'disabled' : ''}>🚀 ЗАБРАТЬ ВЫИГРЫШ 🚀</button>
+                <button class="btn btn-cash" id="cashoutRocketBtn" ${rocketGame.cashedOut ? 'disabled' : ''}>🚀 ЗАБРАТЬ ВЫИГРЫШ</button>
             </div>
         `;
         document.getElementById('cashoutRocketBtn').onclick = cashoutRocket;
@@ -1289,19 +1574,19 @@
                 <div class="game-menu-card" data-game="mines">
                     <div class="game-menu-icon">💎</div>
                     <div class="game-menu-title">MINES</div>
-                    <div class="game-menu-desc">Классическое минное поле. Множитель до x11!</div>
+                    <div class="game-menu-desc">Классическое минное поле. Открывай кристаллы, избегай мин и увеличивай множитель до x11!</div>
                     <div class="game-menu-badge">🔥 ПОПУЛЯРНОЕ</div>
                 </div>
                 <div class="game-menu-card" data-game="wheel">
                     <div class="game-menu-icon">🎡</div>
                     <div class="game-menu-title">FORTUNE WHEEL</div>
-                    <div class="game-menu-desc">Колесо фортуны. Сегменты по % ставок. Раунд 10 сек!</div>
+                    <div class="game-menu-desc">Колесо фортуны. Делай ставку, повышай, крути колесо и забирай банк!</div>
                     <div class="game-menu-badge">🎡 АКТИВНА</div>
                 </div>
                 <div class="game-menu-card" data-game="rocket">
                     <div class="game-menu-icon">🚀</div>
                     <div class="game-menu-title">ROCKET</div>
-                    <div class="game-menu-desc">Ракетка. Непредсказуемый взрыв, множитель до x30!</div>
+                    <div class="game-menu-desc">Ракетка. Лети выше, лови момент и забирай выигрыш до x30!</div>
                     <div class="game-menu-badge">🚀 АКТИВНА</div>
                 </div>
             </div>
