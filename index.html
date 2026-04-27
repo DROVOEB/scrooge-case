@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Scrooge Case — Rocket & Mines & Wheel</title>
+    <title>Scrooge Case — Casino Games</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,6 @@
         :root {
             --gold: #ffd700;
             --gold-dark: #ccaa00;
-            --gold-glow: rgba(255, 215, 0, 0.4);
         }
 
         body {
@@ -278,101 +277,47 @@
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
-        /* Rocket Game - полукруглый полёт */
-        .rocket-track {
-            background: linear-gradient(180deg, #1a1a2a, #0a0a1a);
-            border-radius: 60px;
-            padding: 20px;
+        /* Wheel of Fortune Styles */
+        .wheel-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
             margin: 20px 0;
-            position: relative;
-            overflow: hidden;
-            min-height: 200px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
-        .rocket-flight-path {
+        .wheel-canvas-container {
             position: relative;
-            height: 160px;
-            width: 100%;
-            background: repeating-linear-gradient(90deg, rgba(255,215,0,0.05) 0px, rgba(255,215,0,0.05) 30px, transparent 30px, transparent 60px);
-            border-radius: 80px 80px 0 0;
-            overflow: visible;
+            display: inline-block;
         }
 
-        .rocket-ship-arc {
+        canvas {
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .wheel-pointer {
             position: absolute;
-            bottom: 0;
-            left: 0%;
-            font-size: 48px;
-            transition: left 0.05s linear, bottom 0.05s linear;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #ffd700;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
             z-index: 10;
-            transform: rotate(-45deg);
         }
 
-        .rocket-ship-arc.flying {
-            animation: rocketShake 0.1s infinite;
-        }
-
-        @keyframes rocketShake {
-            0%, 100% { transform: rotate(-45deg) translateY(0px); }
-            50% { transform: rotate(-45deg) translateY(-2px); }
-        }
-
-        .rocket-ship-arc.exploding {
-            animation: rocketArcExplode 0.5s ease-out forwards;
-        }
-
-        @keyframes rocketArcExplode {
-            0% { transform: rotate(-45deg) scale(1); opacity: 1; filter: drop-shadow(0 0 5px #ff6600); }
-            30% { transform: rotate(-45deg) scale(1.5); opacity: 1; filter: drop-shadow(0 0 20px #ff3300); }
-            100% { transform: rotate(-45deg) scale(0.3); opacity: 0; filter: drop-shadow(0 0 0 #ff0000); }
-        }
-
-        .rocket-flame-arc {
+        .wheel-pointer::after {
+            content: "▼";
             position: absolute;
-            left: -20px;
-            top: 20px;
-            width: 25px;
-            height: 15px;
-            background: linear-gradient(90deg, #ff6600, #ffaa00);
-            border-radius: 10px;
-            animation: flameFlickerArc 0.05s infinite;
-        }
-
-        @keyframes flameFlickerArc {
-            0%, 100% { width: 25px; opacity: 0.8; }
-            50% { width: 35px; opacity: 1; }
-        }
-
-        .arc-trail {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at 50% 100%, rgba(255,215,0,0.1), transparent);
-            pointer-events: none;
-        }
-
-        .finish-flag {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            font-size: 30px;
-            filter: drop-shadow(0 0 5px #ffd700);
-        }
-
-        .coefficient-display {
-            font-size: 56px;
-            font-weight: 800;
-            text-align: center;
-            margin: 20px 0;
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            top: -45px;
+            left: -12px;
+            font-size: 24px;
+            color: #ffd700;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         .timer-display {
@@ -399,44 +344,6 @@
             padding: 8px;
             border-bottom: 1px solid rgba(255, 215, 0, 0.1);
             font-size: 14px;
-        }
-
-        .past-coefficients {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 16px 0;
-            justify-content: center;
-        }
-
-        .past-coeff {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #ffd700;
-        }
-
-        /* Wheel Game Styles */
-        .wheel-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .wheel {
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, #ff3366, #ff6633, #ffcc33, #33ff66, #33ccff, #9b59b6, #ff3366);
-            margin: 0 auto;
-            transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-        }
-
-        .wheel.spinning {
-            transform: rotate(1800deg);
         }
 
         .btn {
@@ -523,10 +430,8 @@
             .bet-btn { padding: 8px 12px; font-size: 13px; }
             .game-menu-icon { font-size: 56px; }
             .game-menu-title { font-size: 24px; }
-            .coefficient-display { font-size: 40px; }
-            .rocket-ship-arc { font-size: 36px; }
             .timer-display { font-size: 36px; }
-            .wheel { width: 180px; height: 180px; }
+            canvas { width: 280px; height: 280px; }
         }
     </style>
 </head>
@@ -586,14 +491,7 @@
     
     document.getElementById('addStarsBtn').onclick = () => addStars(500);
     
-    // ========== ИСТОРИЯ КОЭФФИЦИЕНТОВ ==========
-    let pastCoefficients = [1.08, 1.24, 3.52, 1.17, 2.88, 1.45, 5.21, 1.09, 11.32, 1.76];
-    
-    function addPastCoefficient(coeff) {
-        pastCoefficients.unshift(coeff);
-        if (pastCoefficients.length > 15) pastCoefficients.pop();
-    }
-    
+    // ========== ГЛОБАЛЬНЫЕ ФУНКЦИИ ==========
     function showExplosionEffect() {
         const overlay = document.createElement('div');
         overlay.className = 'explosion-overlay';
@@ -610,21 +508,165 @@
     let wheelGame = {
         active: false,
         countingDown: false,
-        countdown: 20,
+        countdown: 10,
         bet: 10,
         participants: [],
         myBetPlaced: false,
         spinning: false,
-        countdownInterval: null
+        countdownInterval: null,
+        canvas: null,
+        ctx: null,
+        animationId: null,
+        currentAngle: 0,
+        targetAngle: 0
     };
+    
+    // Цвета для сегментов
+    const wheelColors = [
+        '#ff3366', '#ff6633', '#ffcc33', '#33ff66', '#33ccff', '#9b59b6',
+        '#e74c3c', '#3498db', '#1abc9c', '#f39c12', '#2ecc71', '#e67e22'
+    ];
+    
+    function drawWheel() {
+        if (!wheelGame.canvas || !wheelGame.ctx) return;
+        const ctx = wheelGame.ctx;
+        const canvas = wheelGame.canvas;
+        const size = canvas.width;
+        const center = size / 2;
+        const radius = size / 2 - 5;
+        
+        ctx.clearRect(0, 0, size, size);
+        
+        if (wheelGame.participants.length === 0) {
+            ctx.beginPath();
+            ctx.arc(center, center, radius, 0, 2 * Math.PI);
+            ctx.fillStyle = '#333';
+            ctx.fill();
+            ctx.fillStyle = '#ffd700';
+            ctx.font = 'bold 16px Poppins';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('НЕТ СТАВОК', center, center);
+            return;
+        }
+        
+        const totalBet = wheelGame.participants.reduce((sum, p) => sum + p.bet, 0);
+        let startAngle = wheelGame.currentAngle;
+        
+        for (let i = 0; i < wheelGame.participants.length; i++) {
+            const p = wheelGame.participants[i];
+            const angle = (p.bet / totalBet) * 2 * Math.PI;
+            const endAngle = startAngle + angle;
+            
+            ctx.beginPath();
+            ctx.arc(center, center, radius, startAngle, endAngle);
+            ctx.lineTo(center, center);
+            ctx.fillStyle = wheelColors[i % wheelColors.length];
+            ctx.fill();
+            ctx.save();
+            ctx.translate(center, center);
+            ctx.rotate(startAngle + angle / 2);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 14px Poppins';
+            ctx.shadowBlur = 0;
+            ctx.fillText(p.name.slice(0, 12), radius - 40, 5);
+            ctx.restore();
+            
+            startAngle = endAngle;
+        }
+        
+        // Рисуем центральный круг
+        ctx.beginPath();
+        ctx.arc(center, center, 25, 0, 2 * Math.PI);
+        ctx.fillStyle = '#1a1a1a';
+        ctx.fill();
+        ctx.fillStyle = '#ffd700';
+        ctx.font = 'bold 20px Poppins';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🎡', center, center);
+        
+        // Рисуем ободок
+        ctx.beginPath();
+        ctx.arc(center, center, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = '#ffd700';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+    
+    function spinWheel() {
+        if (wheelGame.spinning) return;
+        const totalBet = wheelGame.participants.reduce((sum, p) => sum + p.bet, 0);
+        if (totalBet === 0) return;
+        
+        wheelGame.spinning = true;
+        
+        // Случайный угол остановки для выбора победителя
+        const randomValue = Math.random() * totalBet;
+        let cumulative = 0;
+        let winnerIndex = 0;
+        for (let i = 0; i < wheelGame.participants.length; i++) {
+            cumulative += wheelGame.participants[i].bet;
+            if (randomValue <= cumulative) {
+                winnerIndex = i;
+                break;
+            }
+        }
+        const winner = wheelGame.participants[winnerIndex];
+        
+        // Вычисляем угол, на котором должен остановиться сегмент победителя под стрелкой
+        // Стрелка сверху (угол -90 градусов = -PI/2)
+        const targetSegmentCenter = (2 * Math.PI * (randomValue / totalBet)) - (wheelGame.participants[winnerIndex].bet / totalBet * Math.PI);
+        const targetAngle = (Math.PI / 2) - targetSegmentCenter;
+        
+        const spins = 360 * 5; // 5 полных оборотов
+        const finalAngle = targetAngle + (spins * Math.PI / 180);
+        
+        wheelGame.targetAngle = finalAngle;
+        
+        let startTime = null;
+        const duration = 3000;
+        
+        function animateSpin(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(1, elapsed / duration);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            
+            wheelGame.currentAngle = (wheelGame.currentAngle + (finalAngle - wheelGame.currentAngle) * easeOut) % (2 * Math.PI);
+            drawWheel();
+            
+            if (progress < 1) {
+                wheelGame.animationId = requestAnimationFrame(animateSpin);
+            } else {
+                wheelGame.currentAngle = finalAngle % (2 * Math.PI);
+                drawWheel();
+                wheelGame.spinning = false;
+                
+                addWin(totalBet);
+                showToast(`🎡 ПОБЕДИТЕЛЬ: ${winner.name} (забрал ${totalBet} Stars)!`, false);
+                
+                wheelGame.active = false;
+                wheelGame.countingDown = false;
+                wheelGame.myBetPlaced = false;
+                wheelGame.participants = [];
+                renderWheelGame();
+            }
+        }
+        
+        if (wheelGame.animationId) cancelAnimationFrame(wheelGame.animationId);
+        wheelGame.animationId = requestAnimationFrame(animateSpin);
+    }
     
     function startWheelCountdown() {
         if (wheelGame.countdownInterval) clearInterval(wheelGame.countdownInterval);
         wheelGame.countingDown = true;
-        wheelGame.countdown = 20;
+        wheelGame.countdown = 10;
         wheelGame.myBetPlaced = false;
         wheelGame.participants = [];
         wheelGame.spinning = false;
+        wheelGame.currentAngle = 0;
+        drawWheel();
         renderWheelGame();
         
         wheelGame.countdownInterval = setInterval(() => {
@@ -638,7 +680,7 @@
                     showToast('Нет участников! Начните новый раунд', true);
                     renderWheelGame();
                 } else {
-                    spinWheelFinal();
+                    spinWheel();
                 }
             }
         }, 1000);
@@ -662,6 +704,7 @@
         wheelGame.myBetPlaced = true;
         wheelGame.participants.push({ name: 'Вы', bet: wheelGame.bet });
         
+        drawWheel();
         renderWheelGame();
         showToast(`✅ Ставка ${wheelGame.bet} Stars принята!`, false);
     }
@@ -681,29 +724,8 @@
         const myParticipant = wheelGame.participants.find(p => p.name === 'Вы');
         if (myParticipant) myParticipant.bet += extra;
         showToast(`Ставка повышена на +10 Stars!`, false);
+        drawWheel();
         renderWheelGame();
-    }
-    
-    function spinWheelFinal() {
-        if (wheelGame.spinning) return;
-        wheelGame.spinning = true;
-        renderWheelGame();
-        
-        setTimeout(() => {
-            const totalBet = wheelGame.participants.reduce((sum, p) => sum + p.bet, 0);
-            const winnerIndex = Math.floor(Math.random() * wheelGame.participants.length);
-            const winner = wheelGame.participants[winnerIndex];
-            
-            addWin(totalBet);
-            showToast(`🎡 КОЛЕСО ОСТАНОВИЛОСЬ! Победитель: ${winner.name} (забрал ${totalBet} Stars)`, false);
-            
-            wheelGame.active = false;
-            wheelGame.countingDown = false;
-            wheelGame.spinning = false;
-            wheelGame.myBetPlaced = false;
-            wheelGame.participants = [];
-            renderWheelGame();
-        }, 3000);
     }
     
     function newWheelRound() {
@@ -743,6 +765,12 @@
                         <button class="bet-btn ${wheelGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
                     </div>
                     <div class="timer-display">⏱️ ${wheelGame.countdown} сек</div>
+                    <div class="wheel-wrapper">
+                        <div class="wheel-canvas-container">
+                            <canvas id="wheelCanvas" width="400" height="400" style="width:100%; height:auto; max-width:400px; max-height:400px;"></canvas>
+                            <div class="wheel-pointer"></div>
+                        </div>
+                    </div>
                     ${participantsHtml}
                     <div class="info-panel">
                         <div class="info-row"><span>💰 ВАША СТАВКА</span><span>${wheelGame.bet} STARS</span></div>
@@ -755,6 +783,15 @@
                     </div>
                 </div>
             `;
+            
+            wheelGame.canvas = document.getElementById('wheelCanvas');
+            wheelGame.ctx = wheelGame.canvas?.getContext('2d');
+            if (wheelGame.canvas) {
+                wheelGame.canvas.width = 400;
+                wheelGame.canvas.height = 400;
+                drawWheel();
+            }
+            
             document.querySelectorAll('.bet-btn').forEach(btn => {
                 btn.onclick = () => { wheelGame.bet = parseInt(btn.dataset.bet); renderWheelGame(); };
             });
@@ -779,7 +816,7 @@
                         <div class="info-row"><span>💰 СТАВКА</span><span>${wheelGame.bet} STARS</span></div>
                         <div class="info-row"><span>🎡 МАКС. ВЫИГРЫШ</span><span>зависит от банка</span></div>
                     </div>
-                    <button class="btn" id="newWheelRoundBtn">🎡 НОВЫЙ РАУНД (20 сек) 🎡</button>
+                    <button class="btn" id="newWheelRoundBtn">🎡 НОВЫЙ РАУНД (10 сек) 🎡</button>
                 </div>
             `;
             document.querySelectorAll('.bet-btn').forEach(btn => {
@@ -792,8 +829,11 @@
         container.innerHTML = `
             <div class="game-card">
                 <div class="game-title">🎡 КОЛЕСО ФОРТУНЫ 🎡</div>
-                <div class="wheel-container">
-                    <div class="wheel ${wheelGame.spinning ? 'spinning' : ''}"></div>
+                <div class="wheel-wrapper">
+                    <div class="wheel-canvas-container">
+                        <canvas id="wheelCanvas" width="400" height="400" style="width:100%; height:auto; max-width:400px; max-height:400px;"></canvas>
+                        <div class="wheel-pointer"></div>
+                    </div>
                 </div>
                 ${participantsHtml}
                 <div class="info-panel">
@@ -802,267 +842,14 @@
                 <button class="btn" disabled>🎡 ВРАЩЕНИЕ...</button>
             </div>
         `;
-    }
-    
-    // ========== ИГРА: РАКЕТКА ==========
-    let rocketGame = {
-        active: false,
-        countingDown: false,
-        countdown: 10,
-        bet: 50,
-        currentBet: 0,
-        multiplier: 1.00,
-        targetMultiplier: 1.00,
-        interval: null,
-        countdownInterval: null,
-        cashedOut: false,
-        participants: [],
-        myBetPlaced: false
-    };
-    
-    function startRocketCountdown() {
-        if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
-        rocketGame.countingDown = true;
-        rocketGame.countdown = 10;
-        rocketGame.myBetPlaced = false;
-        rocketGame.participants = [];
-        renderRocketGame();
         
-        rocketGame.countdownInterval = setInterval(() => {
-            rocketGame.countdown--;
-            renderRocketGame();
-            
-            if (rocketGame.countdown <= 0) {
-                clearInterval(rocketGame.countdownInterval);
-                rocketGame.countingDown = false;
-                if (rocketGame.participants.length === 0) {
-                    showToast('Нет участников! Начните новый раунд', true);
-                    renderRocketGame();
-                } else {
-                    startRocketFlight();
-                }
-            }
-        }, 1000);
-    }
-    
-    function placeRocketBet() {
-        if (!rocketGame.countingDown) {
-            showToast('Нет активного раунда! Нажмите "НОВЫЙ РАУНД"', true);
-            return;
+        wheelGame.canvas = document.getElementById('wheelCanvas');
+        wheelGame.ctx = wheelGame.canvas?.getContext('2d');
+        if (wheelGame.canvas) {
+            wheelGame.canvas.width = 400;
+            wheelGame.canvas.height = 400;
+            drawWheel();
         }
-        if (rocketGame.myBetPlaced) {
-            showToast('Вы уже сделали ставку!', true);
-            return;
-        }
-        if (rocketGame.bet < 50) {
-            showToast('Минимальная ставка 50 Stars', true);
-            return;
-        }
-        if (!deductStars(rocketGame.bet)) return;
-        
-        rocketGame.myBetPlaced = true;
-        rocketGame.currentBet = rocketGame.bet;
-        rocketGame.participants.push({ name: 'Вы', bet: rocketGame.bet, cashedOut: false });
-        
-        renderRocketGame();
-        showToast(`✅ Ставка ${rocketGame.bet} Stars принята!`, false);
-    }
-    
-    function startRocketFlight() {
-        rocketGame.active = true;
-        rocketGame.multiplier = 1.00;
-        rocketGame.cashedOut = false;
-        // Случайный коэффициент от 1.5 до 30 - непредсказуемо!
-        rocketGame.targetMultiplier = +(Math.random() * (28.5) + 1.5).toFixed(2);
-        
-        const rocket = document.querySelector('.rocket-ship-arc');
-        if (rocket) {
-            rocket.classList.add('flying');
-        }
-        
-        if (rocketGame.interval) clearInterval(rocketGame.interval);
-        rocketGame.interval = setInterval(() => {
-            if (!rocketGame.active) return;
-            
-            const increment = 0.015 + Math.random() * 0.02;
-            rocketGame.multiplier = +(rocketGame.multiplier + increment).toFixed(2);
-            
-            const progress = Math.min(90, (rocketGame.multiplier / rocketGame.targetMultiplier) * 90);
-            const rocketElement = document.querySelector('.rocket-ship-arc');
-            if (rocketElement) {
-                const leftPercent = progress;
-                const bottomPercent = Math.sin(progress * Math.PI / 180) * 80;
-                rocketElement.style.left = `${leftPercent}%`;
-                rocketElement.style.bottom = `${Math.min(80, bottomPercent)}px`;
-            }
-            
-            if (rocketGame.multiplier >= rocketGame.targetMultiplier) {
-                clearInterval(rocketGame.interval);
-                rocketGame.active = false;
-                
-                const rocketEl = document.querySelector('.rocket-ship-arc');
-                if (rocketEl) {
-                    rocketEl.classList.remove('flying');
-                    rocketEl.classList.add('exploding');
-                }
-                
-                showExplosionEffect();
-                addPastCoefficient(rocketGame.multiplier);
-                showToast(`💥 РАКЕТА ВЗОРВАЛАСЬ на x${rocketGame.multiplier}!`, true);
-                renderRocketGame();
-            } else {
-                renderRocketGame();
-            }
-        }, 70);
-        
-        renderRocketGame();
-        showToast(`🚀 Ракета взлетает! Цель неизвестна...`, false);
-    }
-    
-    function cashoutRocket() {
-        if (!rocketGame.active) {
-            showToast('Нет активного полёта!', true);
-            return;
-        }
-        if (rocketGame.cashedOut) {
-            showToast('Вы уже забрали выигрыш!', true);
-            return;
-        }
-        
-        const win = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
-        addWin(win);
-        rocketGame.cashedOut = true;
-        
-        const participant = rocketGame.participants.find(p => p.name === 'Вы');
-        if (participant) participant.cashedOut = true;
-        
-        showToast(`💰 ВЫ ЗАБРАЛИ ${win} Stars (x${rocketGame.multiplier})!`, false);
-        renderRocketGame();
-    }
-    
-    function newRocketRound() {
-        if (rocketGame.active || rocketGame.countingDown) {
-            showToast('Дождитесь окончания текущего раунда!', true);
-            return;
-        }
-        if (rocketGame.interval) clearInterval(rocketGame.interval);
-        if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
-        
-        rocketGame.active = false;
-        rocketGame.countingDown = false;
-        rocketGame.cashedOut = false;
-        rocketGame.myBetPlaced = false;
-        rocketGame.currentBet = 0;
-        rocketGame.participants = [];
-        
-        startRocketCountdown();
-    }
-    
-    function renderRocketGame() {
-        const container = document.getElementById('gameContent');
-        if (!container) return;
-        
-        let pastHtml = '<div class="past-coefficients">';
-        pastCoefficients.slice(0, 10).forEach(c => {
-            pastHtml += `<span class="past-coeff">x${c.toFixed(2)}</span>`;
-        });
-        pastHtml += '</div>';
-        
-        const totalBet = rocketGame.participants.reduce((sum, p) => sum + p.bet, 0);
-        let participantsHtml = '<div class="participants-list">';
-        if (rocketGame.participants.length === 0) {
-            participantsHtml += '<div style="text-align:center; padding:12px; opacity:0.5;">Ожидание ставок...</div>';
-        } else {
-            rocketGame.participants.forEach(p => {
-                participantsHtml += `<div class="participant"><span>${p.name}</span><span>⭐ ${p.bet} ${p.cashedOut ? '✅' : ''}</span></div>`;
-            });
-        }
-        participantsHtml += '</div>';
-        
-        if (rocketGame.countingDown) {
-            container.innerHTML = `
-                <div class="game-card">
-                    <div class="game-title">🚀 ROCKET 🚀</div>
-                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
-                    <div class="bet-buttons">
-                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
-                    </div>
-                    <div class="timer-display">⏱️ ${rocketGame.countdown} сек</div>
-                    ${participantsHtml}
-                    <div class="info-panel">
-                        <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
-                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30</span></div>
-                        ${rocketGame.myBetPlaced ? '<div class="potential-win">✅ ВАША СТАВКА ПРИНЯТА! Ждите старта...</div>' : '<div class="potential-win">💰 СДЕЛАЙТЕ СТАВКУ ДО КОНЦА ОТСЧЁТА</div>'}
-                    </div>
-                    <button class="btn" id="placeRocketBetBtn" ${rocketGame.myBetPlaced ? 'disabled' : ''}>💎 СДЕЛАТЬ СТАВКУ</button>
-                    ${pastHtml}
-                </div>
-            `;
-            document.querySelectorAll('.bet-btn').forEach(btn => {
-                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
-            });
-            document.getElementById('placeRocketBetBtn').onclick = placeRocketBet;
-            return;
-        }
-        
-        if (!rocketGame.active && !rocketGame.countingDown) {
-            container.innerHTML = `
-                <div class="game-card">
-                    <div class="game-title">🚀 ROCKET 🚀</div>
-                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
-                    <div class="bet-buttons">
-                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
-                    </div>
-                    <div class="info-panel">
-                        <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
-                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30</span></div>
-                    </div>
-                    <button class="btn" id="newRocketRoundBtn">🚀 НОВЫЙ РАУНД (10 сек) 🚀</button>
-                    ${pastHtml}
-                </div>
-            `;
-            document.querySelectorAll('.bet-btn').forEach(btn => {
-                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
-            });
-            document.getElementById('newRocketRoundBtn').onclick = newRocketRound;
-            return;
-        }
-        
-        const potentialWin = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
-        const progress = Math.min(90, (rocketGame.multiplier / rocketGame.targetMultiplier) * 90);
-        const bottomPos = Math.sin(progress * Math.PI / 180) * 80;
-        
-        container.innerHTML = `
-            <div class="game-card">
-                <div class="game-title">🚀 ROCKET IN FLIGHT 🚀</div>
-                <div class="rocket-track">
-                    <div class="rocket-flight-path">
-                        <div class="arc-trail"></div>
-                        <div class="rocket-ship-arc flying" style="left: ${progress}%; bottom: ${bottomPos}px;">🚀<div class="rocket-flame-arc"></div></div>
-                        <div class="finish-flag">🏁</div>
-                    </div>
-                </div>
-                <div class="coefficient-display">x${rocketGame.multiplier}</div>
-                ${participantsHtml}
-                <div class="info-panel">
-                    <div class="info-row"><span>💎 ВАША СТАВКА</span><span>${rocketGame.currentBet} STARS</span></div>
-                    <div class="info-row"><span>🎯 ТЕКУЩИЙ МНОЖИТЕЛЬ</span><span>x${rocketGame.multiplier}</span></div>
-                    <div class="potential-win">💰 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${potentialWin.toLocaleString()} STARS 💰</div>
-                </div>
-                <button class="btn btn-cash" id="cashoutRocketBtn" ${rocketGame.cashedOut ? 'disabled' : ''}>🚀 ЗАБРАТЬ ВЫИГРЫШ 🚀</button>
-                ${pastHtml}
-            </div>
-        `;
-        
-        document.getElementById('cashoutRocketBtn').onclick = cashoutRocket;
     }
     
     // ========== ИГРА: МИННОЕ ПОЛЕ ==========
@@ -1220,6 +1007,216 @@
         `;
     }
     
+    // ========== ИГРА: РАКЕТКА ==========
+    let rocketGame = {
+        active: false,
+        countingDown: false,
+        countdown: 10,
+        bet: 50,
+        currentBet: 0,
+        multiplier: 1.00,
+        targetMultiplier: 1.00,
+        interval: null,
+        countdownInterval: null,
+        cashedOut: false,
+        participants: [],
+        myBetPlaced: false
+    };
+    
+    function startRocketCountdown() {
+        if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
+        rocketGame.countingDown = true;
+        rocketGame.countdown = 10;
+        rocketGame.myBetPlaced = false;
+        rocketGame.participants = [];
+        renderRocketGame();
+        
+        rocketGame.countdownInterval = setInterval(() => {
+            rocketGame.countdown--;
+            renderRocketGame();
+            
+            if (rocketGame.countdown <= 0) {
+                clearInterval(rocketGame.countdownInterval);
+                rocketGame.countingDown = false;
+                if (rocketGame.participants.length === 0) {
+                    showToast('Нет участников! Начните новый раунд', true);
+                    renderRocketGame();
+                } else {
+                    startRocketFlight();
+                }
+            }
+        }, 1000);
+    }
+    
+    function placeRocketBet() {
+        if (!rocketGame.countingDown) {
+            showToast('Нет активного раунда! Нажмите "НОВЫЙ РАУНД"', true);
+            return;
+        }
+        if (rocketGame.myBetPlaced) {
+            showToast('Вы уже сделали ставку!', true);
+            return;
+        }
+        if (rocketGame.bet < 50) {
+            showToast('Минимальная ставка 50 Stars', true);
+            return;
+        }
+        if (!deductStars(rocketGame.bet)) return;
+        
+        rocketGame.myBetPlaced = true;
+        rocketGame.currentBet = rocketGame.bet;
+        rocketGame.participants.push({ name: 'Вы', bet: rocketGame.bet, cashedOut: false });
+        
+        renderRocketGame();
+        showToast(`✅ Ставка ${rocketGame.bet} Stars принята!`, false);
+    }
+    
+    function startRocketFlight() {
+        rocketGame.active = true;
+        rocketGame.multiplier = 1.00;
+        rocketGame.cashedOut = false;
+        rocketGame.targetMultiplier = +(Math.random() * (28.5) + 1.5).toFixed(2);
+        
+        if (rocketGame.interval) clearInterval(rocketGame.interval);
+        rocketGame.interval = setInterval(() => {
+            if (!rocketGame.active) return;
+            const increment = 0.02 + Math.random() * 0.03;
+            rocketGame.multiplier = +(rocketGame.multiplier + increment).toFixed(2);
+            
+            if (rocketGame.multiplier >= rocketGame.targetMultiplier) {
+                clearInterval(rocketGame.interval);
+                rocketGame.active = false;
+                showExplosionEffect();
+                showToast(`💥 РАКЕТА ВЗОРВАЛАСЬ на x${rocketGame.multiplier}!`, true);
+                renderRocketGame();
+            } else {
+                renderRocketGame();
+            }
+        }, 70);
+        
+        renderRocketGame();
+        showToast(`🚀 Ракета взлетает!`, false);
+    }
+    
+    function cashoutRocket() {
+        if (!rocketGame.active) {
+            showToast('Нет активного полёта!', true);
+            return;
+        }
+        if (rocketGame.cashedOut) {
+            showToast('Вы уже забрали выигрыш!', true);
+            return;
+        }
+        const win = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
+        addWin(win);
+        rocketGame.cashedOut = true;
+        showToast(`💰 ВЫ ЗАБРАЛИ ${win} Stars (x${rocketGame.multiplier})!`, false);
+        renderRocketGame();
+    }
+    
+    function newRocketRound() {
+        if (rocketGame.active || rocketGame.countingDown) {
+            showToast('Дождитесь окончания текущего раунда!', true);
+            return;
+        }
+        if (rocketGame.interval) clearInterval(rocketGame.interval);
+        if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
+        rocketGame.active = false;
+        rocketGame.countingDown = false;
+        rocketGame.cashedOut = false;
+        rocketGame.myBetPlaced = false;
+        rocketGame.currentBet = 0;
+        rocketGame.participants = [];
+        startRocketCountdown();
+    }
+    
+    function renderRocketGame() {
+        const container = document.getElementById('gameContent');
+        if (!container) return;
+        
+        const totalBet = rocketGame.participants.reduce((sum, p) => sum + p.bet, 0);
+        let participantsHtml = '<div class="participants-list">';
+        if (rocketGame.participants.length === 0) {
+            participantsHtml += '<div style="text-align:center; padding:12px; opacity:0.5;">Ожидание ставок...</div>';
+        } else {
+            rocketGame.participants.forEach(p => {
+                participantsHtml += `<div class="participant"><span>${p.name}</span><span>⭐ ${p.bet} ${p.cashedOut ? '✅' : ''}</span></div>`;
+            });
+        }
+        participantsHtml += '</div>';
+        
+        if (rocketGame.countingDown) {
+            container.innerHTML = `
+                <div class="game-card">
+                    <div class="game-title">🚀 ROCKET 🚀</div>
+                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
+                    </div>
+                    <div class="timer-display">⏱️ ${rocketGame.countdown} сек</div>
+                    ${participantsHtml}
+                    <div class="info-panel">
+                        <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
+                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30</span></div>
+                        ${rocketGame.myBetPlaced ? '<div class="potential-win">✅ ВАША СТАВКА ПРИНЯТА! Ждите старта...</div>' : '<div class="potential-win">💰 СДЕЛАЙТЕ СТАВКУ ДО КОНЦА ОТСЧЁТА</div>'}
+                    </div>
+                    <button class="btn" id="placeRocketBetBtn" ${rocketGame.myBetPlaced ? 'disabled' : ''}>💎 СДЕЛАТЬ СТАВКУ</button>
+                </div>
+            `;
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
+            });
+            document.getElementById('placeRocketBetBtn').onclick = placeRocketBet;
+            return;
+        }
+        
+        if (!rocketGame.active && !rocketGame.countingDown) {
+            container.innerHTML = `
+                <div class="game-card">
+                    <div class="game-title">🚀 ROCKET 🚀</div>
+                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
+                    </div>
+                    <div class="info-panel">
+                        <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
+                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x30</span></div>
+                    </div>
+                    <button class="btn" id="newRocketRoundBtn">🚀 НОВЫЙ РАУНД (10 сек) 🚀</button>
+                </div>
+            `;
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
+            });
+            document.getElementById('newRocketRoundBtn').onclick = newRocketRound;
+            return;
+        }
+        
+        const potentialWin = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
+        container.innerHTML = `
+            <div class="game-card">
+                <div class="game-title">🚀 ROCKET IN FLIGHT 🚀</div>
+                <div class="coefficient-display" style="font-size:56px; font-weight:800; text-align:center; background:linear-gradient(135deg,#ffd700,#ffaa00); -webkit-background-clip:text; background-clip:text; color:transparent;">x${rocketGame.multiplier}</div>
+                ${participantsHtml}
+                <div class="info-panel">
+                    <div class="info-row"><span>💎 ВАША СТАВКА</span><span>${rocketGame.currentBet} STARS</span></div>
+                    <div class="info-row"><span>🎯 ТЕКУЩИЙ МНОЖИТЕЛЬ</span><span>x${rocketGame.multiplier}</span></div>
+                    <div class="potential-win">💰 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${potentialWin.toLocaleString()} STARS 💰</div>
+                </div>
+                <button class="btn btn-cash" id="cashoutRocketBtn" ${rocketGame.cashedOut ? 'disabled' : ''}>🚀 ЗАБРАТЬ ВЫИГРЫШ 🚀</button>
+            </div>
+        `;
+        document.getElementById('cashoutRocketBtn').onclick = cashoutRocket;
+    }
+    
     // ========== ГЛАВНОЕ МЕНЮ ==========
     function renderMainMenu() {
         const mainContent = document.getElementById('mainContent');
@@ -1234,13 +1231,13 @@
                 <div class="game-menu-card" data-game="wheel">
                     <div class="game-menu-icon">🎡</div>
                     <div class="game-menu-title">FORTUNE WHEEL</div>
-                    <div class="game-menu-desc">Колесо фортуны. Делай ставку, повышай, крути колесо!</div>
+                    <div class="game-menu-desc">Колесо фортуны. Сегменты по % ставок. Раунд 10 сек!</div>
                     <div class="game-menu-badge">🎡 АКТИВНА</div>
                 </div>
                 <div class="game-menu-card" data-game="rocket">
                     <div class="game-menu-icon">🚀</div>
                     <div class="game-menu-title">ROCKET</div>
-                    <div class="game-menu-desc">Ракетка. Непредсказуемый взрыв, лети по дуге до x30!</div>
+                    <div class="game-menu-desc">Ракетка. Непредсказуемый взрыв, множитель до x30!</div>
                     <div class="game-menu-badge">🚀 АКТИВНА</div>
                 </div>
             </div>
@@ -1258,6 +1255,7 @@
             if (rocketGame.interval) clearInterval(rocketGame.interval);
             if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
             if (wheelGame.countdownInterval) clearInterval(wheelGame.countdownInterval);
+            if (wheelGame.animationId) cancelAnimationFrame(wheelGame.animationId);
             rocketGame.active = false;
             rocketGame.countingDown = false;
             wheelGame.active = false;
