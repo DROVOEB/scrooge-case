@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Scrooge Case — Luxury Casino</title>
+    <title>Scrooge Case — Rocket & Mines</title>
     <style>
         * {
             margin: 0;
@@ -18,16 +18,14 @@
         :root {
             --gold: #ffd700;
             --gold-dark: #ccaa00;
-            --gold-light: #ffe066;
             --gold-glow: rgba(255, 215, 0, 0.4);
         }
 
         body {
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            font-family: 'Poppins', sans-serif;
             color: white;
             padding: 20px;
             min-height: 100vh;
-            position: relative;
             background: #0a0a0a;
             overflow-x: hidden;
         }
@@ -132,7 +130,7 @@
 
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
             margin-top: 16px;
         }
@@ -149,28 +147,6 @@
             border: 1px solid rgba(255, 215, 0, 0.3);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             overflow: hidden;
-        }
-
-        .game-menu-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 48px;
-            padding: 2px;
-            background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .game-menu-card:hover::before {
-            opacity: 1;
         }
 
         .game-menu-card:hover {
@@ -191,21 +167,15 @@
             50% { transform: translateY(-8px); }
         }
 
-        .game-menu-card:nth-child(1) .game-menu-icon { animation-delay: 0s; }
-        .game-menu-card:nth-child(2) .game-menu-icon { animation-delay: 0.5s; }
-        .game-menu-card:nth-child(3) .game-menu-icon { animation-delay: 1s; }
-
         .game-menu-title {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 800;
             background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
-            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 12px;
-            letter-spacing: 1px;
         }
 
         .game-menu-desc {
@@ -223,14 +193,6 @@
             font-size: 12px;
             font-weight: 700;
             color: #ffd700;
-            letter-spacing: 1px;
-            backdrop-filter: blur(4px);
-        }
-
-        .game-menu-card[data-game="mines"] .game-menu-badge {
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #1a1a1a;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         .game-card {
@@ -241,12 +203,6 @@
             border: 1px solid rgba(255, 215, 0, 0.3);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             margin-bottom: 24px;
-        }
-
-        @media (min-width: 768px) {
-            .game-card {
-                padding: 32px 28px;
-            }
         }
 
         .game-title {
@@ -312,17 +268,6 @@
             font-weight: 500;
         }
 
-        .multiplier-preview {
-            font-size: 42px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-align: center;
-            margin: 16px 0;
-        }
-
         .potential-win {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 170, 0, 0.08));
             border-radius: 60px;
@@ -334,60 +279,83 @@
         }
 
         /* Rocket Game Styles */
-        .rocket-animation {
-            text-align: center;
-            margin: 30px 0;
+        .rocket-track {
+            background: linear-gradient(180deg, #1a1a2a, #0a0a1a);
+            border-radius: 60px;
+            padding: 20px;
+            margin: 20px 0;
             position: relative;
-            min-height: 200px;
+            overflow: hidden;
+            min-height: 120px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
-        .rocket-ship {
-            font-size: 80px;
-            display: inline-block;
-            transition: transform 0.05s linear;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        .rocket-flight-area {
+            position: relative;
+            height: 80px;
+            width: 100%;
+            background: repeating-linear-gradient(90deg, rgba(255,215,0,0.1) 0px, rgba(255,215,0,0.1) 20px, transparent 20px, transparent 40px);
+            border-radius: 40px;
+            overflow: hidden;
         }
 
-        .rocket-ship.flying {
-            animation: rocketFly 2s ease-out infinite;
-        }
-
-        @keyframes rocketFly {
-            0% { transform: translateY(0) rotate(0deg); }
-            30% { transform: translateY(-60px) rotate(-5deg); }
-            70% { transform: translateY(-120px) rotate(5deg); }
-            100% { transform: translateY(-200px) rotate(0deg); opacity: 0.5; }
-        }
-
-        .rocket-ship.exploding {
-            animation: rocketExplode 0.5s ease-out forwards;
-        }
-
-        @keyframes rocketExplode {
-            0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 5px #ff6600); }
-            50% { transform: scale(1.5); opacity: 1; filter: drop-shadow(0 0 20px #ff3300); }
-            100% { transform: scale(0.5); opacity: 0; filter: drop-shadow(0 0 0 #ff0000); }
-        }
-
-        .rocket-trail {
+        .rocket-ship-horizontal {
             position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 40px;
-            background: linear-gradient(to top, #ff6600, #ffaa00);
-            border-radius: 2px;
-            animation: trailFlicker 0.1s infinite;
+            left: 0%;
+            font-size: 48px;
+            transition: left 0.05s linear;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            z-index: 10;
         }
 
-        @keyframes trailFlicker {
-            0%, 100% { opacity: 0.8; height: 40px; }
-            50% { opacity: 1; height: 50px; }
+        .rocket-ship-horizontal.flying {
+            animation: rocketShake 0.1s infinite;
+        }
+
+        @keyframes rocketShake {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .rocket-ship-horizontal.exploding {
+            animation: rocketHorizontalExplode 0.5s ease-out forwards;
+        }
+
+        @keyframes rocketHorizontalExplode {
+            0% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 5px #ff6600); }
+            30% { transform: scale(1.5); opacity: 1; filter: drop-shadow(0 0 20px #ff3300); }
+            100% { transform: scale(0.3); opacity: 0; filter: drop-shadow(0 0 0 #ff0000); left: 100%; }
+        }
+
+        .rocket-flame {
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(90deg, #ff6600, #ffaa00);
+            border-radius: 0 10px 10px 0;
+            animation: flameFlicker 0.05s infinite;
+        }
+
+        @keyframes flameFlicker {
+            0%, 100% { width: 30px; opacity: 0.8; }
+            50% { width: 40px; opacity: 1; }
+        }
+
+        .finish-line {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, #ffd700, #ffaa00);
+            box-shadow: 0 0 10px #ffd700;
         }
 
         .coefficient-display {
-            font-size: 64px;
+            font-size: 56px;
             font-weight: 800;
             text-align: center;
             margin: 20px 0;
@@ -396,6 +364,50 @@
             background-clip: text;
             color: transparent;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .timer-display {
+            font-size: 48px;
+            font-weight: 800;
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            margin: 20px 0;
+        }
+
+        .participants-list {
+            max-height: 150px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 24px;
+            padding: 12px;
+            margin: 16px 0;
+        }
+
+        .participant {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            font-size: 14px;
+        }
+
+        .past-coefficients {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+            justify-content: center;
+        }
+
+        .past-coeff {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffd700;
         }
 
         .btn {
@@ -422,11 +434,6 @@
             color: white;
         }
 
-        .btn-danger {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
         .btn:disabled {
             opacity: 0.5;
             transform: none;
@@ -439,7 +446,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 100, 0, 0.8), rgba(150, 0, 0, 0.9));
+            background: radial-gradient(circle, #ff6600, #990000);
             opacity: 0;
             pointer-events: none;
             z-index: 999;
@@ -448,8 +455,20 @@
 
         @keyframes explosionFlash {
             0% { opacity: 0; backdrop-filter: blur(0px); }
-            20% { opacity: 1; backdrop-filter: blur(10px); }
+            20% { opacity: 0.9; backdrop-filter: blur(10px); }
             100% { opacity: 0; backdrop-filter: blur(0px); }
+        }
+
+        .shake-screen {
+            animation: shakeScreen 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        @keyframes shakeScreen {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
         }
 
         .toast {
@@ -472,28 +491,12 @@
         }
 
         @media (max-width: 480px) {
-            .bet-btn {
-                padding: 8px 12px;
-                font-size: 13px;
-            }
-            .game-menu-icon {
-                font-size: 56px;
-            }
-            .game-menu-title {
-                font-size: 24px;
-            }
-            .games-grid {
-                gap: 16px;
-            }
-            .game-menu-card {
-                padding: 24px 16px;
-            }
-            .coefficient-display {
-                font-size: 48px;
-            }
-            .rocket-ship {
-                font-size: 60px;
-            }
+            .bet-btn { padding: 8px 12px; font-size: 13px; }
+            .game-menu-icon { font-size: 56px; }
+            .game-menu-title { font-size: 24px; }
+            .coefficient-display { font-size: 40px; }
+            .rocket-ship-horizontal { font-size: 36px; }
+            .timer-display { font-size: 36px; }
         }
     </style>
 </head>
@@ -521,7 +524,7 @@
     function addStars(amount) {
         balance += amount;
         updateBalanceUI();
-        showToast(`✨ +${amount} Stars получено!`, false);
+        showToast(`✨ +${amount} Stars`, false);
     }
     
     function deductStars(amount) {
@@ -530,14 +533,14 @@
             updateBalanceUI();
             return true;
         }
-        showToast('❌ Недостаточно средств! Пополните баланс.', true);
+        showToast('❌ Недостаточно Stars!', true);
         return false;
     }
     
     function addWin(amount) {
         balance += amount;
         updateBalanceUI();
-        showToast(`🏆 ПОБЕДА! +${amount} Stars!`, false);
+        showToast(`🏆 +${amount} Stars!`, false);
     }
     
     function showToast(msg, isError = false) {
@@ -553,26 +556,28 @@
     
     document.getElementById('addStarsBtn').onclick = () => addStars(500);
     
-    // ========== СОСТОЯНИЕ ==========
-    let currentScreen = 'menu';
-    let currentGameId = null;
+    // ========== ИСТОРИЯ КОЭФФИЦИЕНТОВ ==========
+    let pastCoefficients = [1.08, 1.24, 3.52, 1.17, 2.88, 1.45, 5.21, 1.09, 11.32, 1.76];
     
-    // ========== ИГРА: МИННОЕ ПОЛЕ ==========
-    let minesGame = {
-        active: false, board: [], revealed: [], minesCount: 3, bet: 50,
-        multiplier: 1, safeLeft: 0, currentBet: 0, cellsRevealed: 0, maxMultiplier: 0
+    // ========== ИГРА: РАКЕТКА ==========
+    let rocketGame = {
+        active: false,
+        countingDown: false,
+        countdown: 10,
+        bet: 50,
+        currentBet: 0,
+        multiplier: 1.00,
+        targetMultiplier: 1.00,
+        interval: null,
+        countdownInterval: null,
+        cashedOut: false,
+        participants: [],
+        myBetPlaced: false
     };
     
-    function getBaseMultiplier(minesCount) {
-        const multipliers = { 3: 3.5, 5: 6.5, 7: 11.0 };
-        return multipliers[minesCount] || 3.5;
-    }
-    
-    function calculateMultiplier(minesCount, openedSafe, totalSafe) {
-        const baseMax = getBaseMultiplier(minesCount);
-        const progress = openedSafe / totalSafe;
-        const accelerated = Math.pow(progress, 1.2);
-        return 1 + (baseMax - 1) * accelerated;
+    function addPastCoefficient(coeff) {
+        pastCoefficients.unshift(coeff);
+        if (pastCoefficients.length > 15) pastCoefficients.pop();
     }
     
     function showExplosionEffect() {
@@ -580,9 +585,267 @@
         overlay.className = 'explosion-overlay';
         document.body.appendChild(overlay);
         setTimeout(() => overlay.remove(), 600);
+        
+        document.body.classList.add('shake-screen');
+        setTimeout(() => document.body.classList.remove('shake-screen'), 500);
+        
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         }
+    }
+    
+    function startCountdown() {
+        if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
+        rocketGame.countingDown = true;
+        rocketGame.countdown = 10;
+        rocketGame.myBetPlaced = false;
+        rocketGame.participants = [];
+        
+        renderRocketGame();
+        
+        rocketGame.countdownInterval = setInterval(() => {
+            rocketGame.countdown--;
+            renderRocketGame();
+            
+            if (rocketGame.countdown <= 0) {
+                clearInterval(rocketGame.countdownInterval);
+                rocketGame.countingDown = false;
+                
+                if (rocketGame.participants.length === 0) {
+                    showToast('Нет участников! Начните новый раунд', true);
+                    renderRocketGame();
+                } else {
+                    startFlight();
+                }
+            }
+        }, 1000);
+    }
+    
+    function placeRocketBet() {
+        if (!rocketGame.countingDown) {
+            showToast('Нет активного раунда! Нажмите "НОВЫЙ РАУНД"', true);
+            return;
+        }
+        if (rocketGame.myBetPlaced) {
+            showToast('Вы уже сделали ставку!', true);
+            return;
+        }
+        if (rocketGame.bet < 50) {
+            showToast('Минимальная ставка 50 Stars', true);
+            return;
+        }
+        if (!deductStars(rocketGame.bet)) return;
+        
+        rocketGame.myBetPlaced = true;
+        rocketGame.currentBet = rocketGame.bet;
+        rocketGame.participants.push({ name: 'Вы', bet: rocketGame.bet, cashedOut: false });
+        
+        renderRocketGame();
+        showToast(`✅ Ставка ${rocketGame.bet} Stars принята!`, false);
+    }
+    
+    function startFlight() {
+        rocketGame.active = true;
+        rocketGame.multiplier = 1.00;
+        rocketGame.cashedOut = false;
+        rocketGame.targetMultiplier = +(Math.random() * (25 - 1.5) + 1.5).toFixed(2);
+        
+        const rocket = document.querySelector('.rocket-ship-horizontal');
+        if (rocket) {
+            rocket.classList.add('flying');
+        }
+        
+        if (rocketGame.interval) clearInterval(rocketGame.interval);
+        rocketGame.interval = setInterval(() => {
+            if (!rocketGame.active) return;
+            
+            const increment = 0.02 + (rocketGame.multiplier / 250);
+            rocketGame.multiplier = +(rocketGame.multiplier + increment).toFixed(2);
+            
+            const progress = Math.min(95, (rocketGame.multiplier / rocketGame.targetMultiplier) * 95);
+            const rocketElement = document.querySelector('.rocket-ship-horizontal');
+            if (rocketElement) {
+                rocketElement.style.left = `${Math.min(95, progress)}%`;
+            }
+            
+            if (rocketGame.multiplier >= rocketGame.targetMultiplier) {
+                clearInterval(rocketGame.interval);
+                rocketGame.active = false;
+                
+                const rocketEl = document.querySelector('.rocket-ship-horizontal');
+                if (rocketEl) {
+                    rocketEl.classList.remove('flying');
+                    rocketEl.classList.add('exploding');
+                }
+                
+                showExplosionEffect();
+                addPastCoefficient(rocketGame.multiplier);
+                showToast(`💥 РАКЕТА ВЗОРВАЛАСЬ на x${rocketGame.multiplier}!`, true);
+                renderRocketGame();
+            } else {
+                renderRocketGame();
+            }
+        }, 80);
+        
+        renderRocketGame();
+        showToast(`🚀 Ракета взлетает! Цель ~x${rocketGame.targetMultiplier}`, false);
+    }
+    
+    function cashoutRocket() {
+        if (!rocketGame.active) {
+            showToast('Нет активного полёта!', true);
+            return;
+        }
+        if (rocketGame.cashedOut) {
+            showToast('Вы уже забрали выигрыш!', true);
+            return;
+        }
+        
+        const win = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
+        addWin(win);
+        rocketGame.cashedOut = true;
+        
+        const participant = rocketGame.participants.find(p => p.name === 'Вы');
+        if (participant) participant.cashedOut = true;
+        
+        showToast(`💰 ВЫ ЗАБРАЛИ ${win} Stars (x${rocketGame.multiplier})!`, false);
+        renderRocketGame();
+    }
+    
+    function newRocketRound() {
+        if (rocketGame.active || rocketGame.countingDown) {
+            showToast('Дождитесь окончания текущего раунда!', true);
+            return;
+        }
+        if (rocketGame.interval) clearInterval(rocketGame.interval);
+        if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
+        
+        rocketGame.active = false;
+        rocketGame.countingDown = false;
+        rocketGame.cashedOut = false;
+        rocketGame.myBetPlaced = false;
+        rocketGame.currentBet = 0;
+        rocketGame.participants = [];
+        
+        startCountdown();
+    }
+    
+    function renderRocketGame() {
+        const container = document.getElementById('gameContent');
+        if (!container) return;
+        
+        const totalBet = rocketGame.participants.reduce((sum, p) => sum + p.bet, 0);
+        
+        let pastHtml = '<div class="past-coefficients">';
+        pastCoefficients.slice(0, 10).forEach(c => {
+            pastHtml += `<span class="past-coeff">x${c.toFixed(2)}</span>`;
+        });
+        pastHtml += '</div>';
+        
+        let participantsHtml = '<div class="participants-list">';
+        if (rocketGame.participants.length === 0) {
+            participantsHtml += '<div style="text-align:center; padding:12px; opacity:0.5;">Ожидание ставок...</div>';
+        } else {
+            rocketGame.participants.forEach(p => {
+                participantsHtml += `<div class="participant"><span>${p.name}</span><span>⭐ ${p.bet} ${p.cashedOut ? '✅' : ''}</span></div>`;
+            });
+        }
+        participantsHtml += '</div>';
+        
+        if (rocketGame.countingDown) {
+            container.innerHTML = `
+                <div class="game-card">
+                    <div class="game-title">🚀 ROCKET 🚀</div>
+                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
+                    </div>
+                    <div class="timer-display">⏱️ ${rocketGame.countdown} сек</div>
+                    ${participantsHtml}
+                    <div class="info-panel">
+                        <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
+                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x25</span></div>
+                        ${rocketGame.myBetPlaced ? '<div class="potential-win">✅ ВАША СТАВКА ПРИНЯТА! Ждите старта...</div>' : '<div class="potential-win">💰 СДЕЛАЙТЕ СТАВКУ ДО КОНЦА ОТСЧЁТА</div>'}
+                    </div>
+                    <button class="btn" id="placeBetBtn" ${rocketGame.myBetPlaced ? 'disabled' : ''}>💎 СДЕЛАТЬ СТАВКУ 💎</button>
+                    ${pastHtml}
+                </div>
+            `;
+            
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
+            });
+            const placeBtn = document.getElementById('placeBetBtn');
+            if (placeBtn) placeBtn.onclick = placeRocketBet;
+            return;
+        }
+        
+        if (!rocketGame.active && !rocketGame.countingDown) {
+            container.innerHTML = `
+                <div class="game-card">
+                    <div class="game-title">🚀 ROCKET 🚀</div>
+                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
+                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
+                    </div>
+                    <div class="info-panel">
+                        <div class="info-row"><span>💰 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
+                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x25</span></div>
+                    </div>
+                    <button class="btn" id="newRoundBtn">🚀 НОВЫЙ РАУНД (10 сек) 🚀</button>
+                    ${pastHtml}
+                </div>
+            `;
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
+            });
+            document.getElementById('newRoundBtn').onclick = newRocketRound;
+            return;
+        }
+        
+        const potentialWin = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
+        
+        container.innerHTML = `
+            <div class="game-card">
+                <div class="game-title">🚀 ROCKET IN FLIGHT 🚀</div>
+                <div class="rocket-track">
+                    <div class="rocket-flight-area">
+                        <div class="rocket-ship-horizontal flying" style="left: ${Math.min(95, (rocketGame.multiplier / rocketGame.targetMultiplier) * 95)}%">🚀<div class="rocket-flame"></div></div>
+                        <div class="finish-line"></div>
+                    </div>
+                </div>
+                <div class="coefficient-display">x${rocketGame.multiplier}</div>
+                ${participantsHtml}
+                <div class="info-panel">
+                    <div class="info-row"><span>💎 ВАША СТАВКА</span><span>${rocketGame.currentBet} STARS</span></div>
+                    <div class="info-row"><span>🎯 ТЕКУЩИЙ МНОЖИТЕЛЬ</span><span>x${rocketGame.multiplier}</span></div>
+                    <div class="potential-win">💰 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${potentialWin.toLocaleString()} STARS 💰</div>
+                </div>
+                <button class="btn btn-cash" id="cashoutRocketBtn" ${rocketGame.cashedOut ? 'disabled' : ''}>🚀 ЗАБРАТЬ ВЫИГРЫШ 🚀</button>
+                ${pastHtml}
+            </div>
+        `;
+        
+        const cashoutBtn = document.getElementById('cashoutRocketBtn');
+        if (cashoutBtn) cashoutBtn.onclick = cashoutRocket;
+    }
+    
+    // ========== ИГРА: МИННОЕ ПОЛЕ (упрощённо) ==========
+    let minesGame = {
+        active: false, board: [], revealed: [], minesCount: 3, bet: 50,
+        multiplier: 1, safeLeft: 0, currentBet: 0, cellsRevealed: 0, maxMultiplier: 0
+    };
+    
+    function getBaseMultiplier(minesCount) {
+        return {3: 3.5, 5: 6.5, 7: 11.0}[minesCount] || 3.5;
     }
     
     function initMinesGame() {
@@ -620,7 +883,7 @@
         minesGame.safeLeft = size*size - totalMines;
         minesGame.maxMultiplier = getBaseMultiplier(totalMines);
         renderMinesGame();
-        showToast(`🚀 Игра началась! Ставка ${minesGame.bet} Stars | Макс x${minesGame.maxMultiplier}`, false);
+        showToast(`🚀 Игра началась! Ставка ${minesGame.bet} Stars`, false);
     }
     
     function revealMineCell(row, col) {
@@ -636,12 +899,13 @@
         minesGame.safeLeft--;
         minesGame.cellsRevealed++;
         const totalSafe = 25 - minesGame.minesCount;
-        minesGame.multiplier = parseFloat(calculateMultiplier(minesGame.minesCount, minesGame.cellsRevealed, totalSafe).toFixed(2));
+        const progress = minesGame.cellsRevealed / totalSafe;
+        minesGame.multiplier = +(1 + (minesGame.maxMultiplier - 1) * Math.pow(progress, 1.2)).toFixed(2);
         if (minesGame.safeLeft === 0) {
             const win = Math.floor(minesGame.currentBet * minesGame.multiplier);
             addWin(win);
             minesGame.active = false;
-            showToast(`🏆 ПОБЕДА! ${win} Stars (x${minesGame.multiplier})!`, false);
+            showToast(`🏆 ПОБЕДА! ${win} Stars!`, false);
             renderMinesGame();
             return;
         }
@@ -665,16 +929,15 @@
             container.innerHTML = `
                 <div class="game-card">
                     <div class="game-title">💎 MINES 💎</div>
-                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                    <div class="section-label">💰 СТАВКА</div>
                     <div class="bet-buttons">
                         <button class="bet-btn ${minesGame.bet === 20 ? 'active' : ''}" data-bet="20">20 ⭐</button>
                         <button class="bet-btn ${minesGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
                         <button class="bet-btn ${minesGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
                         <button class="bet-btn ${minesGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
                         <button class="bet-btn ${minesGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
-                        <button class="bet-btn ${minesGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
                     </div>
-                    <div class="section-label">💣 КОЛИЧЕСТВО МИН</div>
+                    <div class="section-label">💣 МИНЫ</div>
                     <div class="bet-buttons">
                         <button class="bet-btn ${minesGame.minesCount === 3 ? 'active' : ''}" data-mines="3">3 мины (x3.5)</button>
                         <button class="bet-btn ${minesGame.minesCount === 5 ? 'active' : ''}" data-mines="5">5 мин (x6.5)</button>
@@ -683,9 +946,8 @@
                     <div class="info-panel">
                         <div class="info-row"><span>⭐ СТАВКА</span><span>${minesGame.bet} STARS</span></div>
                         <div class="info-row"><span>🏆 МАКС. МНОЖИТЕЛЬ</span><span>x${getBaseMultiplier(minesGame.minesCount)}</span></div>
-                        <div class="potential-win">🏆 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${Math.floor(minesGame.bet * getBaseMultiplier(minesGame.minesCount)).toLocaleString()} STARS 🏆</div>
                     </div>
-                    <button class="btn" id="startGameBtn">💎 НАЧАТЬ ИГРУ 💎</button>
+                    <button class="btn" id="startMinesBtn">💎 НАЧАТЬ ИГРУ 💎</button>
                 </div>
             `;
             document.querySelectorAll('.bet-btn[data-bet]').forEach(btn => {
@@ -694,13 +956,9 @@
             document.querySelectorAll('.bet-btn[data-mines]').forEach(btn => {
                 btn.onclick = () => { minesGame.minesCount = parseInt(btn.dataset.mines); renderMinesGame(); };
             });
-            document.getElementById('startGameBtn').onclick = initMinesGame;
+            document.getElementById('startMinesBtn').onclick = initMinesGame;
             return;
         }
-        
-        const totalSafe = 25 - minesGame.minesCount;
-        const progress = Math.floor((minesGame.cellsRevealed / totalSafe) * 100);
-        const potentialWin = Math.floor(minesGame.currentBet * minesGame.multiplier);
         
         let gridHtml = '<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0;">';
         for (let i = 0; i < 5; i++) {
@@ -716,6 +974,10 @@
         }
         gridHtml += '</div>';
         
+        const totalSafe = 25 - minesGame.minesCount;
+        const progress = Math.floor((minesGame.cellsRevealed / totalSafe) * 100);
+        const potentialWin = Math.floor(minesGame.currentBet * minesGame.multiplier);
+        
         container.innerHTML = `
             <div class="game-card">
                 <div class="game-title">💎 MINES | ${minesGame.minesCount} MINES 💎</div>
@@ -723,7 +985,7 @@
                 <div class="info-panel">
                     <div class="info-row"><span>🎯 ПРОГРЕСС</span><span>${progress}%</span></div>
                     <div class="info-row"><span>💎 БЕЗОПАСНО</span><span>${minesGame.safeLeft} / ${totalSafe}</span></div>
-                    <div class="multiplier-preview">x${minesGame.multiplier}</div>
+                    <div class="multiplier-preview" style="font-size:42px; font-weight:800; background:linear-gradient(135deg,#ffd700,#ffaa00); -webkit-background-clip:text; background-clip:text; color:transparent; text-align:center;">x${minesGame.multiplier}</div>
                     <div class="potential-win">💰 ЗАБРАТЬ: ${potentialWin.toLocaleString()} STARS 💰</div>
                 </div>
                 <button class="btn btn-cash" onclick="window.cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ 💰</button>
@@ -731,126 +993,10 @@
         `;
     }
     
-    // ========== ИГРА: РАКЕТКА ==========
-    let rocketGame = {
-        active: false,
-        bet: 50,
-        currentBet: 0,
-        multiplier: 1.00,
-        targetMultiplier: 1.00,
-        interval: null,
-        cashedOut: false
-    };
-    
-    function startRocketGame() {
-        if (rocketGame.active) return;
-        if (rocketGame.bet < 50) {
-            showToast('Минимальная ставка 50 Stars', true);
-            return;
-        }
-        if (!deductStars(rocketGame.bet)) return;
-        
-        rocketGame.active = true;
-        rocketGame.currentBet = rocketGame.bet;
-        rocketGame.multiplier = 1.00;
-        rocketGame.cashedOut = false;
-        
-        // Случайный коэффициент от 1.5 до 25
-        rocketGame.targetMultiplier = +(Math.random() * (25 - 1.5) + 1.5).toFixed(2);
-        
-        if (rocketGame.interval) clearInterval(rocketGame.interval);
-        rocketGame.interval = setInterval(() => {
-            if (!rocketGame.active) return;
-            // Увеличиваем множитель с ускорением
-            const increment = 0.02 + (rocketGame.multiplier / 200);
-            rocketGame.multiplier = +(rocketGame.multiplier + increment).toFixed(2);
-            
-            if (rocketGame.multiplier >= rocketGame.targetMultiplier) {
-                clearInterval(rocketGame.interval);
-                rocketGame.active = false;
-                showExplosionEffect();
-                showToast(`💥 РАКЕТА ВЗОРВАЛАСЬ! Проиграно ${rocketGame.currentBet} Stars`, true);
-                renderRocketGame();
-            } else {
-                renderRocketGame();
-            }
-        }, 80);
-        
-        renderRocketGame();
-        showToast(`🚀 Ракета взлетает! Цель ~x${rocketGame.targetMultiplier}`, false);
-    }
-    
-    function cashoutRocket() {
-        if (!rocketGame.active || rocketGame.cashedOut) return;
-        clearInterval(rocketGame.interval);
-        const win = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
-        addWin(win);
-        rocketGame.active = false;
-        rocketGame.cashedOut = true;
-        showToast(`💰 ВЫ ЗАБРАЛИ ${win} Stars (x${rocketGame.multiplier})!`, false);
-        renderRocketGame();
-    }
-    
-    function renderRocketGame() {
-        const container = document.getElementById('gameContent');
-        if (!container) return;
-        
-        if (!rocketGame.active) {
-            container.innerHTML = `
-                <div class="game-card">
-                    <div class="game-title">🚀 ROCKET 🚀</div>
-                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
-                    <div class="bet-buttons">
-                        <button class="bet-btn ${rocketGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
-                        <button class="bet-btn ${rocketGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
-                    </div>
-                    <div class="info-panel">
-                        <div class="info-row"><span>🚀 МАКС. ВЫИГРЫШ</span><span>до x25</span></div>
-                        <div class="info-row"><span>💎 СТАВКА</span><span>${rocketGame.bet} STARS</span></div>
-                        <div class="potential-win">🏆 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: до ${(rocketGame.bet * 25).toLocaleString()} STARS 🏆</div>
-                    </div>
-                    <button class="btn" id="startRocketBtn">🚀 ЗАПУСТИТЬ РАКЕТУ 🚀</button>
-                </div>
-            `;
-            document.querySelectorAll('.bet-btn').forEach(btn => {
-                btn.onclick = () => { rocketGame.bet = parseInt(btn.dataset.bet); renderRocketGame(); };
-            });
-            document.getElementById('startRocketBtn').onclick = startRocketGame;
-            return;
-        }
-        
-        const potentialWin = Math.floor(rocketGame.currentBet * rocketGame.multiplier);
-        const progress = Math.min(100, Math.floor((rocketGame.multiplier / rocketGame.targetMultiplier) * 100));
-        
-        container.innerHTML = `
-            <div class="game-card">
-                <div class="game-title">🚀 ROCKET IN FLIGHT 🚀</div>
-                <div class="rocket-animation">
-                    <div class="rocket-ship flying">🚀</div>
-                    <div class="rocket-trail"></div>
-                </div>
-                <div class="coefficient-display">x${rocketGame.multiplier}</div>
-                <div class="info-panel">
-                    <div class="info-row"><span>🎯 ПРОГРЕСС ДО ЦЕЛИ</span><span>${progress}%</span></div>
-                    <div class="info-row"><span>💎 СТАВКА</span><span>${rocketGame.currentBet} STARS</span></div>
-                    <div class="info-row"><span>🏆 ТЕКУЩИЙ МНОЖИТЕЛЬ</span><span>x${rocketGame.multiplier}</span></div>
-                    <div class="potential-win">💰 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: ${potentialWin.toLocaleString()} STARS 💰</div>
-                </div>
-                <button class="btn btn-cash" id="cashoutRocketBtn">🚀 ЗАБРАТЬ ВЫИГРЫШ 🚀</button>
-            </div>
-        `;
-        document.getElementById('cashoutRocketBtn').onclick = cashoutRocket;
-    }
-    
-    // ========== ДРУГИЕ ИГРЫ ==========
+    // ========== КОЛЕСО ФОРТУНЫ ==========
     function renderWheelGame() {
         const container = document.getElementById('gameContent');
-        if (container) {
-            container.innerHTML = `<div class="game-card"><div class="game-title">🎡 FORTUNE WHEEL</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🎡</div><p style="opacity: 0.7;">Скоро будет доступно...</p><p style="margin-top: 16px; font-size: 13px; opacity: 0.5;">Следите за обновлениями</p></div></div>`;
-        }
+        container.innerHTML = `<div class="game-card"><div class="game-title">🎡 FORTUNE WHEEL</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px;">🎡</div><p style="opacity: 0.7;">Скоро будет доступно...</p></div></div>`;
     }
     
     // ========== ГЛАВНОЕ МЕНЮ ==========
@@ -861,60 +1007,43 @@
                 <div class="game-menu-card" data-game="mines">
                     <div class="game-menu-icon">💎</div>
                     <div class="game-menu-title">MINES</div>
-                    <div class="game-menu-desc">Классическое минное поле. Открывай кристаллы, избегай мин и увеличивай множитель до x11!</div>
+                    <div class="game-menu-desc">Классическое минное поле. Множитель до x11!</div>
                     <div class="game-menu-badge">🔥 ПОПУЛЯРНОЕ</div>
                 </div>
                 <div class="game-menu-card" data-game="wheel">
                     <div class="game-menu-icon">🎡</div>
                     <div class="game-menu-title">FORTUNE WHEEL</div>
-                    <div class="game-menu-desc">Колесо фортуны. Сделай ставку и крути колесо удачи! Победитель забирает всё.</div>
+                    <div class="game-menu-desc">Колесо фортуны — испытай удачу!</div>
                     <div class="game-menu-badge">⚡ СКОРО</div>
                 </div>
                 <div class="game-menu-card" data-game="rocket">
                     <div class="game-menu-icon">🚀</div>
                     <div class="game-menu-title">ROCKET</div>
-                    <div class="game-menu-desc">Ракетка. Лети выше, лови момент и забирай выигрыш до x25 до взрыва!</div>
+                    <div class="game-menu-desc">Ракетка. Лети выше, лови момент и забирай выигрыш до x25!</div>
                     <div class="game-menu-badge">🚀 АКТИВНА</div>
                 </div>
             </div>
         `;
         
         document.querySelectorAll('.game-menu-card').forEach(card => {
-            card.onclick = () => {
-                const gameId = card.dataset.game;
-                openGame(gameId);
-            };
+            card.onclick = () => openGame(card.dataset.game);
         });
     }
     
     function openGame(gameId) {
-        currentScreen = 'game';
-        currentGameId = gameId;
-        
         const mainContent = document.getElementById('mainContent');
-        mainContent.innerHTML = `
-            <button class="back-btn" id="backToMenuBtn">← ВЕРНУТЬСЯ В МЕНЮ</button>
-            <div id="gameContent"></div>
-        `;
-        
+        mainContent.innerHTML = `<button class="back-btn" id="backToMenuBtn">← ВЕРНУТЬСЯ В МЕНЮ</button><div id="gameContent"></div>`;
         document.getElementById('backToMenuBtn').onclick = () => {
             if (rocketGame.interval) clearInterval(rocketGame.interval);
+            if (rocketGame.countdownInterval) clearInterval(rocketGame.countdownInterval);
             rocketGame.active = false;
-            currentScreen = 'menu';
+            rocketGame.countingDown = false;
             renderMainMenu();
         };
         
-        if (gameId === 'mines') {
-            minesGame.active = false;
-            minesGame.board = [];
-            renderMinesGame();
-        } else if (gameId === 'wheel') {
-            renderWheelGame();
-        } else if (gameId === 'rocket') {
-            rocketGame.active = false;
-            if (rocketGame.interval) clearInterval(rocketGame.interval);
-            renderRocketGame();
-        }
+        if (gameId === 'mines') renderMinesGame();
+        else if (gameId === 'wheel') renderWheelGame();
+        else if (gameId === 'rocket') renderRocketGame();
     }
     
     window.revealMineCell = revealMineCell;
