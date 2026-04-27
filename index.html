@@ -13,29 +13,89 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* Основной фон с долларами */
         body {
-            background: radial-gradient(circle at 20% 0%, #0a0a1a, #03030a);
             font-family: 'Segoe UI', 'Poppins', system-ui, 'Inter', sans-serif;
             color: white;
             padding: 20px 16px 80px;
             min-height: 100vh;
+            position: relative;
+            background: #0a2a1a;
+        }
+
+        /* Долларовый фон через SVG паттерн */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.15"><text x="10" y="20" font-size="14" fill="%23aaff88">💵</text><text x="40" y="45" font-size="18" fill="%2388ff66">💰</text><text x="70" y="30" font-size="12" fill="%23ccff99">💵</text><text x="20" y="70" font-size="16" fill="%2399ff77">💰</text><text x="60" y="80" font-size="14" fill="%23aaff88">💵</text><text x="85" y="60" font-size="20" fill="%2377ff55">💰</text><text x="5" y="90" font-size="10" fill="%23bbff99">💵</text><text x="50" y="15" font-size="11" fill="%2388ff66">💰</text><text x="30" y="55" font-size="13" fill="%23ccff99">💵</text><text x="75" y="95" font-size="15" fill="%2399ff77">💰</text></svg>');
+            background-repeat: repeat;
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Затемнение для читаемости текста */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 0%, rgba(10, 42, 26, 0.85), rgba(3, 20, 10, 0.95));
+            pointer-events: none;
+            z-index: 0;
         }
 
         .app {
             max-width: 600px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Добавим плавающие доллары для красоты */
+        .floating-dollar {
+            position: fixed;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatDollar 8s ease-in-out infinite;
+            opacity: 0.15;
+        }
+
+        @keyframes floatDollar {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.15;
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                transform: translateY(-50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Верхняя панель */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(20, 20, 40, 0.6);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(12px);
             border-radius: 60px;
             padding: 8px 18px;
             margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
         .balance {
@@ -44,6 +104,7 @@
             border-radius: 40px;
             font-weight: bold;
             font-size: 18px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
 
         .stars {
@@ -51,12 +112,12 @@
         }
 
         .add-stars {
-            background: linear-gradient(135deg, #ffaa33, #ff7733);
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
             border: none;
             border-radius: 40px;
             padding: 6px 16px;
             font-weight: bold;
-            color: #1a1a2a;
+            color: #1a4a2a;
             cursor: pointer;
             transition: 0.1s;
         }
@@ -65,13 +126,16 @@
             transform: scale(0.96);
         }
 
+        /* Навигация */
         .game-nav {
             display: flex;
             gap: 12px;
             margin-bottom: 24px;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
             padding: 8px;
             border-radius: 60px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .game-tab {
@@ -86,20 +150,23 @@
         }
 
         .game-tab.active {
-            background: linear-gradient(135deg, #ffaa33, #ff7733);
-            color: #1a1a2a;
-            box-shadow: 0 0 12px rgba(255, 170, 51, 0.3);
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a4a2a;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.5);
         }
 
+        /* Карточка игры */
         .game-card {
-            background: rgba(10, 10, 25, 0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(12px);
             border-radius: 40px;
             padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.25);
             margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
+        /* Поле 5x5 */
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -109,7 +176,7 @@
         }
 
         .mine-cell {
-            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
+            background: linear-gradient(145deg, rgba(42, 74, 42, 0.9), rgba(26, 54, 26, 0.9));
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -120,7 +187,7 @@
             transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             aspect-ratio: 1;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             position: relative;
         }
 
@@ -152,8 +219,8 @@
         }
 
         .mine-cell.safe {
-            background: linear-gradient(145deg, #2a6a4a, #1a4a3a);
-            box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
+            background: linear-gradient(145deg, #2a7a4a, #1a5a3a);
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
         }
 
         .mine-cell.mine-revealed {
@@ -184,8 +251,8 @@
             bottom: 4px;
             right: 8px;
             font-size: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            background: rgba(0, 0, 0, 0.4);
+            color: rgba(255, 215, 0, 0.9);
+            background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
             padding: 2px 6px;
         }
@@ -220,12 +287,12 @@
         }
 
         .btn {
-            background: linear-gradient(95deg, #4a4aff, #2a2aff);
+            background: linear-gradient(95deg, #ffd700, #ffaa00);
             border: none;
             padding: 12px 20px;
             border-radius: 44px;
             font-weight: bold;
-            color: white;
+            color: #1a4a2a;
             cursor: pointer;
             margin: 4px;
             transition: 0.1s;
@@ -237,15 +304,12 @@
 
         .btn-cash {
             background: linear-gradient(95deg, #2ecc71, #27ae60);
-        }
-
-        .btn-danger {
-            background: linear-gradient(95deg, #e74c3c, #c0392b);
+            color: white;
         }
 
         input, select {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             padding: 10px;
             border-radius: 28px;
             color: white;
@@ -267,11 +331,12 @@
             pointer-events: none;
             font-weight: bold;
             white-space: nowrap;
+            border: 1px solid #ffd700;
         }
 
         .multiplier-badge {
-            background: linear-gradient(135deg, #ffaa33, #ff7733);
-            color: #1a1a2a;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            color: #1a4a2a;
             padding: 4px 12px;
             border-radius: 40px;
             font-weight: bold;
@@ -289,12 +354,17 @@
             opacity: 0.8;
             margin-top: 8px;
         }
+
+        h3 {
+            color: #ffd700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
     </style>
 </head>
 <body>
 <div class="app">
     <div class="top-bar">
-        <div class="balance">⭐ <span id="balance">1000</span> Stars</div>
+        <div class="balance">💰 <span id="balance">1000</span> Stars</div>
         <button class="add-stars" id="addStarsBtn">➕ 500 Stars</button>
     </div>
 
@@ -344,7 +414,7 @@
         const toast = document.getElementById('toast');
         toast.textContent = msg;
         toast.style.opacity = '1';
-        toast.style.background = isError ? '#aa2e2ecc' : '#1f3f2ecc';
+        toast.style.background = isError ? '#aa2e2ecc' : '#1a4a2acc';
         setTimeout(() => toast.style.opacity = '0', 2000);
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred(isError ? 'heavy' : 'light');
@@ -367,21 +437,18 @@
         maxMultiplier: 0
     };
     
-    // Базовый множитель в зависимости от количества мин (чем больше мин, тем выше потенциал)
     function getBaseMultiplier(minesCount) {
         const multipliers = {
-            3: 2.5,   // 3 мины → макс x2.5
-            5: 4.0,   // 5 мин → макс x4.0
-            7: 6.5    // 7 мин → макс x6.5
+            3: 2.5,
+            5: 4.0,
+            7: 6.5
         };
         return multipliers[minesCount] || 3.0;
     }
     
-    // Расчёт текущего множителя на основе открытых безопасных клеток
     function calculateMultiplier(minesCount, openedSafe, totalSafe) {
         const baseMax = getBaseMultiplier(minesCount);
         const progress = openedSafe / totalSafe;
-        // Множитель растёт от 1 до baseMax
         return 1 + (baseMax - 1) * progress;
     }
     
@@ -483,7 +550,6 @@
             return;
         }
         
-        // Безопасная клетка
         if (cellDiv) {
             cellDiv.classList.add('revealing');
             setTimeout(() => {
@@ -542,16 +608,15 @@
             
             statsDiv.innerHTML = `
                 <div style="margin: 16px 0;">
-                    <span class="multiplier-badge">🎯 Текущий множитель: x${minesGame.multiplier}</span>
-                    <span class="multiplier-badge" style="background: #2ecc71;">💰 Макс. x${minesGame.maxMultiplier}</span>
+                    <span class="multiplier-badge">🎯 Текущий: x${minesGame.multiplier}</span>
+                    <span class="multiplier-badge" style="background: #2ecc71; color: white;">🏆 Макс: x${minesGame.maxMultiplier}</span>
                 </div>
                 <div class="btn-group">
                     <button class="btn btn-cash" onclick="cashoutMines()">💰 ЗАБРАТЬ (${potentialWin} ⭐)</button>
                 </div>
                 <div style="margin-top: 12px;">
-                    <div>📊 Прогресс: ${progress}% (${opened}/${totalSafe} безопасных)</div>
+                    <div>📊 Прогресс: ${progress}% (${opened}/${totalSafe})</div>
                     <div>💎 Осталось безопасных: ${remaining}</div>
-                    <div class="info-text">⚠️ Чем больше мин, тем выше множитель!</div>
                 </div>
             `;
         }
@@ -561,12 +626,10 @@
         const container = document.getElementById('gameContainer');
         
         if (!minesGame.active || minesGame.board.length === 0) {
-            // Начальный экран с настройками и подсказкой
             const maxMultiplierPreview = getBaseMultiplier(minesGame.minesCount);
             container.innerHTML = `
                 <div class="game-card">
                     <h3>💎 Минное поле 5x5</h3>
-                    <div>⭐ Баланс: ${balance}</div>
                     <div style="margin: 16px 0;">
                         <label>💰 Ставка: </label>
                         <input type="number" id="minesBet" min="20" value="${minesGame.bet}">
@@ -577,36 +640,21 @@
                             <option value="7" ${minesGame.minesCount === 7 ? 'selected' : ''}>7 мин (макс x6.5)</option>
                         </select>
                     </div>
-                    <div class="info-text">💡 Подсказка: чем больше мин, тем выше потенциальный множитель!</div>
-                    <div class="info-text">⭐ Текущий макс. множитель: x${maxMultiplierPreview}</div>
+                    <div class="info-text">💡 Чем больше мин, тем выше потенциальный множитель!</div>
                     <button class="btn" id="startMinesBtn" style="margin-top: 16px;">🚀 Новая игра</button>
                 </div>
             `;
             
             const betInput = document.getElementById('minesBet');
             const minesSelect = document.getElementById('minesCount');
-            const previewDiv = container.querySelector('.info-text:last-of-type');
-            
-            const updatePreview = () => {
-                const mines = parseInt(minesSelect.value);
-                const maxMult = getBaseMultiplier(mines);
-                if (previewDiv) previewDiv.innerHTML = `⭐ Текущий макс. множитель: x${maxMult}`;
-            };
             
             if (betInput) betInput.addEventListener('change', (e) => minesGame.bet = Math.max(20, parseInt(e.target.value) || 20));
-            if (minesSelect) {
-                minesSelect.addEventListener('change', (e) => {
-                    minesGame.minesCount = parseInt(e.target.value);
-                    updatePreview();
-                });
-            }
+            if (minesSelect) minesSelect.addEventListener('change', (e) => minesGame.minesCount = parseInt(e.target.value));
             
             document.getElementById('startMinesBtn')?.addEventListener('click', initMinesGame);
-            updatePreview();
             return;
         }
         
-        // Активная игра
         let gridHtml = '<div class="mines-grid">';
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
@@ -624,7 +672,6 @@
                     }
                 }
                 
-                // Добавляем подсказку с цифрой для уже открытых
                 let hintHtml = '';
                 if (isRevealed && minesGame.board[i][j] > 0 && minesGame.board[i][j] !== -1) {
                     hintHtml = `<span class="hint-number">${minesGame.board[i][j]}</span>`;
@@ -642,16 +689,14 @@
         
         container.innerHTML = `
             <div class="game-card">
-                <h3>💎 Минное поле 5x5 | ${minesGame.minesCount} мин</h3>
+                <h3>💎 Минное поле | ${minesGame.minesCount} мин</h3>
                 ${gridHtml}
                 <div id="minesStats">
                     <div style="margin: 16px 0;">
                         <span class="multiplier-badge">🎯 x${minesGame.multiplier}</span>
-                        <span class="multiplier-badge" style="background: #2ecc71;">🏆 макс x${minesGame.maxMultiplier}</span>
+                        <span class="multiplier-badge" style="background: #2ecc71; color: white;">🏆 макс x${minesGame.maxMultiplier}</span>
                     </div>
-                    <div class="btn-group">
-                        <button class="btn btn-cash" onclick="cashoutMines()">💰 ЗАБРАТЬ (${potentialWin} ⭐)</button>
-                    </div>
+                    <button class="btn btn-cash" onclick="cashoutMines()">💰 ЗАБРАТЬ (${potentialWin} ⭐)</button>
                     <div style="margin-top: 12px;">
                         <div>📊 Прогресс: ${progress}% (${opened}/${totalSafe})</div>
                         <div>💎 Осталось безопасных: ${minesGame.safeLeft}</div>
@@ -661,18 +706,16 @@
         `;
     }
     
-    // ==================== ЗАГЛУШКИ ДЛЯ ДРУГИХ ИГР ====================
     function renderWheelGame() {
         const container = document.getElementById('gameContainer');
-        container.innerHTML = `<div class="game-card"><h3>🎡 Колесо фортуны</h3><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div><div>⭐ Баланс: ${balance}</div></div>`;
+        container.innerHTML = `<div class="game-card"><h3>🎡 Колесо фортуны</h3><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
     }
     
     function renderRocketGame() {
         const container = document.getElementById('gameContainer');
-        container.innerHTML = `<div class="game-card"><h3>🚀 Ракетка</h3><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div><div>⭐ Баланс: ${balance}</div></div>`;
+        container.innerHTML = `<div class="game-card"><h3>🚀 Ракетка</h3><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
     }
     
-    // ==================== НАВИГАЦИЯ ====================
     let currentGame = 'mines';
     function switchGame(game) {
         currentGame = game;
