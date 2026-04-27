@@ -141,6 +141,31 @@
             text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
+        /* ===== СТИЛИ ДЛЯ КНОПОК ПОКУПКИ STARS ===== */
+        .buy-stars-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .buy-star {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border: none;
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .buy-star:active {
+            transform: scale(0.95);
+        }
+
         .add-stars {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             border: none;
@@ -649,6 +674,7 @@
             .mine-cell { font-size: 28px; }
             canvas { width: 280px; height: 280px; }
             .participant { font-size: 12px; }
+            .buy-star { padding: 6px 10px; font-size: 11px; }
         }
     </style>
 </head>
@@ -695,38 +721,43 @@
     }
     createFloatingCoins();
     
-    // ========== РЕАЛЬНОЕ ПОПОЛНЕНИЕ TELEGRAM STARS ==========
-    function openTelegramStarsInvoice() {
-        if (window.Telegram?.WebApp) {
-            // Telegram Stars — встроенная покупка
-            const starsAmount = 500;
-            const price = starsAmount; // 1 Star = 0.01 USD примерно
-            Telegram.WebApp.openInvoice(`stars_${starsAmount}_${Date.now()}`, {
-                title: `${starsAmount} Telegram Stars`,
-                description: `Пополнение баланса на ${starsAmount} Stars`,
-                payload: JSON.stringify({ action: 'add_stars', amount: starsAmount }),
-                provider_token: '', // Telegram Stars не требует provider_token
-                currency: 'XTR',
-                prices: [{ label: `${starsAmount} Stars`, amount: price * 100 }]
-            });
-        } else {
+    // ========== ФУНКЦИЯ ПОКУПКИ TELEGRAM STARS ==========
+    function buyStars(amount) {
+        if (!window.Telegram?.WebApp) {
             // Демо-режим для тестирования в браузере
-            showToast('⭐ Демо-пополнение: +500 Stars (в Telegram будет через Stars)', false);
-            addStars(500);
+            addStars(amount);
+            showToast('⭐ Демо-пополнение: +' + amount + ' Stars', false);
+            return;
         }
+        
+        // Открываем платёжное окно Telegram Stars
+        Telegram.WebApp.openInvoice('stars_' + amount + '_' + Date.now(), {
+            title: amount + ' Telegram Stars',
+            description: 'Пополнение игрового баланса на ' + amount + ' Stars',
+            payload: JSON.stringify({ action: 'add_stars', amount: amount }),
+            provider_token: '',
+            currency: 'XTR',
+            prices: [{ label: amount + ' Stars', amount: amount * 100 }]
+        });
     }
     
-    // Обработчик покупки через Telegram
+    // Обработчик успешной покупки
     if (window.Telegram?.WebApp) {
         Telegram.WebApp.onEvent('invoiceClosed', (event) => {
             if (event.status === 'paid') {
                 try {
                     const data = JSON.parse(event.payload);
-                    if (data.action === 'add_stars') {
+                    if (data.action === 'add_stars' && data.amount) {
                         addStars(data.amount);
-                        showToast(`⭐ Пополнение: +${data.amount} Stars!`, false);
+                        showToast(`⭐ Пополнение успешно! +${data.amount} Stars!`, false);
                     }
-                } catch(e) {}
+                } catch(e) {
+                    // Если не удалось распарсить payload
+                    addStars(100);
+                    showToast(`⭐ Пополнение успешно! +100 Stars!`, false);
+                }
+            } else if (event.status === 'failed') {
+                showToast('❌ Платёж не завершён', true);
             }
         });
     }
@@ -772,8 +803,6 @@
             window.Telegram.WebApp.HapticFeedback.impactOccurred(isError ? 'heavy' : 'light');
         }
     }
-    
-    document.getElementById('addStarsBtn').onclick = openTelegramStarsInvoice;
     
     // ========== ПРОДВИНУТЫЙ ГЕНЕРАТОР ФЕЙК-ИГРОКОВ ==========
     const firstNames = ['Alex', 'Max', 'Leo', 'Dan', 'Sam', 'Tom', 'Nick', 'Mike', 'John', 'Chris', 'Kevin', 'Brian', 'Jason', 'Eric', 'Adam', 'David', 'Paul', 'Mark', 'Steve', 'Andrew', 'Vlad', 'Igor', 'Dmitry', 'Sergey', 'Anton', 'Roman', 'Ivan', 'Mikhail', 'Nikita', 'Artem'];
@@ -1246,8 +1275,8 @@
         if (!deductStars(minesGame.bet)) return;
         minesGame.active = true;
         minesGame.currentBet = minesGame.bet;
-        minesGame.multiplier = 1;
-        minesGame.cellsRevealed = 0;
+        minesGame.multiplier = 1
+                minesGame.cellsRevealed = 0;
         const size = 5;
         const totalMines = minesGame.minesCount;
         let newBoard = Array(size).fill().map(() => Array(size).fill(0));
