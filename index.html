@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Scrooge Case — Минное поле</title>
+    <title>Scrooge Case — Luxury Mines</title>
     <style>
         * {
             margin: 0;
@@ -13,16 +13,19 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
         body {
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
             color: white;
             padding: 20px 16px 80px;
             min-height: 100vh;
             position: relative;
-            background: #0a2a1a;
+            background: #0a0a0a;
+            overflow-x: hidden;
         }
 
-        /* Долларовый фон */
+        /* Фон с золотой пыльцой и долларами */
         body::before {
             content: "";
             position: fixed;
@@ -30,9 +33,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.12"><text x="10" y="20" font-size="14" fill="%23aaff88">💵</text><text x="40" y="45" font-size="18" fill="%2388ff66">💰</text><text x="70" y="30" font-size="12" fill="%23ccff99">💵</text><text x="20" y="70" font-size="16" fill="%2399ff77">💰</text><text x="60" y="80" font-size="14" fill="%23aaff88">💵</text><text x="85" y="60" font-size="20" fill="%2377ff55">💰</text><text x="5" y="90" font-size="10" fill="%23bbff99">💵</text><text x="50" y="15" font-size="11" fill="%2388ff66">💰</text><text x="30" y="55" font-size="13" fill="%23ccff99">💵</text><text x="75" y="95" font-size="15" fill="%2399ff77">💰</text></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.08"><text x="15" y="30" font-size="22" fill="%23ffd700">💰</text><text x="55" y="70" font-size="28" fill="%23ffcc00">💵</text><text x="100" y="45" font-size="18" fill="%23ffd700">💰</text><text x="140" y="90" font-size="24" fill="%23ffcc00">💵</text><text x="25" y="120" font-size="20" fill="%23ffd700">💰</text><text x="80" y="150" font-size="26" fill="%23ffcc00">💵</text><text x="130" y="170" font-size="18" fill="%23ffd700">💰</text><text x="165" y="130" font-size="22" fill="%23ffcc00">💵</text><text x="45" y="180" font-size="16" fill="%23ffd700">💰</text><text x="110" y="195" font-size="20" fill="%23ffcc00">💵</text></svg>');
             background-repeat: repeat;
-            background-size: 60px 60px;
+            background-size: 100px 100px;
             pointer-events: none;
             z-index: 0;
         }
@@ -44,7 +47,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 0%, rgba(10, 42, 26, 0.88), rgba(3, 20, 10, 0.96));
+            background: radial-gradient(circle at 30% 10%, rgba(26, 20, 10, 0.7), rgba(5, 3, 2, 0.95));
             pointer-events: none;
             z-index: 0;
         }
@@ -53,233 +56,282 @@
             max-width: 600px;
             margin: 0 auto;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
-        /* Верхняя панель */
+        /* Верхняя панель люкс */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(12px);
-            border-radius: 60px;
-            padding: 8px 18px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(20, 15, 8, 0.8));
+            backdrop-filter: blur(20px);
+            border-radius: 80px;
+            padding: 8px 20px;
+            margin-bottom: 28px;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.1);
         }
 
         .balance {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-weight: bold;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-weight: 700;
             font-size: 20px;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            backdrop-filter: blur(4px);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .balance span {
             color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
         .add-stars {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
             border: none;
-            border-radius: 40px;
-            padding: 8px 20px;
-            font-weight: bold;
-            color: #1a4a2a;
+            border-radius: 60px;
+            padding: 10px 24px;
+            font-weight: 700;
+            color: #1a1a1a;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 16px;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
 
         .add-stars:active {
             transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
         }
 
-        /* Навигация */
+        /* Навигация премиум */
         .game-nav {
             display: flex;
             gap: 12px;
-            margin-bottom: 24px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(8px);
+            margin-bottom: 28px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
             padding: 8px;
-            border-radius: 60px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 80px;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .game-tab {
             flex: 1;
             text-align: center;
-            padding: 12px;
-            border-radius: 40px;
-            background: rgba(255, 255, 255, 0.05);
+            padding: 14px 8px;
+            border-radius: 60px;
+            background: rgba(255, 255, 255, 0.03);
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            font-size: 15px;
+            letter-spacing: 0.5px;
         }
 
         .game-tab.active {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #1a4a2a;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            color: #1a1a1a;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transform: scale(1.02);
         }
 
-        /* Карточка */
+        /* Карточка роскошь */
         .game-card {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(16px);
-            border-radius: 40px;
-            padding: 24px 20px;
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        .game-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #ffd700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Секция ставок - кнопки пресеты */
-        .bet-section {
+            background: linear-gradient(145deg, rgba(20, 18, 14, 0.75), rgba(10, 8, 6, 0.85));
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 28px 24px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
             margin-bottom: 24px;
         }
 
-        .section-label {
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 12px;
+        .game-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00, #ffd700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
             letter-spacing: 1px;
         }
 
+        /* Секции */
+        .section-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: rgba(255, 215, 0, 0.7);
+            margin-bottom: 14px;
+        }
+
+        /* Кнопки ставок премиум */
         .bet-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 28px;
         }
 
         .bet-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 170, 0, 0.05));
             border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 60px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             color: white;
             font-size: 16px;
+            backdrop-filter: blur(4px);
+            flex: 1 0 auto;
+            text-align: center;
         }
 
         .bet-btn.active {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #1a4a2a;
+            color: #1a1a1a;
             border-color: transparent;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            transform: scale(1.02);
         }
 
-        /* Выбор мин - карточки */
+        /* Карточки мин премиум */
         .mines-buttons {
             display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 16px;
+            margin-bottom: 28px;
         }
 
         .mine-card {
             flex: 1;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 24px;
-            padding: 12px;
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.08), rgba(255, 170, 0, 0.03));
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 28px;
+            padding: 16px 8px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
         }
 
         .mine-card.active {
-            background: linear-gradient(135deg, #ffd70020, #ffaa0020);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 170, 0, 0.1));
             border-color: #ffd700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            transform: translateY(-3px);
         }
 
         .mine-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 36px;
+            margin-bottom: 10px;
         }
 
         .mine-count {
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .mine-max {
             font-size: 11px;
             opacity: 0.6;
-            margin-top: 4px;
+            font-weight: 500;
         }
 
-        /* Инфо панель */
+        /* Информационная панель */
         .info-panel {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 28px;
-            padding: 16px;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 215, 0, 0.15);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
+            border-radius: 32px;
+            padding: 20px;
+            margin: 24px 0;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            font-weight: 500;
         }
 
         .multiplier-preview {
-            font-size: 28px;
-            font-weight: bold;
-            color: #ffd700;
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             text-align: center;
-            margin: 12px 0;
+            margin: 16px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
 
         .potential-win {
-            background: rgba(255, 215, 0, 0.15);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 170, 0, 0.08));
             border-radius: 60px;
-            padding: 12px;
+            padding: 14px;
             text-align: center;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 18px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
-        /* Поле игры */
+        /* Кнопки действия */
+        .btn {
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
+            border: none;
+            padding: 16px 28px;
+            border-radius: 60px;
+            font-weight: 800;
+            color: #1a1a1a;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-cash {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        /* Игровое поле премиум */
         .mines-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 12px;
-            margin: 24px 0;
+            margin: 28px 0;
             aspect-ratio: 1;
         }
 
         .mine-cell {
-            background: linear-gradient(145deg, rgba(42, 74, 42, 0.9), rgba(26, 54, 26, 0.9));
-            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(30, 28, 22, 0.9), rgba(20, 18, 14, 0.95));
+            border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
+            font-size: 36px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.2s;
             aspect-ratio: 1;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.2);
             position: relative;
         }
 
@@ -288,17 +340,20 @@
         }
 
         @keyframes popOpen {
-            0% { transform: scale(0.8); opacity: 0; }
-            50% { transform: scale(1.1); }
+            0% { transform: scale(0.7); opacity: 0; }
+            50% { transform: scale(1.08); }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .mine-cell:active { transform: scale(0.92); }
-        .mine-cell.revealed { cursor: default; }
-        .mine-cell.safe {
-            background: linear-gradient(145deg, #2a7a4a, #1a5a3a);
-            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+        .mine-cell:active {
+            transform: scale(0.92);
         }
+
+        .mine-cell.safe {
+            background: linear-gradient(145deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.15));
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);
+        }
+
         .mine-cell.mine-revealed {
             background: linear-gradient(145deg, #9b2c2c, #5a1010);
             animation: explode 0.4s ease-out forwards;
@@ -306,109 +361,101 @@
 
         @keyframes explode {
             0% { transform: scale(1); background: #ff6600; }
-            30% { transform: scale(1.3); background: #ff3300; }
-            70% { transform: scale(1.1); }
+            30% { transform: scale(1.25); background: #ff3300; }
             100% { transform: scale(1); background: #5a1010; }
         }
 
         .mine-cell .hint-number {
             position: absolute;
-            bottom: 4px;
+            bottom: 5px;
             right: 8px;
             font-size: 11px;
             color: #ffd700;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 2px 6px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            padding: 2px 7px;
+            font-weight: 700;
         }
 
-        /* Кнопки */
-        .btn {
-            background: linear-gradient(95deg, #ffd700, #ffaa00);
-            border: none;
-            padding: 14px 24px;
-            border-radius: 60px;
-            font-weight: bold;
-            color: #1a4a2a;
-            cursor: pointer;
-            width: 100%;
-            font-size: 18px;
-            transition: all 0.1s;
-        }
-
-        .btn:active { transform: scale(0.97); }
-        .btn-cash { background: linear-gradient(95deg, #2ecc71, #27ae60); color: white; }
-        .btn:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
-
-        /* Взрыв */
+        /* Анимация взрыва */
         .explosion-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, #ff6600, #990000);
+            background: radial-gradient(circle, rgba(255, 100, 0, 0.8), rgba(150, 0, 0, 0.9));
             opacity: 0;
             pointer-events: none;
             z-index: 999;
-            animation: explosionFlash 0.5s ease-out forwards;
+            animation: explosionFlash 0.6s ease-out forwards;
         }
 
         @keyframes explosionFlash {
-            0% { opacity: 0; }
-            20% { opacity: 0.8; }
-            100% { opacity: 0; }
+            0% { opacity: 0; backdrop-filter: blur(0px); }
+            20% { opacity: 1; backdrop-filter: blur(10px); }
+            100% { opacity: 0; backdrop-filter: blur(0px); }
         }
 
         .shake-field {
-            animation: shakeField 0.4s ease-in-out;
+            animation: shakeField 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
         }
 
         @keyframes shakeField {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
         }
 
+        /* Уведомления */
         .toast {
             position: fixed;
-            bottom: 100px;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(12px);
-            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(30, 25, 15, 0.95));
+            backdrop-filter: blur(20px);
+            padding: 14px 28px;
             border-radius: 60px;
             z-index: 1000;
-            transition: 0.2s;
+            transition: 0.25s;
             opacity: 0;
             pointer-events: none;
-            font-weight: bold;
+            font-weight: 600;
             border: 1px solid #ffd700;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             white-space: nowrap;
+            font-size: 14px;
         }
 
         .multiplier-badge {
             background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #1a4a2a;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-weight: bold;
+            color: #1a1a1a;
+            padding: 6px 16px;
+            border-radius: 60px;
+            font-weight: 800;
             display: inline-block;
+        }
+
+        /* Эффект свечения */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
     </style>
 </head>
 <body>
 <div class="app">
     <div class="top-bar">
-        <div class="balance">💰 <span id="balance">1000</span> Stars</div>
-        <button class="add-stars" id="addStarsBtn">+500 Stars</button>
+        <div class="balance">💎 <span id="balance">1000</span> Stars</div>
+        <button class="add-stars" id="addStarsBtn">💎 +500</button>
     </div>
 
     <div class="game-nav">
-        <div class="game-tab active" data-game="mines">💣 Минное поле</div>
-        <div class="game-tab" data-game="wheel">🎡 Колесо фортуны</div>
-        <div class="game-tab" data-game="rocket">🚀 Ракетка</div>
+        <div class="game-tab active" data-game="mines">💎 MINES</div>
+        <div class="game-tab" data-game="wheel">🎡 WHEEL</div>
+        <div class="game-tab" data-game="rocket">🚀 ROCKET</div>
     </div>
 
     <div id="gameContainer"></div>
@@ -428,7 +475,7 @@
     function addStars(amount) {
         balance += amount;
         updateBalanceUI();
-        showToast(`+${amount} Stars`);
+        showToast(`✨ +${amount} Stars получено!`, false);
     }
     
     function deductStars(amount) {
@@ -437,21 +484,21 @@
             updateBalanceUI();
             return true;
         }
-        showToast('❌ Недостаточно Stars!', true);
+        showToast('❌ Недостаточно средств! Пополните баланс.', true);
         return false;
     }
     
     function addWin(amount) {
         balance += amount;
         updateBalanceUI();
-        showToast(`🎉 Выигрыш ${amount} Stars!`);
+        showToast(`🏆 ПОБЕДА! +${amount} Stars!`, false);
     }
     
     function showToast(msg, isError = false) {
         const toast = document.getElementById('toast');
         toast.textContent = msg;
         toast.style.opacity = '1';
-        toast.style.background = isError ? '#aa2e2ecc' : '#1a4a2acc';
+        toast.style.borderColor = isError ? '#e74c3c' : '#ffd700';
         setTimeout(() => toast.style.opacity = '0', 2000);
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred(isError ? 'heavy' : 'light');
@@ -460,14 +507,14 @@
     
     document.getElementById('addStarsBtn').onclick = () => addStars(500);
     
-    // ========== ИГРА ==========
+    // ========== ИГРА МИННОЕ ПОЛЕ ==========
     let minesGame = {
-        active: false, board: [], revealed: [], minesCount: 3, bet: 20,
+        active: false, board: [], revealed: [], minesCount: 3, bet: 50,
         multiplier: 1, safeLeft: 0, currentBet: 0, cellsRevealed: 0, maxMultiplier: 0
     };
     
     function getBaseMultiplier(minesCount) {
-        return {3: 2.5, 5: 4.0, 7: 6.5}[minesCount] || 3.0;
+        return {3: 2.5, 5: 4.5, 7: 7.5}[minesCount] || 3.0;
     }
     
     function calculateMultiplier(minesCount, openedSafe, totalSafe) {
@@ -522,7 +569,7 @@
         minesGame.safeLeft = size*size - totalMines;
         minesGame.maxMultiplier = getBaseMultiplier(totalMines);
         renderMinesGame();
-        showToast(`🎲 Игра началась! Ставка ${minesGame.bet} Stars, ${totalMines} мин | Макс. x${minesGame.maxMultiplier}`);
+        showToast(`🚀 Игра началась! Ставка ${minesGame.bet} Stars | x${minesGame.maxMultiplier} максимум`, false);
     }
     
     function revealMineCell(row, col) {
@@ -562,7 +609,7 @@
             const win = Math.floor(minesGame.currentBet * minesGame.multiplier);
             addWin(win);
             minesGame.active = false;
-            showToast(`🏆 ПОБЕДА! Выигрыш ${win} Stars (x${minesGame.multiplier})!`);
+            showToast(`🏆 ПОБЕДА! ${win} Stars (x${minesGame.multiplier})!`, false);
             renderMinesGame();
             return;
         }
@@ -574,7 +621,7 @@
         const win = Math.floor(minesGame.currentBet * minesGame.multiplier);
         addWin(win);
         minesGame.active = false;
-        showToast(`💰 Забрано ${win} Stars (x${minesGame.multiplier})!`);
+        showToast(`💰 ЗАБРАНО ${win} Stars!`, false);
         renderMinesGame();
     }
     
@@ -584,7 +631,7 @@
         const multEl = document.getElementById('previewMultiplier');
         const potEl = document.getElementById('previewPotential');
         if (multEl) multEl.textContent = previewMult;
-        if (potEl) potEl.textContent = potential;
+        if (potEl) potEl.textContent = potential.toLocaleString();
     }
     
     function renderMinesGameStats() {
@@ -595,12 +642,12 @@
         const progress = Math.floor((minesGame.cellsRevealed / totalSafe) * 100);
         statsDiv.innerHTML = `
             <div class="info-panel">
-                <div class="info-row"><span>📊 Прогресс</span><span>${progress}%</span></div>
-                <div class="info-row"><span>💎 Безопасных осталось</span><span>${minesGame.safeLeft}</span></div>
+                <div class="info-row"><span>🎯 ПРОГРЕСС</span><span>${progress}%</span></div>
+                <div class="info-row"><span>💎 БЕЗОПАСНО</span><span>${minesGame.safeLeft} / ${totalSafe}</span></div>
                 <div class="multiplier-preview">x${minesGame.multiplier}</div>
-                <div class="potential-win">💰 ЗАБРАТЬ МОЖНО: ${potentialWin} ⭐</div>
+                <div class="potential-win">💎 ЗАБРАТЬ: ${potentialWin.toLocaleString()} STARS 💎</div>
             </div>
-            <button class="btn btn-cash" onclick="cashoutMines()">💰 ЗАБРАТЬ ВЫИГРЫШ</button>
+            <button class="btn btn-cash" onclick="cashoutMines()">💎 ЗАБРАТЬ ВЫИГРЫШ 💎</button>
         `;
     }
     
@@ -610,43 +657,40 @@
             updatePreview();
             container.innerHTML = `
                 <div class="game-card">
-                    <div class="game-title">💎 Минное поле 5x5</div>
-                    <div class="bet-section">
-                        <div class="section-label">💰 ВЫБОР СТАВКИ</div>
-                        <div class="bet-buttons">
-                            <button class="bet-btn ${minesGame.bet === 20 ? 'active' : ''}" data-bet="20">20 ⭐</button>
-                            <button class="bet-btn ${minesGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
-                            <button class="bet-btn ${minesGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
-                            <button class="bet-btn ${minesGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
-                            <button class="bet-btn ${minesGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
-                        </div>
+                    <div class="game-title">💎 MINES 💎</div>
+                    <div class="section-label">💰 ВЫБОР СТАВКИ</div>
+                    <div class="bet-buttons">
+                        <button class="bet-btn ${minesGame.bet === 20 ? 'active' : ''}" data-bet="20">20 ⭐</button>
+                        <button class="bet-btn ${minesGame.bet === 50 ? 'active' : ''}" data-bet="50">50 ⭐</button>
+                        <button class="bet-btn ${minesGame.bet === 100 ? 'active' : ''}" data-bet="100">100 ⭐</button>
+                        <button class="bet-btn ${minesGame.bet === 250 ? 'active' : ''}" data-bet="250">250 ⭐</button>
+                        <button class="bet-btn ${minesGame.bet === 500 ? 'active' : ''}" data-bet="500">500 ⭐</button>
+                        <button class="bet-btn ${minesGame.bet === 1000 ? 'active' : ''}" data-bet="1000">1000 ⭐</button>
                     </div>
-                    <div class="bet-section">
-                        <div class="section-label">💣 КОЛИЧЕСТВО МИН</div>
-                        <div class="mines-buttons">
-                            <div class="mine-card ${minesGame.minesCount === 3 ? 'active' : ''}" data-mines="3">
-                                <div class="mine-icon">💣💣💣</div>
-                                <div class="mine-count">3 мины</div>
-                                <div class="mine-max">макс x2.5</div>
-                            </div>
-                            <div class="mine-card ${minesGame.minesCount === 5 ? 'active' : ''}" data-mines="5">
-                                <div class="mine-icon">💣💣💣💣💣</div>
-                                <div class="mine-count">5 мин</div>
-                                <div class="mine-max">макс x4.0</div>
-                            </div>
-                            <div class="mine-card ${minesGame.minesCount === 7 ? 'active' : ''}" data-mines="7">
-                                <div class="mine-icon">💣💣💣💣💣💣💣</div>
-                                <div class="mine-count">7 мин</div>
-                                <div class="mine-max">макс x6.5</div>
-                            </div>
+                    <div class="section-label">💣 КОЛИЧЕСТВО МИН</div>
+                    <div class="mines-buttons">
+                        <div class="mine-card ${minesGame.minesCount === 3 ? 'active' : ''}" data-mines="3">
+                            <div class="mine-icon">💎💎💎</div>
+                            <div class="mine-count">3 мины</div>
+                            <div class="mine-max">Макс x2.5</div>
+                        </div>
+                        <div class="mine-card ${minesGame.minesCount === 5 ? 'active' : ''}" data-mines="5">
+                            <div class="mine-icon">💎💎💎💎💎</div>
+                            <div class="mine-count">5 мин</div>
+                            <div class="mine-max">Макс x4.5</div>
+                        </div>
+                        <div class="mine-card ${minesGame.minesCount === 7 ? 'active' : ''}" data-mines="7">
+                            <div class="mine-icon">💎💎💎💎💎💎💎</div>
+                            <div class="mine-count">7 мин</div>
+                            <div class="mine-max">Макс x7.5</div>
                         </div>
                     </div>
                     <div class="info-panel">
-                        <div class="info-row"><span>⭐ Ваша ставка</span><span>${minesGame.bet} Stars</span></div>
-                        <div class="info-row"><span>💣 Макс. множитель</span><span>x<span id="previewMultiplier">${getBaseMultiplier(minesGame.minesCount)}</span></span></div>
-                        <div class="potential-win">🏆 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: <span id="previewPotential">${Math.floor(minesGame.bet * getBaseMultiplier(minesGame.minesCount))}</span> ⭐</div>
+                        <div class="info-row"><span>⭐ ТЕКУЩАЯ СТАВКА</span><span>${minesGame.bet} STARS</span></div>
+                        <div class="info-row"><span>🏆 МАКС. МНОЖИТЕЛЬ</span><span>x<span id="previewMultiplier">${getBaseMultiplier(minesGame.minesCount)}</span></span></div>
+                        <div class="potential-win" style="margin-top: 16px;">🏆 ПОТЕНЦИАЛЬНЫЙ ВЫИГРЫШ: <span id="previewPotential">${Math.floor(minesGame.bet * getBaseMultiplier(minesGame.minesCount)).toLocaleString()}</span> STARS 🏆</div>
                     </div>
-                    <button class="btn" id="startGameBtn">🚀 НАЧАТЬ ИГРУ</button>
+                    <button class="btn" id="startGameBtn">💎 НАЧАТЬ ИГРУ 💎</button>
                 </div>
             `;
             document.querySelectorAll('.bet-btn').forEach(btn => {
@@ -662,7 +706,7 @@
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
                 const isRevealed = minesGame.revealed[i][j];
-                let content = '🪙', addClass = '';
+                let content = '💎', addClass = '';
                 if (isRevealed) {
                     if (minesGame.board[i][j] === -1) { content = '💣'; addClass = 'mine-revealed revealed'; }
                     else { content = '💎'; addClass = 'safe revealed'; }
@@ -675,16 +719,16 @@
             }
         }
         gridHtml += '</div>';
-        container.innerHTML = `<div class="game-card"><div class="game-title">💎 Минное поле | ${minesGame.minesCount} мин</div>${gridHtml}<div id="minesStats"></div></div>`;
+        container.innerHTML = `<div class="game-card"><div class="game-title">💎 MINES | ${minesGame.minesCount} MINES 💎</div>${gridHtml}<div id="minesStats"></div></div>`;
         renderMinesGameStats();
     }
     
     function renderWheelGame() {
-        document.getElementById('gameContainer').innerHTML = `<div class="game-card"><div class="game-title">🎡 Колесо фортуны</div><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
+        document.getElementById('gameContainer').innerHTML = `<div class="game-card"><div class="game-title">🎡 FORTUNE WHEEL</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🚧</div><p style="opacity: 0.7;">Скоро будет доступно...</p><p style="margin-top: 16px; font-size: 14px; opacity: 0.5;">Следите за обновлениями</p></div></div>`;
     }
     
     function renderRocketGame() {
-        document.getElementById('gameContainer').innerHTML = `<div class="game-card"><div class="game-title">🚀 Ракетка</div><div style="text-align:center; padding:40px;">🚧 В разработке 🚧</div></div>`;
+        document.getElementById('gameContainer').innerHTML = `<div class="game-card"><div class="game-title">🚀 ROCKET</div><div style="text-align:center; padding:60px 20px;"><div style="font-size: 64px; margin-bottom: 20px;">🚀</div><p style="opacity: 0.7;">Скоро будет доступно...</p><p style="margin-top: 16px; font-size: 14px; opacity: 0.5;">Следите за обновлениями</p></div></div>`;
     }
     
     let currentGame = 'mines';
