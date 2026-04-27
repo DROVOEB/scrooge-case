@@ -655,10 +655,15 @@
 <body>
 <div class="floating-coins" id="floatingCoins"></div>
 <div class="app">
-    <div class="top-bar">
-        <div class="balance">💎 <span id="balance">1000</span> Stars</div>
-        <button class="add-stars" id="addStarsBtn">⭐ ПОПОЛНИТЬ</button>
+   <div class="top-bar">
+    <div class="balance">💎 <span id="balance">1000</span> Stars</div>
+    <div class="buy-stars-buttons">
+        <button class="buy-star" onclick="buyStars(100)">100 ⭐</button>
+        <button class="buy-star" onclick="buyStars(250)">250 ⭐</button>
+        <button class="buy-star" onclick="buyStars(500)">500 ⭐</button>
+        <button class="buy-star" onclick="buyStars(1000)">1000 ⭐</button>
     </div>
+</div>
     <div id="mainContent"></div>
 </div>
 <div id="toast" class="toast"></div>
