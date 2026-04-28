@@ -1,621 +1,160 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Scrooge Case — Multiplayer Casino</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrooge Case - Тест мультиплеера</title>
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
         body {
-            background: radial-gradient(circle at 20% 0%, #0a0a1a, #03030a);
-            font-family: system-ui, 'Segoe UI', sans-serif;
+            background: #0a0a1a;
             color: white;
-            padding: 20px 16px 80px;
-            min-height: 100vh;
-        }
-        .app {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(20,20,40,0.6);
-            backdrop-filter: blur(12px);
-            border-radius: 60px;
-            padding: 8px 18px;
-            margin-bottom: 16px;
-        }
-        .balance {
-            background: rgba(0,0,0,0.7);
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .stars { color: #ffd966; }
-        .add-stars {
-            background: linear-gradient(135deg, #ffaa33, #ff7733);
-            border: none;
-            border-radius: 40px;
-            padding: 6px 16px;
-            font-weight: bold;
-            color: #1a1a2a;
-            cursor: pointer;
-        }
-        /* Бегущая строка фейк-побед */
-        .fake-wins-marquee {
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            padding: 8px 16px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            white-space: nowrap;
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-        .marquee-content {
-            display: inline-block;
-            animation: marquee 20s linear infinite;
-            font-size: 13px;
-            font-weight: 600;
-            color: #ffd700;
-        }
-        .marquee-content span {
-            margin: 0 30px;
-        }
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .game-nav {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            background: rgba(0,0,0,0.4);
-            padding: 8px;
-            border-radius: 60px;
-        }
-        .game-tab {
-            flex: 1;
-            text-align: center;
-            padding: 12px;
-            border-radius: 40px;
-            background: rgba(255,255,255,0.05);
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .game-tab.active {
-            background: linear-gradient(135deg, #ffaa33, #ff7733);
-            color: #1a1a2a;
-        }
-        .game-card {
-            background: rgba(10,10,25,0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
+            font-family: system-ui;
             padding: 20px;
-            margin-bottom: 20px;
-        }
-        .mines-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin: 20px 0;
-            aspect-ratio: 1;
-        }
-        .mine-cell {
-            background: linear-gradient(145deg, #2a2a4a, #1a1a3a);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            aspect-ratio: 1;
-        }
-        .mine-cell:active { transform: scale(0.92); }
-        .mine-cell.revealed { background: #3a3a5a; }
-        .mine-cell.mine {
-            background: linear-gradient(145deg, #9b2c2c, #5a1010);
-            animation: shake 0.3s;
-        }
-        @keyframes shake {
-            0%,100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .wheel {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, #ff3366, #ff6633, #ffcc33, #33ff66, #33ccff, #ff3366);
-            margin: 20px auto;
-            transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
-        }
-        .wheel.spinning { transform: rotate(1440deg); }
-        .rocket {
-            font-size: 64px;
             text-align: center;
-            transition: 0.1s;
         }
-        .rocket.flying {
-            animation: fly 2s ease-out infinite;
-        }
-        @keyframes fly {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-200px); opacity: 0; }
-        }
-        .btn {
-            background: linear-gradient(95deg, #4a4aff, #2a2aff);
-            border: none;
-            padding: 12px 20px;
-            border-radius: 44px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            margin: 4px;
-        }
-        .btn-cash { background: linear-gradient(95deg, #2ecc71, #27ae60); }
-        input, select {
-            background: rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.2);
+        .player {
+            background: #1a1a3a;
+            margin: 10px;
             padding: 10px;
-            border-radius: 28px;
-            color: white;
-            margin: 8px;
+            border-radius: 16px;
         }
-        .participants-list {
-            max-height: 150px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.3);
-            border-radius: 24px;
-            padding: 12px;
-            margin: 16px 0;
-        }
-        .participant {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .participant-real {
-            background: rgba(255,215,0,0.1);
-            border-left: 3px solid #ffd700;
-            border-radius: 12px;
-            margin: 2px 0;
-        }
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.9);
-            padding: 10px 20px;
-            border-radius: 40px;
-            z-index: 1000;
-            transition: 0.2s;
-            opacity: 0;
-            pointer-events: none;
-        }
-        button:disabled { opacity: 0.5; }
-        .coefficient-display {
-            font-size: 42px;
-            font-weight: 800;
-            text-align: center;
-            color: #ffd700;
-            margin: 16px 0;
-        }
-        .potential-win {
-            background: rgba(255,215,0,0.15);
-            border-radius: 60px;
-            padding: 12px;
-            text-align: center;
+        button {
+            background: #ffaa33;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
             font-weight: bold;
+            margin: 10px;
+            cursor: pointer;
         }
-        .timer-display {
-            font-size: 36px;
-            font-weight: 800;
-            text-align: center;
-            color: #ffd700;
-            margin: 16px 0;
+        .bet-btn {
+            background: #2a2a4a;
+            color: white;
+            margin: 5px;
+            padding: 8px 16px;
+        }
+        .bet-btn.active {
+            background: #ffaa33;
+            color: black;
         }
     </style>
 </head>
 <body>
-<div class="app">
-    <div class="top-bar">
-        <div class="balance">⭐ <span id="balance">1000</span> Stars</div>
-        <button class="add-stars" id="addStarsBtn">➕ 500 Stars</button>
+    <h1>🎡 Scrooge Case - Колесо Фортуны</h1>
+    <div>⭐ Баланс: <span id="balance">1000</span> Stars</div>
+    
+    <div style="margin: 20px 0;">
+        <button class="bet-btn" data-bet="10">10 ⭐</button>
+        <button class="bet-btn" data-bet="25">25 ⭐</button>
+        <button class="bet-btn" data-bet="50">50 ⭐</button>
+        <button class="bet-btn" data-bet="100">100 ⭐</button>
     </div>
-
-    <!-- Бегущая строка фейк-побед -->
-    <div class="fake-wins-marquee" id="fakeWinsMarquee">
-        <div class="marquee-content" id="marqueeContent">
-            <span>🔥 Игрок LuckyHunter выиграл +500 Stars!</span>
-            <span>✨ Игрок CryptoKing выиграл +10 Stars!</span>
-            <span>⚡ Игрок GoldMaster выиграл +15 Stars!</span>
-            <span>💎 Игрок StarPlayer выиграл +125 Stars!</span>
-        </div>
-    </div>
-
-    <div class="game-nav">
-        <div class="game-tab active" data-game="mines">💣 Минное поле</div>
-        <div class="game-tab" data-game="wheel">🎡 Колесо фортуны</div>
-        <div class="game-tab" data-game="rocket">🚀 Ракетка</div>
-    </div>
-
-    <div id="gameContainer"></div>
-</div>
-<div id="toast" class="toast"></div>
+    
+    <button id="joinBtn">🎲 ПРИСОЕДИНИТЬСЯ</button>
+    <button id="raiseBtn">⬆️ ПОВЫСИТЬ СТАВКУ (+10)</button>
+    <button id="startBtn">🚀 СТАРТ РАУНДА (10 сек)</button>
+    
+    <div id="timer" style="font-size: 32px; margin: 20px;"></div>
+    <div id="playersList"></div>
+    <div id="result"></div>
+    
+    <div id="fakeWins" style="margin-top: 30px; color: #ffd700;"></div>
 
 <script>
-    // ========== ПОДКЛЮЧЕНИЕ К СЕРВЕРУ ==========
+    // Настройки
     const SOCKET_URL = 'http://192.168.31.84:3000';
     let socket = null;
-    let playerId = null;
-    let playerName = 'Игрок_' + Math.floor(Math.random() * 10000);
-    let playerAvatar = ['👑', '⭐', '🔥', '💎', '🎲'][Math.floor(Math.random() * 5)];
+    let currentBet = 10;
+    let myName = 'Игрок_' + Math.floor(Math.random() * 1000);
+    let balance = 1000;
     
-    // ========== БАЛАНС ==========
-    let balance = parseInt(localStorage.getItem('balance') || '1000');
-    const balanceEl = document.getElementById('balance');
-    
-    function updateBalanceUI() {
-        balanceEl.textContent = balance;
-        localStorage.setItem('balance', balance);
-    }
-    
-    function addStars(amount) {
+    // Обновление баланса
+    function updateBalance(amount) {
         balance += amount;
-        updateBalanceUI();
-        showToast(`✨ +${amount} Stars ✨`, false);
+        document.getElementById('balance').innerText = balance;
     }
     
-    function deductStars(amount) {
-        if (balance >= amount) {
-            balance -= amount;
-            updateBalanceUI();
-            return true;
-        }
-        showToast('❌ Недостаточно Stars!', true);
-        return false;
-    }
-    
-    function addWin(amount) {
-        balance += amount;
-        updateBalanceUI();
-        showVictoryAnimation();
-        showToast(`🏆 ВЫИГРЫШ ${amount} Stars! 🏆`, false);
-    }
-    
-    function showToast(msg, isError = false) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.style.opacity = '1';
-        toast.style.background = isError ? '#aa2e2ecc' : '#1f3f2ecc';
-        setTimeout(() => toast.style.opacity = '0', 2000);
-        if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred(isError ? 'heavy' : 'light');
-        }
-    }
-    
-    function showVictoryAnimation() {
-        for (let i = 0; i < 20; i++) {
+    // Подключение к серверу
+    function connect() {
+        socket = io(SOCKET_URL);
+        
+        socket.on('connect', () => {
+            document.getElementById('result').innerHTML = '✅ Подключено к серверу!';
+        });
+        
+        socket.on('wheel_update', (players) => {
+            const container = document.getElementById('playersList');
+            if (players.length === 0) {
+                container.innerHTML = '<div>💎 Ожидание игроков...</div>';
+            } else {
+                container.innerHTML = players.map(p => 
+                    `<div class="player">🎲 ${p.name} - Ставка: ${p.bet} ⭐</div>`
+                ).join('');
+            }
+        });
+        
+        socket.on('wheel_timer', (time) => {
+            document.getElementById('timer').innerHTML = time > 0 ? `⏱️ ${time} сек` : '🎡 ВРАЩЕНИЕ...';
+        });
+        
+        socket.on('wheel_result', (data) => {
+            document.getElementById('result').innerHTML = `🏆 ПОБЕДИТЕЛЬ: ${data.winner} (забрал ${data.prize} ⭐)!`;
+            if (data.winner === myName) {
+                updateBalance(data.prize);
+            }
+        });
+        
+        socket.on('fake_win', (msg) => {
+            const winsDiv = document.getElementById('fakeWins');
+            winsDiv.innerHTML = msg;
             setTimeout(() => {
-                const confetti = document.createElement('div');
-                confetti.style.cssText = `position:fixed;width:8px;height:8px;background:#ffd700;left:${Math.random() * window.innerWidth}px;top:0;border-radius:50%;animation:confettiFall 2s ease-out forwards;pointer-events:none;z-index:999;`;
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 2000);
-            }, i * 40);
-        }
-    }
-    
-    document.getElementById('addStarsBtn').onclick = () => addStars(500);
-    
-    // ========== ПОДКЛЮЧЕНИЕ WEBSOCKET ==========
-    function connectSocket() {
-        if (socket && socket.connected) return;
-        socket = io(SOCKET_URL, { transports: ['websocket'], reconnection: true });
-        socket.on('connect', () => { playerId = socket.id; console.log('✅ Подключено к серверу'); });
-        socket.on('fake_win', (data) => {
-            const marquee = document.getElementById('marqueeContent');
-            const newSpan = document.createElement('span');
-            newSpan.textContent = data.message;
-            marquee.appendChild(newSpan);
-            setTimeout(() => { if (marquee.children.length > 6) marquee.removeChild(marquee.children[0]); }, 5000);
+                if (winsDiv.innerHTML === msg) winsDiv.innerHTML = '';
+            }, 5000);
         });
-        socket.on('disconnect', () => { console.log('❌ Отключено, переподключение...'); setTimeout(connectSocket, 3000); });
-    }
-    connectSocket();
-    
-    // ========== ИГРА: КОЛЕСО ФОРТУНЫ (МУЛЬТИПЛЕЕР) ==========
-    let wheelBet = 10;
-    let wheelMyBetPlaced = false;
-    let wheelMyBetAmount = 0;
-    
-    function joinWheelGame() {
-        if (!socket?.connected) { showToast('Подключение к серверу...', true); return; }
-        if (!deductStars(wheelBet)) return;
-        wheelMyBetPlaced = true;
-        wheelMyBetAmount = wheelBet;
-        socket.emit('wheel_join', { playerName, playerBet: wheelBet, avatar: playerAvatar });
-        showToast(`✅ Вы присоединились к игре со ставкой ${wheelBet} Stars!`, false);
     }
     
-    function raiseWheelBet() {
-        if (!wheelMyBetPlaced) { showToast('Сначала присоединитесь к игре!', true); return; }
-        if (!deductStars(10)) return;
-        wheelMyBetAmount += 10;
-        socket.emit('wheel_raise_bet', { playerId, newBet: wheelMyBetAmount });
-        showToast(`Ставка повышена до ${wheelMyBetAmount} Stars!`, false);
-    }
+    connect();
     
-    function startWheelGame() {
-        if (!socket?.connected) return;
-        socket.emit('wheel_start_countdown');
-    }
+    // Выбор ставки
+    document.querySelectorAll('.bet-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.bet-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentBet = parseInt(btn.dataset.bet);
+        };
+    });
     
-    function initWheelGame() {
-        renderWheelGameUI();
-        if (socket) {
-            socket.on('wheel_update', (data) => {
-                document.getElementById('wheelParticipants').innerHTML = data.players.map(p => 
-                    `<div class="participant ${p.name === playerName ? 'participant-real' : ''}">
-                        <span>${p.avatar || '🎲'} ${p.name}</span>
-                        <span>⭐ ${p.bet}</span>
-                     </div>`
-                ).join('');
-                document.getElementById('wheelBank').innerHTML = `<div class="info-row"><span>🏆 БАНК</span><span>${data.bank} ⭐</span></div>`;
-            });
-            socket.on('wheel_countdown', (timeLeft) => {
-                const timerEl = document.getElementById('wheelTimer');
-                if (timerEl) timerEl.textContent = timeLeft > 0 ? `⏱️ ${timeLeft} сек` : `⏱️ ВРАЩЕНИЕ...`;
-            });
-            socket.on('wheel_result', (data) => {
-                showToast(`🎡 ПОБЕДИТЕЛЬ: ${data.winner} 🎡 (забрал ${data.prize} Stars)!`, false);
-                if (data.winner === playerName) addWin(data.prize);
-                wheelMyBetPlaced = false;
-                wheelMyBetAmount = 0;
-                renderWheelGameUI();
-            });
-        }
-    }
-    
-    function renderWheelGameUI() {
-        const container = document.getElementById('gameContainer');
-        container.innerHTML = `
-            <div class="game-card">
-                <h3>🎡 КОЛЕСО ФОРТУНЫ (МУЛЬТИПЛЕЕР)</h3>
-                <div>⭐ Баланс: ${balance}</div>
-                <div class="bet-buttons" style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap;">
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="10">10 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="25">25 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="50">50 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="100">100 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="250">250 ⭐</button>
-                </div>
-                <div class="timer-display" id="wheelTimer">⏱️ Ожидание</div>
-                <div class="participants-list" id="wheelParticipants"><div style="text-align:center;padding:12px;">💎 Ожидание игроков</div></div>
-                <div class="info-panel" id="wheelBank" style="background:rgba(0,0,0,0.3);border-radius:28px;padding:12px;margin:16px 0;">
-                    <div class="info-row"><span>🏆 БАНК</span><span>0 ⭐</span></div>
-                </div>
-                <div style="display:flex;gap:12px;margin-top:16px;">
-                    <button class="btn" id="wheelJoinBtn" style="flex:2">🎡 ПРИСОЕДИНИТЬСЯ</button>
-                    <button class="btn" id="wheelRaiseBtn" style="flex:1">+10</button>
-                </div>
-                <button class="btn" id="wheelStartBtn" style="margin-top:12px;">🚀 СТАРТ РАУНДА (10 сек)</button>
-            </div>`;
-        document.querySelectorAll('[data-bet]').forEach(btn => {
-            btn.onclick = () => { wheelBet = parseInt(btn.dataset.bet); renderWheelGameUI(); };
-        });
-        document.getElementById('wheelJoinBtn').onclick = joinWheelGame;
-        document.getElementById('wheelRaiseBtn').onclick = raiseWheelBet;
-        document.getElementById('wheelStartBtn').onclick = startWheelGame;
-    }
-    
-    // ========== ИГРА: РАКЕТКА (МУЛЬТИПЛЕЕР) ==========
-    let rocketBet = 50;
-    let rocketMyBetPlaced = false;
-    let rocketMyBetAmount = 0;
-    let rocketMultiplier = 1;
-    
-    function joinRocketGame() {
-        if (!socket?.connected) { showToast('Подключение к серверу...', true); return; }
-        if (!deductStars(rocketBet)) return;
-        rocketMyBetPlaced = true;
-        rocketMyBetAmount = rocketBet;
-        socket.emit('rocket_join', { playerName, playerBet: rocketBet, avatar: playerAvatar });
-        showToast(`✅ Вы присоединились к игре со ставкой ${rocketBet} Stars!`, false);
-    }
-    
-    function startRocketGame() {
-        if (!socket?.connected) return;
-        socket.emit('rocket_start_flight');
-    }
-    
-    function cashoutRocket() {
-        if (!rocketMyBetPlaced) { showToast('Вы не сделали ставку!', true); return; }
-        const win = Math.floor(rocketMyBetAmount * rocketMultiplier);
-        socket.emit('rocket_cashout', { playerId, multiplier: rocketMultiplier, win });
-        addWin(win);
-        rocketMyBetPlaced = false;
-        showToast(`💰 ЗАБРАНО ${win} Stars (x${rocketMultiplier})!`, false);
-    }
-    
-    function initRocketGame() {
-        renderRocketGameUI();
-        if (socket) {
-            socket.on('rocket_update', (data) => {
-                document.getElementById('rocketParticipants').innerHTML = data.players.map(p => 
-                    `<div class="participant ${p.name === playerName ? 'participant-real' : ''}">
-                        <span>${p.avatar || '🚀'} ${p.name}</span>
-                        <span>⭐ ${p.bet} ${p.cashedOut ? '✅' : ''}</span>
-                     </div>`
-                ).join('');
-            });
-            socket.on('rocket_multiplier', (mult) => {
-                rocketMultiplier = mult;
-                document.getElementById('rocketMultiplier').textContent = `x${mult}`;
-                document.getElementById('rocketPotential').innerHTML = `💰 ВОЗМОЖНО: ${Math.floor(rocketMyBetAmount * mult)} ⭐`;
-            });
-            socket.on('rocket_explode', (mult) => {
-                showToast(`💥 ВЗРЫВ на x${mult}!`, true);
-                document.getElementById('rocketStartBtn').disabled = false;
-                rocketMyBetPlaced = false;
-                renderRocketGameUI();
-            });
-            socket.on('rocket_cashout_event', (data) => {
-                showToast(`💰 ${data.playerName} забрал ${data.win} Stars (x${data.multiplier})!`, false);
-            });
-        }
-    }
-    
-    function renderRocketGameUI() {
-        const container = document.getElementById('gameContainer');
-        container.innerHTML = `
-            <div class="game-card">
-                <h3>🚀 РАКЕТКА (МУЛЬТИПЛЕЕР)</h3>
-                <div>⭐ Баланс: ${balance}</div>
-                <div class="bet-buttons" style="display:flex;gap:10px;margin:16px 0;flex-wrap:wrap;">
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="50">50 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="100">100 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="250">250 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="500">500 ⭐</button>
-                    <button class="btn" style="background:rgba(255,215,0,0.2);padding:8px 16px;" data-bet="1000">1000 ⭐</button>
-                </div>
-                <div class="coefficient-display" id="rocketMultiplier">x1.00</div>
-                <div class="participants-list" id="rocketParticipants"><div style="text-align:center;padding:12px;">💎 Ожидание игроков</div></div>
-                <div class="potential-win" id="rocketPotential">💰 ВОЗМОЖНО: 0 ⭐</div>
-                <div style="display:flex;gap:12px;margin-top:16px;">
-                    <button class="btn" id="rocketJoinBtn" style="flex:2">🚀 ПРИСОЕДИНИТЬСЯ</button>
-                    <button class="btn btn-cash" id="rocketCashoutBtn" style="flex:1">💰 ЗАБРАТЬ</button>
-                </div>
-                <button class="btn" id="rocketStartBtn" style="margin-top:12px;">🚀 СТАРТ РАУНДА (10 сек)</button>
-            </div>`;
-        document.querySelectorAll('[data-bet]').forEach(btn => {
-            btn.onclick = () => { rocketBet = parseInt(btn.dataset.bet); renderRocketGameUI(); };
-        });
-        document.getElementById('rocketJoinBtn').onclick = joinRocketGame;
-        document.getElementById('rocketCashoutBtn').onclick = cashoutRocket;
-        document.getElementById('rocketStartBtn').onclick = startRocketGame;
-    }
-    
-    // ========== МИННОЕ ПОЛЕ (ОСТАЛОСЬ ОДИНОЧНЫМ) ==========
-    let minesGame = { active: false, board: [], revealed: [], minesCount: 3, bet: 20, multiplier: 1, safeLeft: 0, currentBet: 0 };
-    function getBaseMultiplier(minesCount) { return {3: 2.5, 5: 4.0, 7: 6.5}[minesCount] || 2.5; }
-    function initMinesGame() {
-        if (!deductStars(minesGame.bet)) return;
-        minesGame.active = true;
-        minesGame.currentBet = minesGame.bet;
-        minesGame.multiplier = 1;
-        const size = 5, totalMines = minesGame.minesCount;
-        let newBoard = Array(size).fill().map(() => Array(size).fill(0));
-        let minesPlaced = 0;
-        while (minesPlaced < totalMines) {
-            const r = Math.floor(Math.random() * size), c = Math.floor(Math.random() * size);
-            if (newBoard[r][c] !== -1) { newBoard[r][c] = -1; minesPlaced++; }
-        }
-        for (let i = 0; i < size; i++) {
-            for (let j = 0; j < size; j++) {
-                if (newBoard[i][j] !== -1) {
-                    let cnt = 0;
-                    for (let di = -1; di <= 1; di++) {
-                        for (let dj = -1; dj <= 1; dj++) {
-                            if (di === 0 && dj === 0) continue;
-                            const ni = i+di, nj = j+dj;
-                            if (ni>=0 && ni<size && nj>=0 && nj<size && newBoard[ni][nj]===-1) cnt++;
-                        }
-                    }
-                    newBoard[i][j] = cnt;
-                }
-            }
-        }
-        minesGame.board = newBoard;
-        minesGame.revealed = Array(size).fill().map(() => Array(size).fill(false));
-        minesGame.safeLeft = size*size - totalMines;
-        renderMinesGameUI();
-        showToast(`Игра началась! Ставка ${minesGame.bet} Stars`);
-    }
-    function revealMineCell(row, col) {
-        if (!minesGame.active || minesGame.revealed[row][col]) return;
-        if (minesGame.board[row][col] === -1) {
-            minesGame.active = false;
-            showToast(`💥 Взрыв! Проиграно ${minesGame.currentBet} Stars`, true);
-            renderMinesGameUI();
+    // Присоединиться
+    document.getElementById('joinBtn').onclick = () => {
+        if (balance < currentBet) {
+            alert('Недостаточно Stars!');
             return;
         }
-        minesGame.revealed[row][col] = true;
-        minesGame.safeLeft--;
-        const totalSafe = 25 - minesGame.minesCount;
-        const opened = totalSafe - minesGame.safeLeft;
-        minesGame.multiplier = 1 + (opened / totalSafe) * 4;
-        if (minesGame.safeLeft === 0) {
-            const win = Math.floor(minesGame.currentBet * minesGame.multiplier);
-            addWin(win);
-            minesGame.active = false;
-            showToast(`🏆 ПОБЕДА! Выигрыш ${win} Stars!`);
-        }
-        renderMinesGameUI();
-    }
-    function cashoutMines() {
-        if (!minesGame.active) return;
-        const win = Math.floor(minesGame.currentBet * minesGame.multiplier);
-        addWin(win);
-        minesGame.active = false;
-        showToast(`💰 Вы забрали ${win} Stars!`);
-        renderMinesGameUI();
-    }
-    function renderMinesGameUI() {
-        const container = document.getElementById('gameContainer');
-        if (!minesGame.active || !minesGame.board.length) {
-            container.innerHTML = `<div class="game-card"><h3>💎 Минное поле 5x5</h3><div>⭐ Баланс: ${balance}</div><div>Ставка: <input type="number" id="minesBet" min="20" value="${minesGame.bet}" ${minesGame.active ? 'disabled' : ''}> Мин: <select id="minesCount" ${minesGame.active ? 'disabled' : ''}><option value="3" ${minesGame.minesCount===3 ? 'selected' : ''}>3 мины</option><option value="5" ${minesGame.minesCount===5 ? 'selected' : ''}>5 мин</option><option value="7" ${minesGame.minesCount===7 ? 'selected' : ''}>7 мин</option></select></div><button class="btn" id="startMinesBtn" ${minesGame.active ? 'disabled' : ''}>🚀 Новая игра</button></div>`;
-            document.getElementById('minesBet')?.addEventListener('change', (e) => minesGame.bet = Math.max(20, parseInt(e.target.value) || 20));
-            document.getElementById('minesCount')?.addEventListener('change', (e) => minesGame.minesCount = parseInt(e.target.value));
-            document.getElementById('startMinesBtn')?.addEventListener('click', initMinesGame);
+        balance -= currentBet;
+        document.getElementById('balance').innerText = balance;
+        socket.emit('wheel_join', { name: myName, bet: currentBet });
+        document.getElementById('result').innerHTML = `✅ Вы присоединились со ставкой ${currentBet} ⭐!`;
+    };
+    
+    // Повысить ставку
+    document.getElementById('raiseBtn').onclick = () => {
+        if (balance < 10) {
+            alert('Недостаточно Stars!');
             return;
         }
-        let gridHtml = '<div class="mines-grid">';
-        for (let i = 0; i < 5; i++) {
-            for (let j = 0; j < 5; j++) {
-                const isRevealed = minesGame.revealed[i][j];
-                let content = '?';
-                if (isRevealed) {
-                    if (minesGame.board[i][j] === -1) content = '💣';
-                    else if (minesGame.board[i][j] === 0) content = '✨';
-                    else content = minesGame.board[i][j];
-                }
-                gridHtml += `<div class="mine-cell ${isRevealed ? 'revealed' : ''}" onclick="revealMineCell(${i},${j})">${content}</div>`;
-            }
-        }
-        gridHtml += '</div>';
-        container.innerHTML = `<div class="game-card"><h3>💎 Минное поле 5x5</h3>${gridHtml}<button class="btn btn-cash" onclick="cashoutMines()">💰 Забрать (x${minesGame.multiplier.toFixed(2)})</button><div>Множитель: x${minesGame.multiplier.toFixed(2)} | Потенциальный выигрыш: ${Math.floor(minesGame.currentBet * minesGame.multiplier)} Stars</div></div>`;
-    }
+        balance -= 10;
+        document.getElementById('balance').innerText = balance;
+        socket.emit('wheel_raise', { newBet: currentBet + 10 });
+        currentBet += 10;
+        document.getElementById('result').innerHTML = `✅ Ставка повышена до ${currentBet} ⭐!`;
+    };
     
-    // ========== НАВИГАЦИЯ ==========
-    let currentGame = 'mines';
-    function switchGame(game) {
-        currentGame = game;
-        document.querySelectorAll('.game-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.game === game));
-        if (game === 'mines') renderMinesGameUI();
-        else if (game === 'wheel') initWheelGame();
-        else if (game === 'rocket') initRocketGame();
-    }
-    document.querySelectorAll('.game-tab').forEach(tab => tab.onclick = () => switchGame(tab.dataset.game));
-    window.revealMineCell = revealMineCell;
-    window.cashoutMines = cashoutMines;
-    
-    if (window.Telegram?.WebApp) { Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
-    updateBalanceUI();
-    renderMinesGameUI();
+    // Старт раунда
+    document.getElementById('startBtn').onclick = () => {
+        socket.emit('wheel_start');
+        document.getElementById('result').innerHTML = '🚀 РАУНД НАЧАЛСЯ! 10 секунд...';
+    };
 </script>
 </body>
 </html>
